@@ -15,7 +15,7 @@ export const SlideButton: React.FC<Props> = ({ ImageOne, ImageTwo }) => {
     setTheme(toValue === 0 ? false : true);
     Animated.timing(positionSwitch, {
       toValue,
-      duration: 600,
+      duration: 400,
       useNativeDriver: false,
     }).start();
   };

@@ -1,4 +1,4 @@
 export type RootStackParamList = {
   HomeScreen: undefined;
-  MultiUtils: undefined;
+  DetailsEvent: { time: string; message: string; colorEvent: string };
 };

@@ -39,7 +39,7 @@ export const TextRegular = styled.Text`
   color: ${({ theme }) => (theme.title === 'dark' ? '#fff' : '#000')};
   font-family: 'Inter-Regular';
   font-size: ${responsive.P};
-  text-align: center;
+  text-align: justify;
   line-height: 20px;
 `;
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import responsive from '../../styles/themes/responsive';
+// import responsive from '../../styles/themes/responsive';
 
 export const Container = styled.View`
   flex: 1;
@@ -7,21 +7,7 @@ export const Container = styled.View`
   align-items: center;
 `;
 
-export const ContentContainer = styled.View`
-  align-items: center;
-  justify-content: space-evenly;
+export const Content = styled.View`
+  width: 100%;
   flex: 1;
-  margin-left: ${responsive.UEG};
-  margin-right: ${responsive.UEG};
-`;
-
-export const TextBottom = styled.View`
-  margin-top: ${responsive.EG};
-  justify-content: center;
-`;
-
-export const ButtonContainer = styled.View`
-  width: 85%;
-  margin-bottom: ${responsive.EG};
-  align-items: flex-end;
 `;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Home } from '../screens/Home';
-import { MultiUtils } from '../screens/MultiUtils';
+import { DetailsEvent } from '../screens/DetailsEvent';
 import { RootStackParamList } from './types';
 
 export const HomeRoute: React.FC = () => {
@@ -10,7 +10,7 @@ export const HomeRoute: React.FC = () => {
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       <RootStack.Screen name="HomeScreen" component={Home} />
-      <RootStack.Screen name="MultiUtils" component={MultiUtils} />
+      <RootStack.Screen name="DetailsEvent" component={DetailsEvent} />
     </RootStack.Navigator>
   );
 };
