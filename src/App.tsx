@@ -13,8 +13,8 @@ export const App: React.FC = () => {
       <MainContext.Consumer>
         {value => (
           <ThemeProvider theme={value.theme === false ? dark : light}>
-            <Route />
             <StatusBarApp />
+            <Route />
           </ThemeProvider>
         )}
       </MainContext.Consumer>

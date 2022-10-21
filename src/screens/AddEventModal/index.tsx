@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Modal } from 'react-native';
 import { BottomMenu } from '../../components/BottomMenu';
 import { HeaderMenu } from '../../components/HeaderMenu';
+import { MaskInput } from '../../components/MaskInput';
 import {
   Container,
   Content,
@@ -35,8 +36,12 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
                 <TextTitle>Um titulo para se lembrar</TextTitle>
               </ContainerTitle>
               <TextRegular>Categoria: Escolher</TextRegular>
-              <TextRegular>Horário: _ _</TextRegular>
-              <TextRegular>Data: _ _</TextRegular>
+              <TextRegular>
+                Horário: <MaskInput separator=":" linesNumber={2} />{' '}
+              </TextRegular>
+              <TextRegular>
+                Data: <MaskInput separator="/" linesNumber={3} />
+              </TextRegular>
             </TopContainer>
             <BottomContainer>
               <ScrollView showsVerticalScrollIndicator={false}>

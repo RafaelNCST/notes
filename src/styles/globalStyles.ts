@@ -6,7 +6,7 @@ interface PropsImage {
   height: string;
 }
 
-export const BodyScreen = styled.View`
+export const BodyScreen = styled.SafeAreaView`
   background-color: ${({ theme }) => theme.colors.BackGround};
   flex: 1;
 `;
