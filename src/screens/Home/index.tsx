@@ -6,6 +6,9 @@ import { BottomMenu } from '../../components/BottomMenu';
 import { HeaderMenu } from '../../components/HeaderMenu';
 import { Events } from './components/events';
 import { AddEventModal } from '../AddEventModal';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../routes/types';
 
 const DATA = [
   { time: '07:00', message: 'Hoje eu Caguei', colorEvent: 'yellow' },
@@ -14,6 +17,8 @@ const DATA = [
 ];
 
 export const Home: React.FC = () => {
+  const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
+
   const [showModalAddEvent, setShowModalAddEvent] = useState<boolean>(false);
 
   const openModalAddEvent = () => {
@@ -24,6 +29,10 @@ export const Home: React.FC = () => {
     setShowModalAddEvent(false);
   };
 
+  const handleNavigationOptions = () => {
+    navigate('SettingsScreen');
+  };
+
   return (
     <BodyScreen>
       <Container>
@@ -32,6 +41,7 @@ export const Home: React.FC = () => {
           iconLeft="calendar-today"
           iconRight="settings"
           actionLeftButton={() => console.log('pressou')}
+          actionRightButton={handleNavigationOptions}
         />
         <Content>
           <FlatList

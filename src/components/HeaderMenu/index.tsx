@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextSubTitle } from '../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Container, ContainerButton } from './styles';
+import { Container, ContainerButtonLeft, ContainerButtonRight } from './styles';
 
 interface Props {
   textDate: string;
@@ -20,13 +20,13 @@ export const HeaderMenu: React.FC<Props> = ({
 }) => {
   return (
     <Container>
-      <ContainerButton onPress={actionLeftButton}>
+      <ContainerButtonLeft onPress={actionLeftButton}>
         {iconLeft && <Icon name={iconLeft} size={20} color="#fff" />}
-      </ContainerButton>
+      </ContainerButtonLeft>
       <TextSubTitle>{textDate}</TextSubTitle>
-      <ContainerButton onPress={actionRightButton}>
+      <ContainerButtonRight onPress={actionRightButton}>
         {iconRight && <Icon name={iconRight} size={20} color="#fff" />}
-      </ContainerButton>
+      </ContainerButtonRight>
     </Container>
   );
 };
