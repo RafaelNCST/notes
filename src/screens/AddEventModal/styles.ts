@@ -32,3 +32,10 @@ export const BottomContainer = styled.View`
   width: 100%;
   padding: ${responsive.P};
 `;
+
+export const ContainerTexts = styled.View`
+  margin-bottom: ${responsive.EP};
+  flex-direction: row;
+  padding: 0px;
+  height: 20px;
+`;

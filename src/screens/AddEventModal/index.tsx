@@ -6,18 +6,28 @@ import { Modal } from 'react-native';
 import { BottomMenu } from '../../components/BottomMenu';
 import { HeaderMenu } from '../../components/HeaderMenu';
 import { MaskInput } from '../../components/MaskInput';
+import { DropDown } from '../../components/DropDown';
 import {
   Container,
   Content,
   TopContainer,
   ContainerTitle,
   BottomContainer,
+  ContainerTexts,
 } from './styles';
 
 interface Props {
   closeModal: () => void;
   modalState: boolean;
 }
+
+const DATA = [
+  'Sem importância',
+  'Indiferente',
+  'Importante',
+  'Extremamente importante',
+  'Vida ou morte',
+];
 
 export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   return (
@@ -35,13 +45,18 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
                 <CircleEvent colorEvent="white" />
                 <TextTitle>Um titulo para se lembrar</TextTitle>
               </ContainerTitle>
-              <TextRegular>Categoria: Escolher</TextRegular>
-              <TextRegular>
-                Horário: <MaskInput separator=":" linesNumber={2} />{' '}
-              </TextRegular>
-              <TextRegular>
-                Data: <MaskInput separator="/" linesNumber={3} />
-              </TextRegular>
+              <ContainerTexts>
+                <TextRegular>Categoria: </TextRegular>
+                <DropDown Data={DATA} zIndex={1} />
+              </ContainerTexts>
+              <ContainerTexts>
+                <TextRegular>Horário:</TextRegular>
+                <MaskInput separator=":" linesNumber={2} />
+              </ContainerTexts>
+              <ContainerTexts>
+                <TextRegular>Data:</TextRegular>
+                <MaskInput separator="/" linesNumber={3} />
+              </ContainerTexts>
             </TopContainer>
             <BottomContainer>
               <ScrollView showsVerticalScrollIndicator={false}>

@@ -1,6 +1,5 @@
 import React from 'react';
-import { TextRegular } from '../../styles/globalStyles';
-import { ContainerInput, Input } from './styles';
+import { ContainerInput, Input, SeparatorText } from './styles';
 
 interface Props {
   separator: string;
@@ -9,16 +8,17 @@ interface Props {
 
 export const MaskInput: React.FC<Props> = ({ separator, linesNumber }) => {
   return (
-    <ContainerInput>
-      {Array(3)
+    <ContainerInput width={linesNumber === 2 ? '60px' : '105px'}>
+      {Array(linesNumber)
         .fill(0)
         .map((_, index) => index + 1)
         .map((_, index) => {
-          if (linesNumber === index) return null;
           return (
             <React.Fragment key={index}>
-              <Input />
-              <TextRegular>{separator}</TextRegular>
+              <Input maxLength={index === 2 ? 4 : 2} />
+              {linesNumber - 1 !== index && (
+                <SeparatorText>{separator}</SeparatorText>
+              )}
             </React.Fragment>
           );
         })}
