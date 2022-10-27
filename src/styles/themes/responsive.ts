@@ -1,7 +1,8 @@
 import { RFPercentage } from 'react-native-responsive-fontsize';
 
 export default {
-  EP: `${RFPercentage(1)}px`, //8px
+  EPP: `${RFPercentage(1)}px`, //8px
+  EP: `${RFPercentage(1.25)}px`, //8px
   P: `${RFPercentage(1.5)}px`, //12px
   PM: `${RFPercentage(1.75)}px`, //14px
   M: `${RFPercentage(2)}px`, //16px

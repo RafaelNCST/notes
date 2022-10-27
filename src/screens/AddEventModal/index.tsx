@@ -47,7 +47,7 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
               </ContainerTitle>
               <ContainerTexts>
                 <TextRegular>Categoria: </TextRegular>
-                <DropDown Data={DATA} zIndex={1} />
+                <DropDown Data={DATA} zIndex={3} />
               </ContainerTexts>
               <ContainerTexts>
                 <TextRegular>Horário:</TextRegular>

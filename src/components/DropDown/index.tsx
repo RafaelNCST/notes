@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { LayoutAnimation } from 'react-native';
-import { toggleAnimation } from './animations/toggleAnimation';
+import React, { useState, useRef, useEffect } from 'react';
+import { Animated } from 'react-native';
 import {
   DropDownContainer,
   DropDownSubContainer,
@@ -8,7 +7,10 @@ import {
   Option,
   TextSelected,
   TextDropDown,
+  SubContainerSelected,
 } from './styles';
+
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
   Data: Array<string>;
@@ -16,53 +18,77 @@ interface Props {
 }
 
 export const DropDown: React.FC<Props> = ({ Data, zIndex }) => {
-  const placeholder: string = 'Selecione algo ai poh pra começar';
+  const placeholder: string = 'Selecione uma categoria';
 
+  const dataSize: number = Data.length * 25;
+
+  const movimentMenu = useRef(new Animated.Value(-dataSize)).current;
   const [firstRun, setFirstRun] = useState<boolean>(true);
   const [selected, setSelected] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
 
   const handleDropDrown = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setOpen(prev => !prev);
+    Animated.timing(movimentMenu, {
+      toValue: open ? 1 : 0,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
   };
 
   const handleSelectedOption = (item: string) => {
     setSelected(item);
     setFirstRun(false);
-    setOpen(false);
   };
 
-  return (
-    <DropDownContainer zIndex={zIndex}>
-      <Selected
-        onPress={handleDropDrown}
-        activeOpacity={0.8}
-        underlayColor="#cac8c8">
-        <TextSelected color={firstRun ? '#9e9d9d' : '#363636'}>
-          {firstRun ? placeholder : selected}
-        </TextSelected>
-      </Selected>
-      {open && (
-        <DropDownSubContainer>
-          {Data.map((item, index) => {
-            if (item === selected) {
-              return null;
-            }
+  const movimentControl = movimentMenu.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-dataSize, -1],
+  });
 
-            return (
-              <Option
-                activeOpacity={0.8}
-                underlayColor="#cac8c8"
-                sizeBorderRadius={index === Data.length - 1 ? '12px' : '0px'}
-                key={String(index)}
-                onPress={() => handleSelectedOption(item)}>
-                <TextDropDown>{item}</TextDropDown>
-              </Option>
-            );
-          })}
-        </DropDownSubContainer>
-      )}
+  const onClickDropDown = () => {
+    setOpen(prev => !prev);
+  };
+
+  useEffect(() => {
+    handleDropDrown();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  return (
+    <DropDownContainer
+      zIndex={open ? zIndex : 0}
+      style={{ height: dataSize + 25 }}>
+      <Selected
+        onPress={onClickDropDown}
+        activeOpacity={0.5}
+        underlayColor="#cac8c8">
+        <SubContainerSelected>
+          <TextSelected color={firstRun ? '#9e9d9d' : '#363636'}>
+            {firstRun ? placeholder : selected}
+          </TextSelected>
+          <Icon name="expand-more" size={20} color="#000" />
+        </SubContainerSelected>
+      </Selected>
+      <DropDownSubContainer
+        style={{
+          transform: [{ translateY: movimentControl }],
+        }}>
+        {Data.map((item, index) => {
+          if (item === selected) {
+            return null;
+          }
+
+          return (
+            <Option
+              activeOpacity={0.8}
+              underlayColor="#cac8c8"
+              key={String(index)}
+              onPress={() => handleSelectedOption(item)}>
+              <TextDropDown>{item}</TextDropDown>
+            </Option>
+          );
+        })}
+      </DropDownSubContainer>
     </DropDownContainer>
   );
 };

@@ -31,10 +31,11 @@ export const BottomContainer = styled.View`
   flex: 1;
   width: 100%;
   padding: ${responsive.P};
+  z-index: -1;
 `;
 
 export const ContainerTexts = styled.View`
-  margin-bottom: ${responsive.EP};
+  margin-bottom: ${responsive.M};
   flex-direction: row;
   padding: 0px;
   height: 20px;
