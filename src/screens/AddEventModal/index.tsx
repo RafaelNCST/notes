@@ -1,12 +1,12 @@
 import React from 'react';
 import { BodyScreen, TextRegular, TextTitle } from '../../styles/globalStyles';
-import { CircleEvent } from '../../components/CircleEvent';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Modal } from 'react-native';
 import { BottomMenu } from '../../components/BottomMenu';
 import { HeaderMenu } from '../../components/HeaderMenu';
 import { MaskInput } from '../../components/MaskInput';
 import { DropDown } from '../../components/DropDown';
+import { DropDownCircle } from '../../components/DropDownCircle';
 import {
   Container,
   Content,
@@ -14,6 +14,7 @@ import {
   ContainerTitle,
   BottomContainer,
   ContainerTexts,
+  DropDownCircleContainer,
 } from './styles';
 
 interface Props {
@@ -29,6 +30,8 @@ const DATA = [
   'Vida ou morte',
 ];
 
+const DATACIRCLE = ['gray', 'green', 'yellow', 'red', 'black'];
+
 export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   return (
     <Modal visible={modalState} animationType="slide">
@@ -42,7 +45,9 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
           <Content>
             <TopContainer>
               <ContainerTitle>
-                <CircleEvent colorEvent="white" />
+                <DropDownCircleContainer>
+                  <DropDownCircle Data={DATACIRCLE} zIndex={5} />
+                </DropDownCircleContainer>
                 <TextTitle>Um titulo para se lembrar</TextTitle>
               </ContainerTitle>
               <ContainerTexts>

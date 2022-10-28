@@ -1,4 +1,3 @@
-import responsive from '../../styles/themes/responsive';
 import styled from 'styled-components/native';
 
 interface styledProps {
@@ -10,5 +9,4 @@ export const StyledCircleEvent = styled.View<styledProps>`
   width: 20px;
   background-color: ${({ colorEvent }) => colorEvent};
   border-radius: 30px;
-  margin-right: ${responsive.M};
 `;

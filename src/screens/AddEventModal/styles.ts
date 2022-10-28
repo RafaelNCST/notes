@@ -11,6 +11,11 @@ export const Content = styled.View`
   width: 100%;
 `;
 
+export const DropDownCircleContainer = styled.View`
+  width: 20%;
+  height: 40px;
+`;
+
 export const TopContainer = styled.View`
   width: 100%;
   align-items: flex-start;
