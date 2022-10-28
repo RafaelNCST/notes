@@ -3,7 +3,6 @@ import responsive from '../../styles/themes/responsive';
 
 interface styledProps {
   width?: string;
-  widthInput?: string;
 }
 
 export const ContainerInput = styled.View<styledProps>`
@@ -14,7 +13,7 @@ export const ContainerInput = styled.View<styledProps>`
   justify-content: center;
 `;
 
-export const Input = styled.TextInput<styledProps>`
+export const Input = styled.TextInput`
   font-size: ${responsive.P};
   color: ${({ theme }) => theme.colors.Text};
   padding: 0px;
@@ -23,7 +22,6 @@ export const Input = styled.TextInput<styledProps>`
   border-bottom-width: 1px;
   border-color: ${({ theme }) => theme.colors.Text};
   border-style: solid;
-  width: ${({ widthInput }) => widthInput};
 `;
 
 export const SeparatorText = styled.Text`

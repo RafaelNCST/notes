@@ -51,11 +51,11 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
               </ContainerTexts>
               <ContainerTexts>
                 <TextRegular>Horário:</TextRegular>
-                <MaskInput separator=":" linesNumber={2} />
+                <MaskInput separator=":" linesNumber={2} type="time" />
               </ContainerTexts>
               <ContainerTexts>
                 <TextRegular>Data:</TextRegular>
-                <MaskInput separator="/" linesNumber={3} />
+                <MaskInput separator="/" linesNumber={3} type="date" />
               </ContainerTexts>
             </TopContainer>
             <BottomContainer>
