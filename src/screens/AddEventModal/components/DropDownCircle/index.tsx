@@ -9,8 +9,7 @@ import {
   CircleContainer,
   SubContainerSelected,
 } from './styles';
-import { View } from 'react-native';
-import { CircleEvent } from '../CircleEvent';
+import { CircleEvent } from '../../../../components/CircleEvent';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -20,11 +19,10 @@ interface Props {
 }
 
 export const DropDownCircle: React.FC<Props> = ({ Data, zIndex }) => {
-  const placeholder: string = 'O';
-
-  const dataSize: number = Data.length * 40;
+  const dataSize: number = Data.length * 45;
 
   const movimentMenu = useRef(new Animated.Value(-dataSize)).current;
+  const heightMenu = useRef(new Animated.Value(45)).current;
   const [firstRun, setFirstRun] = useState<boolean>(true);
   const [selected, setSelected] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
@@ -34,6 +32,14 @@ export const DropDownCircle: React.FC<Props> = ({ Data, zIndex }) => {
       toValue: open ? 1 : 0,
       duration: 500,
       useNativeDriver: true,
+    }).start();
+  };
+
+  const handleDropDrownHeight = () => {
+    Animated.timing(heightMenu, {
+      toValue: open ? 1 : 0,
+      duration: 500,
+      useNativeDriver: false,
     }).start();
   };
 
@@ -47,26 +53,30 @@ export const DropDownCircle: React.FC<Props> = ({ Data, zIndex }) => {
     outputRange: [-dataSize, -1],
   });
 
+  const heightControl = heightMenu.interpolate({
+    inputRange: [0, 1],
+    outputRange: [45, dataSize + 25],
+  });
+
   const onClickDropDown = () => {
     setOpen(prev => !prev);
   };
 
   useEffect(() => {
     handleDropDrown();
+    handleDropDrownHeight();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   return (
-    <DropDownContainer
-      zIndex={open ? zIndex : 0}
-      style={{ height: dataSize + 25 }}>
+    <DropDownContainer zIndex={zIndex} style={{ height: heightControl }}>
       <Selected
         onPress={onClickDropDown}
         activeOpacity={0.5}
         underlayColor="#cac8c8">
         <SubContainerSelected>
           <CircleContainer>
-            <CircleEvent colorEvent={'white'} />
+            <CircleEvent colorEvent={firstRun ? 'white' : selected} />
           </CircleContainer>
           <ContainerIcon>
             <Icon name="expand-more" size={20} color="#000" />

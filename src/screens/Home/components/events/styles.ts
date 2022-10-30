@@ -13,4 +13,5 @@ export const ButtonLine = styled.TouchableOpacity`
 
 export const ContainerText = styled.View`
   flex-direction: row;
+  margin-left: ${responsive.P};
 `;

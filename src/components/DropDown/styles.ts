@@ -7,7 +7,7 @@ interface StyledProps {
   zIndex?: number;
 }
 
-export const DropDownContainer = styled.View<StyledProps>`
+export const DropDownContainer = styled(Animated.View)<StyledProps>`
   width: 50%;
   height: auto;
   z-index: ${({ zIndex }) => zIndex};
@@ -24,7 +24,6 @@ export const DropDownSubContainer = styled(Animated.View)`
 
 export const Selected = styled.TouchableHighlight`
   border: 1px solid #000;
-  border-bottom-width: 0px;
   z-index: 2;
 `;
 

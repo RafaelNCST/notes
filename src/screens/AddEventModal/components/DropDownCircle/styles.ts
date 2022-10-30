@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import responsive from '../../styles/themes/responsive';
+import responsive from '../../../../styles/themes/responsive';
 import { Animated } from 'react-native';
 
 interface StyledProps {
@@ -7,7 +7,7 @@ interface StyledProps {
   zIndex?: number;
 }
 
-export const DropDownContainer = styled.View<StyledProps>`
+export const DropDownContainer = styled(Animated.View)<StyledProps>`
   width: 100%;
   height: auto;
   z-index: ${({ zIndex }) => zIndex};
@@ -37,6 +37,9 @@ export const CircleContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  border-bottom-width: 1px;
+  border-color: #000;
+  border-style: solid;
 `;
 
 export const Selected = styled.TouchableHighlight`

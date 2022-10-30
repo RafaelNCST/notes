@@ -1,18 +1,23 @@
-import React, { useRef } from 'react';
+import React, { useRef, Dispatch, SetStateAction } from 'react';
 import { Container, Switch, ContainerPosition } from './styles';
-import { ConsumerMainContext } from '../../contexts/consumer';
 import { Animated } from 'react-native';
 interface Props {
   ImageOne?: () => SVGRectElement;
   ImageTwo?: () => SVGRectElement;
+  setEvent?: Dispatch<SetStateAction<boolean>>;
 }
 
-export const SlideButton: React.FC<Props> = ({ ImageOne, ImageTwo }) => {
+export const SlideButton: React.FC<Props> = ({
+  ImageOne,
+  ImageTwo,
+  setEvent,
+}) => {
   const positionSwitch = useRef(new Animated.Value(0)).current;
-  const { setTheme } = ConsumerMainContext();
 
   const startAnimation = (toValue: number) => {
-    setTheme(toValue === 0 ? false : true);
+    if (setEvent) {
+      setEvent(toValue === 0 ? false : true);
+    }
     Animated.timing(positionSwitch, {
       toValue,
       duration: 400,
@@ -22,7 +27,7 @@ export const SlideButton: React.FC<Props> = ({ ImageOne, ImageTwo }) => {
 
   const left = positionSwitch.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 28],
+    outputRange: [-2, 22],
     extrapolate: 'clamp',
   });
 
@@ -30,10 +35,10 @@ export const SlideButton: React.FC<Props> = ({ ImageOne, ImageTwo }) => {
     <Container>
       <Switch style={{ transform: [{ translateX: left }] }} />
       <ContainerPosition onPress={() => startAnimation(0)}>
-        {ImageOne && ImageOne()}
+        {ImageOne ? ImageOne() : null}
       </ContainerPosition>
       <ContainerPosition onPress={() => startAnimation(1)}>
-        {ImageTwo && ImageTwo()}
+        {ImageTwo ? ImageTwo() : null}
       </ContainerPosition>
     </Container>
   );

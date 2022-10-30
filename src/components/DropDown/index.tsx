@@ -20,9 +20,10 @@ interface Props {
 export const DropDown: React.FC<Props> = ({ Data, zIndex }) => {
   const placeholder: string = 'Selecione uma categoria';
 
-  const dataSize: number = Data.length * 25;
+  const dataSize: number = Data.length * 30;
 
   const movimentMenu = useRef(new Animated.Value(-dataSize)).current;
+  const heightMenu = useRef(new Animated.Value(30)).current;
   const [firstRun, setFirstRun] = useState<boolean>(true);
   const [selected, setSelected] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
@@ -32,6 +33,14 @@ export const DropDown: React.FC<Props> = ({ Data, zIndex }) => {
       toValue: open ? 1 : 0,
       duration: 500,
       useNativeDriver: true,
+    }).start();
+  };
+
+  const handleDropDrownHeight = () => {
+    Animated.timing(heightMenu, {
+      toValue: open ? 1 : 0,
+      duration: 500,
+      useNativeDriver: false,
     }).start();
   };
 
@@ -45,19 +54,23 @@ export const DropDown: React.FC<Props> = ({ Data, zIndex }) => {
     outputRange: [-dataSize, -1],
   });
 
+  const heightControl = heightMenu.interpolate({
+    inputRange: [0, 1],
+    outputRange: [30, dataSize + 3],
+  });
+
   const onClickDropDown = () => {
     setOpen(prev => !prev);
   };
 
   useEffect(() => {
     handleDropDrown();
+    handleDropDrownHeight();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   return (
-    <DropDownContainer
-      zIndex={open ? zIndex : 0}
-      style={{ height: dataSize + 25 }}>
+    <DropDownContainer zIndex={zIndex} style={{ height: heightControl }}>
       <Selected
         onPress={onClickDropDown}
         activeOpacity={0.5}

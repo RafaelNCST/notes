@@ -11,6 +11,13 @@ export const BodyScreen = styled.SafeAreaView`
   flex: 1;
 `;
 
+export const BodyScreenModal = styled.SafeAreaView`
+  background-color: rgba(0, 0, 0, 0.5);
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const TextSuperTitle = styled.Text`
   color: ${({ theme }) => theme.colors.Text};
   font-family: 'Inter-ExtraBold';
@@ -36,11 +43,27 @@ export const TextSubTitle = styled.Text`
 `;
 
 export const TextRegular = styled.Text`
-  color: ${({ theme }) => (theme.title === 'dark' ? '#fff' : '#000')};
+  color: ${({ theme }) => theme.colors.Text};
   font-family: 'Inter-Regular';
   font-size: ${responsive.P};
   text-align: justify;
   line-height: 20px;
+`;
+
+export const TextModalTitle = styled.Text`
+  color: #000;
+  font-family: 'Inter-Bold';
+  font-size: ${responsive.PM};
+  text-align: justify;
+  line-height: 20px;
+`;
+
+export const TextModalRegular = styled.Text`
+  color: #000;
+  font-family: 'Inter-Regular';
+  font-size: ${responsive.P};
+  text-align: justify;
+  line-height: 15px;
 `;
 
 export const Image = styled.Image<PropsImage>`

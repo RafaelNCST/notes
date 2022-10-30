@@ -7,6 +7,6 @@ export default {
 
     BackGround: '#F5DEB3',
     Inverted: '#363636',
-    Text: '#363636',
+    Text: '#000',
   },
 };

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { TextInput } from 'react-native';
 import { ContainerInput, Input, SeparatorText } from './styles';
-import { DATA_MASK_MONTH } from '../../helpers/monthMask';
+import { DATA_MASK_MONTH } from '../../../../helpers/monthMask';
 
 interface Props {
   separator: string;
@@ -14,9 +14,9 @@ export const MaskInput: React.FC<Props> = ({
   linesNumber,
   type,
 }) => {
-  const [firstInput, setFirstInput] = useState<string>();
-  const [secondInput, setSecondInput] = useState<string>();
-  const [thirdInput, setThirdInput] = useState<string>();
+  const [firstInput, setFirstInput] = useState<string | null>(null);
+  const [secondInput, setSecondInput] = useState<string | null>(null);
+  const [thirdInput, setThirdInput] = useState<string | null>(null);
 
   const date = new Date();
 
@@ -31,7 +31,7 @@ export const MaskInput: React.FC<Props> = ({
       setFirstInput(event);
       if (event.length === 2) {
         if (parseInt(event, 10) >= 23) {
-          setFirstInput(prev => '0' + prev[1]);
+          setFirstInput(prev => '0' + (prev ? prev[1] : null));
           ref_input2?.current?.focus();
         } else {
           ref_input2?.current?.focus();
@@ -49,10 +49,10 @@ export const MaskInput: React.FC<Props> = ({
         ref_input1?.current?.focus();
       } else if (event.length === 2) {
         if (parseInt(event[0], 10) >= 6) {
-          setSecondInput(prev => '0' + prev[1]);
+          setSecondInput(prev => '0' + (prev ? prev[1] : null));
           ref_input3?.current?.focus();
         } else if (event[0] === '2' && parseInt(event[1], 10) >= 4) {
-          setSecondInput(prev => prev[0] + '0');
+          setSecondInput(prev => (prev ? prev[0] : null) + '0');
           ref_input3?.current?.focus();
         } else {
           ref_input3?.current?.focus();
@@ -86,7 +86,7 @@ export const MaskInput: React.FC<Props> = ({
         ref_input1?.current?.focus();
       } else if (event.length === 2) {
         if (parseInt(event, 10) >= 13) {
-          setSecondInput(prev => '0' + prev[1]);
+          setSecondInput(prev => '0' + (prev ? prev[1] : null));
           ref_input3?.current?.focus();
         } else {
           ref_input3?.current?.focus();
@@ -109,7 +109,7 @@ export const MaskInput: React.FC<Props> = ({
       if (event.length === 0) {
         ref_input2?.current?.focus();
       } else if (event.length === 4) {
-        if (parseInt(event, 10) < parseInt(date.getFullYear(), 10)) {
+        if (parseInt(event, 10) < date.getFullYear()) {
           setThirdInput('2022');
         }
 

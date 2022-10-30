@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import responsive from '../../styles/themes/responsive';
+import responsive from '../../../../styles/themes/responsive';
 
 interface styledProps {
   width?: string;
@@ -11,6 +11,7 @@ export const ContainerInput = styled.View<styledProps>`
   height: 80%;
   width: ${({ width }) => width};
   justify-content: center;
+  z-index: 1;
 `;
 
 export const Input = styled.TextInput`
