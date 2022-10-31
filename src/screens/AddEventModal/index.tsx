@@ -38,14 +38,14 @@ const DATA = [
   'Vida ou morte',
 ];
 
-const DATACIRCLE = ['gray', 'green', 'yellow', 'red', 'black'];
+const DATACIRCLE: Array<string> = ['gray', 'green', 'yellow', 'red', 'black'];
 
 export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
   const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
-    circle: 'White',
+    circle: 'white',
     title: '',
     category: '',
     time: '',
@@ -78,7 +78,12 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
             <TopContainer>
               <ContainerTitle>
                 <DropDownCircleContainer>
-                  <DropDownCircle Data={DATACIRCLE} zIndex={4} />
+                  <DropDownCircle
+                    Data={DATACIRCLE}
+                    zIndex={4}
+                    setArrayEvents={setArrayEvents}
+                    arrayEvents={arrayEvents}
+                  />
                 </DropDownCircleContainer>
                 <InputTitle
                   heightStyled="40px"
@@ -88,14 +93,10 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
                     focusTitle ? '#777676' : theme.colors.Text
                   }
                   onChangeText={(event: string) =>
-                    setArrayEvents({
-                      circle: 'White',
+                    setArrayEvents(prevState => ({
+                      ...prevState,
                       title: event,
-                      category: '',
-                      time: '',
-                      date: '',
-                      description: arrayEvents.description,
-                    })
+                    }))
                   }
                   onFocus={() => setFocusTitle(true)}
                   onBlur={() => setFocusTitle(false)}
@@ -105,15 +106,32 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
               </ContainerTitle>
               <ContainerTexts>
                 <TextRegular>Categoria: </TextRegular>
-                <DropDown Data={DATA} zIndex={5} />
+                <DropDown
+                  Data={DATA}
+                  zIndex={5}
+                  setArrayEvents={setArrayEvents}
+                  arrayEvents={arrayEvents}
+                />
               </ContainerTexts>
               <ContainerTexts>
                 <TextRegular>Horário:</TextRegular>
-                <MaskInput separator=":" linesNumber={2} type="time" />
+                <MaskInput
+                  separator=":"
+                  linesNumber={2}
+                  type="time"
+                  arrayEvents={arrayEvents}
+                  setArrayEvents={setArrayEvents}
+                />
               </ContainerTexts>
               <ContainerTexts>
                 <TextRegular>Data:</TextRegular>
-                <MaskInput separator="/" linesNumber={3} type="date" />
+                <MaskInput
+                  separator="/"
+                  linesNumber={3}
+                  type="date"
+                  arrayEvents={arrayEvents}
+                  setArrayEvents={setArrayEvents}
+                />
               </ContainerTexts>
 
               <InfoButton setOpen={setShowModalInfo} />
@@ -126,14 +144,10 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
                     focusDescription ? '#777676' : theme.colors.Text
                   }
                   onChangeText={(event: string) =>
-                    setArrayEvents({
-                      circle: 'White',
-                      title: arrayEvents.title,
-                      category: '',
-                      time: '',
-                      date: '',
+                    setArrayEvents(prevState => ({
+                      ...prevState,
                       description: event,
-                    })
+                    }))
                   }
                   onFocus={() => setFocusDescription(true)}
                   onBlur={() => setFocusDescription(false)}

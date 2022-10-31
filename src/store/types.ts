@@ -1,12 +1,12 @@
 import { Store } from '.';
 
 export interface eventsProps {
-  circle: string;
-  title: string;
-  category: string;
-  time: string;
-  date: string;
-  description: string;
+  circle?: string;
+  title?: string;
+  category?: string;
+  time?: string;
+  date?: string;
+  description?: string;
 }
 
 export interface InitialStateProps {

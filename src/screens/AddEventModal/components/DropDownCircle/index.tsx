@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { Animated } from 'react-native';
 import {
   DropDownContainer,
@@ -10,21 +16,28 @@ import {
   SubContainerSelected,
 } from './styles';
 import { CircleEvent } from '../../../../components/CircleEvent';
+import { eventsProps } from '../../../../store/types';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
   Data: Array<string>;
   zIndex?: number;
+  setArrayEvents: Dispatch<SetStateAction<eventsProps>>;
+  arrayEvents?: eventsProps;
 }
 
-export const DropDownCircle: React.FC<Props> = ({ Data, zIndex }) => {
+export const DropDownCircle: React.FC<Props> = ({
+  Data,
+  zIndex,
+  setArrayEvents,
+  arrayEvents,
+}) => {
   const dataSize: number = Data.length * 45;
 
   const movimentMenu = useRef(new Animated.Value(-dataSize)).current;
   const heightMenu = useRef(new Animated.Value(45)).current;
   const [firstRun, setFirstRun] = useState<boolean>(true);
-  const [selected, setSelected] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
 
   const handleDropDrown = () => {
@@ -44,8 +57,12 @@ export const DropDownCircle: React.FC<Props> = ({ Data, zIndex }) => {
   };
 
   const handleSelectedOption = (item: string) => {
-    setSelected(item);
+    setArrayEvents({
+      ...arrayEvents,
+      circle: item,
+    });
     setFirstRun(false);
+    setOpen(false);
   };
 
   const movimentControl = movimentMenu.interpolate({
@@ -76,7 +93,9 @@ export const DropDownCircle: React.FC<Props> = ({ Data, zIndex }) => {
         underlayColor="#cac8c8">
         <SubContainerSelected>
           <CircleContainer>
-            <CircleEvent colorEvent={firstRun ? 'white' : selected} />
+            <CircleEvent
+              colorEvent={firstRun ? 'white' : arrayEvents?.circle}
+            />
           </CircleContainer>
           <ContainerIcon>
             <Icon name="expand-more" size={20} color="#000" />
@@ -87,8 +106,8 @@ export const DropDownCircle: React.FC<Props> = ({ Data, zIndex }) => {
         style={{
           transform: [{ translateY: movimentControl }],
         }}>
-        {Data.map((item, index) => {
-          if (item === selected) {
+        {Data.map((item, index: number) => {
+          if (item === arrayEvents?.circle) {
             return null;
           }
 

@@ -1,4 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from 'react';
+import { eventsProps } from '../../../../store/types';
 import { TextInput } from 'react-native';
 import { ContainerInput, Input, SeparatorText } from './styles';
 import { DATA_MASK_MONTH } from '../../../../helpers/monthMask';
@@ -7,12 +14,16 @@ interface Props {
   separator: string;
   linesNumber: number;
   type: string;
+  arrayEvents: eventsProps;
+  setArrayEvents: Dispatch<SetStateAction<eventsProps>>;
 }
 
 export const MaskInput: React.FC<Props> = ({
   separator,
   linesNumber,
   type,
+  arrayEvents,
+  setArrayEvents,
 }) => {
   const [firstInput, setFirstInput] = useState<string | null>(null);
   const [secondInput, setSecondInput] = useState<string | null>(null);
@@ -119,6 +130,20 @@ export const MaskInput: React.FC<Props> = ({
       }
     }
   };
+
+  useEffect(() => {
+    if (firstInput || secondInput) {
+      setArrayEvents({ ...arrayEvents, time: `${firstInput}:${secondInput}` });
+    }
+
+    if (thirdInput) {
+      setArrayEvents({
+        ...arrayEvents,
+        date: `${firstInput}/${secondInput}/${thirdInput}`,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [firstInput, secondInput, thirdInput]);
 
   return (
     <ContainerInput width={linesNumber === 2 ? '60px' : '105px'}>
