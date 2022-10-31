@@ -7,6 +7,8 @@ import { BottomMenu } from '../../components/BottomMenu';
 import { HeaderMenu } from '../../components/HeaderMenu';
 import { MaskInput } from './components/MaskInput';
 import { DropDown } from '../../components/DropDown';
+import { useAppDispatch } from '../../store/hooks/useAppDispatch';
+import { useAppSelector } from '../../store/hooks/useAppSelector';
 import { DropDownCircle } from './components/DropDownCircle';
 import { InfoButton } from './components/InfoButton';
 import { ContentInfo } from './components/InfoButton';
@@ -20,6 +22,8 @@ import {
   DropDownCircleContainer,
   InputTitle,
 } from './styles';
+import { eventsProps } from '../../store/types';
+import { ADD_EVENT } from '../../store/eventsReducer';
 
 interface Props {
   closeModal: () => void;
@@ -37,11 +41,25 @@ const DATA = [
 const DATACIRCLE = ['gray', 'green', 'yellow', 'red', 'black'];
 
 export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
-  const [focusTitle, setFocusTitle] = useState(false);
-  const [focusDescription, setFocusDescription] = useState(false);
-  const [showModalInfo, setShowModalInfo] = useState(false);
+  const [focusTitle, setFocusTitle] = useState<boolean>(false);
+  const [focusDescription, setFocusDescription] = useState<boolean>(false);
+  const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
+  const [arrayEvents, setArrayEvents] = useState<eventsProps>({
+    circle: 'White',
+    title: '',
+    category: '',
+    time: '',
+    date: '',
+    description: '',
+  });
+
+  const { data } = useAppSelector(store => store.Events);
+
+  const dispatch = useAppDispatch();
 
   const theme = useTheme();
+
+  console.log(data);
 
   return (
     <Modal visible={modalState} animationType="slide">
@@ -68,6 +86,16 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
                   placeholder="Um título para se lembrar!"
                   placeholderTextColor={
                     focusTitle ? '#777676' : theme.colors.Text
+                  }
+                  onChangeText={(event: string) =>
+                    setArrayEvents({
+                      circle: 'White',
+                      title: event,
+                      category: '',
+                      time: '',
+                      date: '',
+                      description: arrayEvents.description,
+                    })
                   }
                   onFocus={() => setFocusTitle(true)}
                   onBlur={() => setFocusTitle(false)}
@@ -97,6 +125,16 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
                   placeholderTextColor={
                     focusDescription ? '#777676' : theme.colors.Text
                   }
+                  onChangeText={(event: string) =>
+                    setArrayEvents({
+                      circle: 'White',
+                      title: arrayEvents.title,
+                      category: '',
+                      time: '',
+                      date: '',
+                      description: event,
+                    })
+                  }
                   onFocus={() => setFocusDescription(true)}
                   onBlur={() => setFocusDescription(false)}
                   multiline={true}
@@ -107,7 +145,9 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
           </Content>
           <BottomMenu
             buttonExists={true}
-            buttonAction={() => console.log('pressou')}
+            buttonAction={() => {
+              dispatch(ADD_EVENT(arrayEvents));
+            }}
             iconButton="check"
           />
         </Container>
