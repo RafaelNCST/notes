@@ -67,8 +67,9 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   const handleConfirmOrganizationMaskInputs = () => {
     const year = date.getFullYear();
     const inputDate = arrayEvents.date?.split('/');
-    const [inputDay, inputMonth, inputYear] = inputDate;
-    const [inputHour, inputSeconds] = arrayEvents.time?.split(':');
+    const [inputDay, inputMonth, inputYear] = inputDate || [];
+    const inputTime = arrayEvents.time?.split(':');
+    const [inputHour, inputSeconds] = inputTime || [];
 
     if (
       inputDay.length === 1 ||
