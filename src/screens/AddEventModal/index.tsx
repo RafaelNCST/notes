@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BodyScreen, TextRegular } from '../../styles/globalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
@@ -52,6 +52,9 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
     date: '',
     description: '',
   });
+  const [readySend, setReadySend] = useState<boolean>(false);
+
+  const date = new Date();
 
   const { data } = useAppSelector(store => store.Events);
 
@@ -60,6 +63,49 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   const theme = useTheme();
 
   console.log(data);
+
+  const handleConfirmOrganizationMaskInputs = () => {
+    const year = date.getFullYear();
+    const inputDate = arrayEvents.date?.split('/');
+    const [inputDay, inputMonth, inputYear] = inputDate;
+    const [inputHour, inputSeconds] = arrayEvents.time?.split(':');
+
+    if (
+      inputDay.length === 1 ||
+      inputMonth.length === 1 ||
+      inputYear.length === 1
+    ) {
+      setArrayEvents(prevState => ({
+        ...prevState,
+        date: `${inputDay.length === 1 ? '0' + inputDay : inputDay}/${
+          inputMonth.length === 1 ? '0' + inputMonth : inputMonth
+        }/${inputYear.length <= 3 ? year : inputYear}`,
+      }));
+      setReadySend(true);
+    }
+
+    if (inputHour.length === 1 || inputSeconds.length === 1) {
+      setArrayEvents(prevState => ({
+        ...prevState,
+        time: `${inputHour.length === 1 ? '0' + inputHour : inputHour}:${
+          inputSeconds.length === 1 ? '0' + inputSeconds : inputSeconds
+        }`,
+      }));
+      setReadySend(true);
+    }
+  };
+
+  const onClickConfirm = () => {
+    handleConfirmOrganizationMaskInputs();
+  };
+
+  useEffect(() => {
+    if (readySend) {
+      dispatch(ADD_EVENT(arrayEvents));
+      setReadySend(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [readySend]);
 
   return (
     <Modal visible={modalState} animationType="slide">
@@ -159,9 +205,7 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
           </Content>
           <BottomMenu
             buttonExists={true}
-            buttonAction={() => {
-              dispatch(ADD_EVENT(arrayEvents));
-            }}
+            buttonAction={onClickConfirm}
             iconButton="check"
           />
         </Container>

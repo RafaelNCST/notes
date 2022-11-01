@@ -35,6 +35,19 @@ export const MaskInput: React.FC<Props> = ({
   const ref_input2 = useRef<TextInput>();
   const ref_input3 = useRef<TextInput>();
 
+  const handleOneLenght = () => {
+    const year = date.getFullYear();
+    if (firstInput && firstInput.length === 1) {
+      setFirstInput(prev => '0' + prev);
+    }
+    if (secondInput && secondInput.length === 1) {
+      setSecondInput(prev => '0' + prev);
+    }
+    if (thirdInput && thirdInput.length <= 3) {
+      setThirdInput(String(year));
+    }
+  };
+
   const handleChangeTimeOne = (event: string) => {
     if (/[a-zA-Z]/.test(event)) {
       setSecondInput('');
@@ -113,6 +126,7 @@ export const MaskInput: React.FC<Props> = ({
   };
 
   const handleChangeDateYear = (event: string) => {
+    const year = date.getFullYear();
     if (/[a-zA-Z]/.test(event)) {
       setSecondInput('');
     } else {
@@ -120,8 +134,8 @@ export const MaskInput: React.FC<Props> = ({
       if (event.length === 0) {
         ref_input2?.current?.focus();
       } else if (event.length === 4) {
-        if (parseInt(event, 10) < date.getFullYear()) {
-          setThirdInput('2022');
+        if (parseInt(event, 10) < year) {
+          setThirdInput(String(year));
         }
 
         if (secondInput === '02' && firstInput === '29') {
@@ -157,6 +171,7 @@ export const MaskInput: React.FC<Props> = ({
             handleChangeDateDay(event);
           }
         }}
+        onBlur={handleOneLenght}
         blurOnSubmit={false}
         keyboardType="numeric"
         value={firstInput}
@@ -172,6 +187,7 @@ export const MaskInput: React.FC<Props> = ({
             handleChangeDateMonth(event);
           }
         }}
+        onBlur={handleOneLenght}
         blurOnSubmit={false}
         keyboardType="numeric"
         value={secondInput}
@@ -183,6 +199,7 @@ export const MaskInput: React.FC<Props> = ({
             ref={ref_input3}
             maxLength={4}
             onChangeText={(event: string) => handleChangeDateYear(event)}
+            onBlur={handleOneLenght}
             blurOnSubmit={false}
             style={{ width: 35 }}
             keyboardType="numeric"
