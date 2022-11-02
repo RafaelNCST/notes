@@ -8,5 +8,8 @@ export default {
     BackGround: '#363636',
     Inverted: '#F5DEB3',
     Text: '#fff',
+
+    ButtonAfirmative: '#57A773',
+    ButtonNegative: '#CB2900',
   },
 };

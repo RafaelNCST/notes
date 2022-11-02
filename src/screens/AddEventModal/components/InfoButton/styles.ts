@@ -14,7 +14,7 @@ export const Container = styled.TouchableOpacity`
 `;
 
 export const ContentInfoStyled = styled.View`
-  height: 300px;
+  height: 350px;
   width: 80%;
   border-radius: 12px;
   background-color: white;

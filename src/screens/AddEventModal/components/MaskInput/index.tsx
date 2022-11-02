@@ -8,7 +8,7 @@ import React, {
 import { eventsProps } from '../../../../store/types';
 import { TextInput } from 'react-native';
 import { ContainerInput, Input, SeparatorText } from './styles';
-import { DATA_MASK_MONTH } from '../../../../helpers/monthMask';
+import { DATA_MASK_MONTH, February } from '../../../../helpers/monthMask';
 
 interface Props {
   separator: string;
@@ -25,9 +25,9 @@ export const MaskInput: React.FC<Props> = ({
   arrayEvents,
   setArrayEvents,
 }) => {
-  const [firstInput, setFirstInput] = useState<string | null>(null);
-  const [secondInput, setSecondInput] = useState<string | null>(null);
-  const [thirdInput, setThirdInput] = useState<string | null>(null);
+  const [firstInput, setFirstInput] = useState<string>('');
+  const [secondInput, setSecondInput] = useState<string>('');
+  const [thirdInput, setThirdInput] = useState<string>('');
 
   const date = new Date();
 
@@ -55,7 +55,7 @@ export const MaskInput: React.FC<Props> = ({
       setFirstInput(event);
       if (event.length === 2) {
         if (parseInt(event, 10) >= 23) {
-          setFirstInput(prev => '0' + (prev ? prev[1] : null));
+          setFirstInput(prev => '0' + (prev ? prev[1] : ''));
           ref_input2?.current?.focus();
         } else {
           ref_input2?.current?.focus();
@@ -73,7 +73,7 @@ export const MaskInput: React.FC<Props> = ({
         ref_input1?.current?.focus();
       } else if (event.length === 2) {
         if (parseInt(event[0], 10) >= 6) {
-          setSecondInput(prev => '0' + (prev ? prev[1] : null));
+          setSecondInput(prev => '0' + (prev ? prev[1] : ''));
           ref_input3?.current?.focus();
         } else if (event[0] === '2' && parseInt(event[1], 10) >= 4) {
           setSecondInput(prev => (prev ? prev[0] : null) + '0');
@@ -110,16 +110,17 @@ export const MaskInput: React.FC<Props> = ({
         ref_input1?.current?.focus();
       } else if (event.length === 2) {
         if (parseInt(event, 10) >= 13) {
-          setSecondInput(prev => '0' + (prev ? prev[1] : null));
+          setSecondInput(prev => '0' + (prev ? prev[1] : ''));
           ref_input3?.current?.focus();
         } else {
           ref_input3?.current?.focus();
         }
 
-        if (event === '02' && parseInt(firstInput, 10) >= 29) {
-          setFirstInput(prev => prev);
-        } else if (parseInt(firstInput, 10) === 31) {
-          setFirstInput(DATA_MASK_MONTH[String(event)]);
+        if (event === '02' && firstInput && parseInt(firstInput, 10) >= 29) {
+          setFirstInput('29');
+        } else if (firstInput && parseInt(firstInput, 10) === 31) {
+          const number = String(event);
+          setFirstInput(DATA_MASK_MONTH[number]);
         }
       }
     }
@@ -139,18 +140,16 @@ export const MaskInput: React.FC<Props> = ({
         }
 
         if (secondInput === '02' && firstInput === '29') {
-          setFirstInput(DATA_MASK_MONTH['02'](event));
+          setFirstInput(February(event));
         }
       }
     }
   };
 
   useEffect(() => {
-    if (firstInput || secondInput) {
+    if (type === 'time') {
       setArrayEvents({ ...arrayEvents, time: `${firstInput}:${secondInput}` });
-    }
-
-    if (thirdInput) {
+    } else {
       setArrayEvents({
         ...arrayEvents,
         date: `${firstInput}/${secondInput}/${thirdInput}`,

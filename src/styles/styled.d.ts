@@ -11,6 +11,9 @@ declare module 'styled-components' {
       BackGround: string;
       Inverted: string;
       Text: string;
+
+      ButtonAfirmative: string;
+      ButtonNegative: string;
     };
   }
 }

@@ -8,10 +8,14 @@ import { HeaderMenu } from '../../components/HeaderMenu';
 import { MaskInput } from './components/MaskInput';
 import { DropDown } from '../../components/DropDown';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
-import { useAppSelector } from '../../store/hooks/useAppSelector';
+import { ModalWarning } from '../../components/ModalWarning';
+// import { useAppSelector } from '../../store/hooks/useAppSelector';
 import { DropDownCircle } from './components/DropDownCircle';
 import { InfoButton } from './components/InfoButton';
+import { useNavigation } from '@react-navigation/native';
 import { ContentInfo } from './components/InfoButton';
+import { RootStackParamList } from '../../routes/types';
+import { StackNavigationProp } from '@react-navigation/stack';
 import {
   Container,
   Content,
@@ -44,6 +48,16 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
   const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
+  const [showModalWarning, setShowModalWarning] = useState<boolean>(false);
+  const [textButtonWarningAffirmative, setTextButtonWarningAffirmative] =
+    useState<string>('');
+  const [textButtonWarningNegative, setTextButtonWarningNegative] =
+    useState<string>('');
+  const [textWarning, setTextWarning] = useState<string>(
+    'Os campos a seguir estão vazios: ',
+  );
+  const [arrayBlankWarning, setArrayBlankWarning] = useState<string[]>([]);
+  const [iconWarning, setIconWarning] = useState<string>('');
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
     circle: 'white',
     title: '',
@@ -54,15 +68,66 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   });
   const [readySend, setReadySend] = useState<boolean>(false);
 
+  const { reset } = useNavigation<StackNavigationProp<RootStackParamList>>();
+
   const date = new Date();
 
-  const { data } = useAppSelector(store => store.Events);
+  // const { data } = useAppSelector(store => store.Events);
 
   const dispatch = useAppDispatch();
 
   const theme = useTheme();
 
-  console.log(data);
+  const handleModalWarningNegativeFN = () => {
+    reset({
+      index: 0,
+      routes: [{ name: 'HomeScreen' }],
+    });
+  };
+
+  const handleModalWarningAffirmativeFN = () => {
+    setShowModalWarning(false);
+    setArrayEvents
+  };
+
+  const handleConfirmBlankInputs = () => {
+    if (
+      arrayEvents.circle === 'white' ||
+      arrayEvents.category === '' ||
+      arrayEvents.date === '' ||
+      arrayEvents.time === '' ||
+      arrayEvents.title === ''
+    ) {
+      if (arrayEvents.circle === 'white') {
+        setArrayBlankWarning(['Círculo de importância']);
+        setIconWarning('warning');
+      }
+
+      if (arrayEvents.category === '') {
+        setArrayBlankWarning(prev => [...prev, 'Categoria']);
+        setIconWarning('warning');
+      }
+
+      if (arrayEvents.date === '' || arrayEvents.date === '//') {
+        setArrayBlankWarning(prev => [...prev, 'Data']);
+        setIconWarning('warning');
+      }
+
+      if (arrayEvents.time === '' || arrayEvents.time === ':') {
+        setArrayBlankWarning(prev => [...prev, 'Horário']);
+        setIconWarning('warning');
+      }
+
+      if (arrayEvents.title === '') {
+        setArrayBlankWarning(prev => [...prev, 'Título']);
+        setIconWarning('warning');
+      }
+      setTextButtonWarningAffirmative('OK');
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const handleConfirmOrganizationMaskInputs = () => {
     const year = date.getFullYear();
@@ -96,8 +161,24 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
     }
   };
 
-  const onClickConfirm = () => {
+  const handleAffirmativeCamps = () => {
+    setArrayBlankWarning([]);
     handleConfirmOrganizationMaskInputs();
+    setTextWarning(
+      'Você adicionou um evento com sucesso! Deseja voltar ao menu principal ou continuar a adicionar?',
+    );
+    setIconWarning('done');
+    setTextButtonWarningAffirmative('CONTINUAR');
+    setTextButtonWarningNegative('VOLTAR');
+    setShowModalWarning(true);
+  };
+
+  const onClickConfirmEvent = () => {
+    if (handleConfirmBlankInputs()) {
+      setShowModalWarning(true);
+    } else {
+      handleAffirmativeCamps();
+    }
   };
 
   useEffect(() => {
@@ -113,6 +194,18 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
       <BodyScreen>
         <Modal visible={showModalInfo} transparent animationType="fade">
           <ContentInfo setOpen={setShowModalInfo} />
+        </Modal>
+
+        <Modal visible={showModalWarning} transparent animationType="fade">
+          <ModalWarning
+            actionNegative={handleModalWarningNegativeFN}
+            actionAffirmative={handleModalWarningAffirmativeFN}
+            text={textWarning}
+            iconName={iconWarning}
+            arrayBlankWarnings={arrayBlankWarning}
+            textButtonAffirmative={textButtonWarningAffirmative}
+            textButtonNegative={textButtonWarningNegative}
+          />
         </Modal>
 
         <Container>
@@ -206,7 +299,7 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
           </Content>
           <BottomMenu
             buttonExists={true}
-            buttonAction={onClickConfirm}
+            buttonAction={onClickConfirmEvent}
             iconButton="check"
           />
         </Container>

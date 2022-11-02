@@ -1,26 +1,76 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { BodyScreenModal, TextModalRegular } from '../../styles/globalStyles';
-import { Content, ContainerText, ButtonOk } from './styles';
+import React from 'react';
+import {
+  BodyScreenModal,
+  TextModalRegular,
+  TextModalTitle,
+} from '../../styles/globalStyles';
+import {
+  Content,
+  ContainerText,
+  ButtonOk,
+  ContainerButton,
+  ContainerIcon,
+  SubContainerText,
+  TextBlankWarning,
+} from './styles';
+import { useTheme } from 'styled-components';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  actionNegative: (state: boolean) => void;
+  actionAffirmative: () => void;
+  text: string;
+  iconName: string;
+  arrayBlankWarnings?: string[];
+  textButtonAffirmative: string;
+  textButtonNegative: string;
 }
 
-export const ModalWarning: React.FC<Props> = ({ setOpen }) => {
+export const ModalWarning: React.FC<Props> = ({
+  actionNegative,
+  actionAffirmative,
+  text,
+  iconName,
+  arrayBlankWarnings,
+  textButtonAffirmative,
+  textButtonNegative,
+}) => {
+  const theme = useTheme();
+
   return (
     <BodyScreenModal>
       <Content>
-        <Icon name="dangerous" color="#313131" size={60} />
+        <ContainerIcon>
+          <Icon
+            name={iconName}
+            color={
+              iconName === 'done'
+                ? theme.colors.ButtonAfirmative
+                : theme.colors.ButtonNegative
+            }
+            size={iconName === 'done' ? 50 : 40}
+          />
+        </ContainerIcon>
         <ContainerText>
-          <TextModalRegular>
-            Houve um erro em sua data, tente escrever uma data válida que seja a
-            partir de hoje
-          </TextModalRegular>
+          <TextModalRegular>{text}</TextModalRegular>
+          <SubContainerText>
+            {arrayBlankWarnings?.map((item, index) => (
+              <TextBlankWarning key={index}>{item}</TextBlankWarning>
+            ))}
+          </SubContainerText>
         </ContainerText>
-        <ButtonOk>
-          <TextModalRegular>OK</TextModalRegular>
-        </ButtonOk>
+        <ContainerButton>
+          {textButtonNegative !== '' && (
+            <ButtonOk
+              colorButton="negative"
+              onPress={() => actionNegative(false)}>
+              <TextModalTitle>{textButtonNegative}</TextModalTitle>
+            </ButtonOk>
+          )}
+          <ButtonOk colorButton="affirmative" onPress={actionAffirmative}>
+            <TextModalTitle>{textButtonAffirmative}</TextModalTitle>
+          </ButtonOk>
+        </ContainerButton>
       </Content>
     </BodyScreenModal>
   );
