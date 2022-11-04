@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BodyScreen, TextRegular } from '../../styles/globalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
@@ -9,7 +9,6 @@ import { MaskInput } from './components/MaskInput';
 import { DropDown } from '../../components/DropDown';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
 import { ModalWarning } from '../../components/ModalWarning';
-// import { useAppSelector } from '../../store/hooks/useAppSelector';
 import { DropDownCircle } from './components/DropDownCircle';
 import { InfoButton } from './components/InfoButton';
 import { useNavigation } from '@react-navigation/native';
@@ -24,7 +23,7 @@ import {
   BottomContainer,
   ContainerTexts,
   DropDownCircleContainer,
-  InputTitle,
+  InputTexts,
 } from './styles';
 import { eventsProps } from '../../store/types';
 import { ADD_EVENT } from '../../store/eventsReducer';
@@ -32,6 +31,7 @@ import { ADD_EVENT } from '../../store/eventsReducer';
 interface Props {
   closeModal: () => void;
   modalState: boolean;
+  openModal: () => void;
 }
 
 const DATA = [
@@ -44,7 +44,11 @@ const DATA = [
 
 const DATACIRCLE: Array<string> = ['gray', 'green', 'yellow', 'red', 'black'];
 
-export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
+export const AddEventModal: React.FC<Props> = ({
+  closeModal,
+  modalState,
+  openModal,
+}) => {
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
   const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
@@ -66,13 +70,10 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
     date: '',
     description: '',
   });
-  const [readySend, setReadySend] = useState<boolean>(false);
 
   const { reset } = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const date = new Date();
-
-  // const { data } = useAppSelector(store => store.Events);
 
   const dispatch = useAppDispatch();
 
@@ -87,7 +88,8 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
 
   const handleModalWarningAffirmativeFN = () => {
     setShowModalWarning(false);
-    setArrayEvents
+    closeModal();
+    setTimeout(() => openModal(), 50);
   };
 
   const handleConfirmBlankInputs = () => {
@@ -147,7 +149,6 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
           inputMonth.length === 1 ? '0' + inputMonth : inputMonth
         }/${inputYear.length <= 3 ? year : inputYear}`,
       }));
-      setReadySend(true);
     }
 
     if (inputHour.length === 1 || inputSeconds.length === 1) {
@@ -157,7 +158,6 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
           inputSeconds.length === 1 ? '0' + inputSeconds : inputSeconds
         }`,
       }));
-      setReadySend(true);
     }
   };
 
@@ -171,6 +171,7 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
     setTextButtonWarningAffirmative('CONTINUAR');
     setTextButtonWarningNegative('VOLTAR');
     setShowModalWarning(true);
+    dispatch(ADD_EVENT(arrayEvents));
   };
 
   const onClickConfirmEvent = () => {
@@ -180,14 +181,6 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
       handleAffirmativeCamps();
     }
   };
-
-  useEffect(() => {
-    if (readySend) {
-      dispatch(ADD_EVENT(arrayEvents));
-      setReadySend(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [readySend]);
 
   return (
     <Modal visible={modalState} animationType="slide">
@@ -225,7 +218,7 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
                     arrayEvents={arrayEvents}
                   />
                 </DropDownCircleContainer>
-                <InputTitle
+                <InputTexts
                   heightStyled="40px"
                   widthStyled="75%"
                   placeholder="Um título para se lembrar!"
@@ -278,7 +271,7 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
             </TopContainer>
             <BottomContainer>
               <ScrollView showsVerticalScrollIndicator={false}>
-                <InputTitle
+                <InputTexts
                   placeholder="Descreve seu compromisso ai cara!"
                   placeholderTextColor={
                     focusDescription ? '#777676' : theme.colors.Text
