@@ -5,7 +5,7 @@ import { Container } from './styles';
 export const BlankList = () => {
   return (
     <Container>
-      <TextSubTitle>{'Não há eventos adicionados ainda. :('}</TextSubTitle>
+      <TextSubTitle>{'Não há eventos adicionados para hoje :)'}</TextSubTitle>
     </Container>
   );
 };

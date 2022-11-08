@@ -26,7 +26,7 @@ export const Events: React.FC<eventsProps> = ({
       <CircleEvent colorEvent={circle} />
       <ContainerText>
         <TextRegular> {time} </TextRegular>
-        <TextRegular numberOfLines={1}> {description} </TextRegular>
+        <TextRegular numberOfLines={1}> {title} </TextRegular>
       </ContainerText>
     </ButtonLine>
   );

@@ -8,25 +8,43 @@ import { Events } from './components/events';
 import { AddEventModal } from '../AddEventModal';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-// import { useAppSelector } from '../../store/hooks/useAppSelector';
+import { useAppSelector } from '../../store/hooks/useAppSelector';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BlankList } from './components/blankList';
 import { RootStackParamList } from '../../routes/types';
-import { getCurrentScope } from 'immer/dist/internal';
-
-// const DATA = [
-//   { time: '07:00', message: 'Hoje eu Caguei', colorEvent: 'yellow' },
-//   { time: '05:00', message: 'Hoje eu LARQUIEI', colorEvent: 'green' },
-//   { time: '10:00', message: 'Hoje eu Viajei', colorEvent: 'red' },
-// ];
+import { eventsProps } from '../../store/types';
+import { getEventsArrayAsync } from '../../store/eventsReducer/thunk';
+import { MONTHS } from '../../helpers/months';
+import { useAppDispatch } from '../../store/hooks/useAppDispatch';
+import { INITIALIZE_APP } from '../../store/eventsReducer';
 
 export const Home: React.FC = () => {
   const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
 
+  const dispatch = useAppDispatch();
+
   const [showModalAddEvent, setShowModalAddEvent] = useState<boolean>(false);
   const [dataEvents, setDataEvents] = useState<object[]>([]);
 
-  // const { data } = useAppSelector(store => store.Events);
+  const date = new Date();
+
+  const day: string = String(
+    String(date.getDate()).length === 1
+      ? '0' + String(date.getDate())
+      : date.getDate(),
+  );
+  const month: string = String(
+    String(date.getMonth() + 1).length === 1
+      ? '0' + String(date.getMonth() + 1)
+      : date.getMonth() + 1,
+  );
+  const year = String(
+    String(date.getFullYear()).length === 1
+      ? '0' + String(date.getFullYear())
+      : date.getFullYear(),
+  );
+
+  const { data } = useAppSelector(store => store.Events);
 
   const openModalAddEvent = () => {
     setShowModalAddEvent(true);
@@ -40,26 +58,41 @@ export const Home: React.FC = () => {
     navigate('SettingsScreen');
   };
 
-  const getAsyncStorageEvents = async () => {
-    const resultArraySavedEvents = await AsyncStorage.getItem('@ArrayEvents');
+  const getEventsToday = (resultArraySavedEvents: eventsProps[]) => {
+    const dateToday = `${day}/${month}/${year}`;
     if (resultArraySavedEvents) {
-      setDataEvents(JSON.parse(resultArraySavedEvents));
+      const eventsToday = resultArraySavedEvents.filter(
+        item => item.date === dateToday,
+      );
+      setDataEvents(eventsToday);
     }
   };
 
-  const reset = () => {
-    AsyncStorage.clear();
+  const getAsyncStorageEvents = async () => {
+    const stringArraySavedEvents = await AsyncStorage.getItem('@ArrayEvents');
+    const parsedArraySavedEvents = JSON.parse(stringArraySavedEvents as string);
+    if (parsedArraySavedEvents) {
+      getEventsToday(parsedArraySavedEvents);
+      dispatch(INITIALIZE_APP(parsedArraySavedEvents));
+    }
+    console.log(parsedArraySavedEvents);
   };
+
+  // const reset = () => {
+  //   AsyncStorage.clear();
+  // };
 
   useEffect(() => {
     getAsyncStorageEvents();
-  }, [dataEvents]);
+    getEventsArrayAsync();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <BodyScreen>
       <Container>
         <HeaderMenu
-          textDate="22 de Julho de 2022"
+          textDate={`${day} de ${MONTHS[String(date.getMonth())]} de ${year}`}
           iconLeft="calendar-today"
           iconRight="settings"
           actionLeftButton={() => console.log('pressouuu')}
