@@ -45,8 +45,8 @@ export const ModalWarning: React.FC<Props> = ({
             name={iconName}
             color={
               iconName === 'done'
-                ? theme.colors.ButtonAfirmative
-                : theme.colors.ButtonNegative
+                ? theme.colors.Color_Afirmative
+                : theme.colors.Color_Negative
             }
             size={iconName === 'done' ? 50 : 40}
           />

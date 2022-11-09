@@ -45,7 +45,7 @@ export const SubContainerText = styled.View`
 `;
 
 export const TextBlankWarning = styled.Text`
-  color: ${({ theme }) => theme.colors.ButtonNegative};
+  color: ${({ theme }) => theme.colors.Color_Negative};
   font-family: 'Inter-SemiBold';
   font-size: ${responsive.P};
   text-align: center;
@@ -57,8 +57,8 @@ export const ButtonOk = styled(TouchableOpacity)<styledProps>`
   height: 40px;
   background-color: ${({ theme, colorButton }) =>
     colorButton === 'affirmative'
-      ? theme.colors.ButtonAfirmative
-      : theme.colors.ButtonNegative};
+      ? theme.colors.Color_Afirmative
+      : theme.colors.Color_Negative};
   justify-content: center;
   align-items: center;
   border-radius: 12px;

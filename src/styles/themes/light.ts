@@ -9,7 +9,7 @@ export default {
     Inverted: '#363636',
     Text: '#000',
 
-    ButtonAfirmative: '#57A773',
-    ButtonNegative: '#CB2900',
+    Color_Afirmative: '#57A773',
+    Color_Negative: '#CB2900',
   },
 };

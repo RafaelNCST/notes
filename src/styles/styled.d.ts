@@ -12,8 +12,8 @@ declare module 'styled-components' {
       Inverted: string;
       Text: string;
 
-      ButtonAfirmative: string;
-      ButtonNegative: string;
+      Color_Afirmative: string;
+      Color_Negative: string;
     };
   }
 }
