@@ -16,6 +16,7 @@ interface Props {
   type: string;
   arrayEvents: eventsProps;
   setArrayEvents: Dispatch<SetStateAction<eventsProps>>;
+  clearMaskInputs: boolean;
 }
 
 export const MaskInput: React.FC<Props> = ({
@@ -24,6 +25,7 @@ export const MaskInput: React.FC<Props> = ({
   type,
   arrayEvents,
   setArrayEvents,
+  clearMaskInputs,
 }) => {
   const [firstInput, setFirstInput] = useState<string>('');
   const [secondInput, setSecondInput] = useState<string>('');
@@ -146,6 +148,12 @@ export const MaskInput: React.FC<Props> = ({
     }
   };
 
+  const resetInputs = () => {
+    setFirstInput('');
+    setSecondInput('');
+    setThirdInput('');
+  };
+
   useEffect(() => {
     if (type === 'time') {
       setArrayEvents({ ...arrayEvents, time: `${firstInput}:${secondInput}` });
@@ -155,8 +163,12 @@ export const MaskInput: React.FC<Props> = ({
         date: `${firstInput}/${secondInput}/${thirdInput}`,
       });
     }
+
+    if (clearMaskInputs) {
+      resetInputs();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [firstInput, secondInput, thirdInput]);
+  }, [firstInput, secondInput, thirdInput, clearMaskInputs]);
 
   return (
     <ContainerInput width={linesNumber === 2 ? '60px' : '105px'}>

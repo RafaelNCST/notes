@@ -18,18 +18,18 @@ export const TopContainer = styled.View`
   border-bottom-width: 1px;
   border-color: #000;
   border-style: solid;
-  padding: ${responsive.P};
+  padding: ${responsive.small};
   justify-content: center;
 `;
 
 export const ContainerTitle = styled.View`
   width: 100%;
   flex-direction: row;
-  margin-bottom: ${responsive.P};
+  margin-bottom: ${responsive.small};
 `;
 
 export const BottomContainer = styled.View`
   flex: 1;
   width: 100%;
-  padding: ${responsive.P};
+  padding: ${responsive.small};
 `;

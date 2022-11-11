@@ -77,9 +77,9 @@ export const Home: React.FC = () => {
     console.log(parsedArraySavedEvents);
   };
 
-  // const reset = () => {
-  //   AsyncStorage.clear();
-  // };
+  const reset = () => {
+    AsyncStorage.clear();
+  };
 
   useEffect(() => {
     getAsyncStorageEvents();
@@ -114,7 +114,6 @@ export const Home: React.FC = () => {
         <AddEventModal
           closeModal={closeModalAddEvent}
           modalState={showModalAddEvent}
-          openModal={openModalAddEvent}
         />
 
         <BottomMenu

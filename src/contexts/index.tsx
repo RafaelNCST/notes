@@ -1,13 +1,9 @@
 import React, { createContext, useState } from 'react';
-import { mainContextTypes } from './types';
+import { mainContextTypes, PropsChildren } from './types';
 
 export const MainContext = createContext({} as mainContextTypes);
 
-interface Props {
-  children: React.ReactNode;
-}
-
-export const MainContextProvider: React.FC<Props> = ({ children }) => {
+export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
   const [theme, setTheme] = useState(false);
 
   return (

@@ -29,22 +29,23 @@ export const InputTexts = styled.TextInput<styledProps>`
   width: ${({ widthStyled }) => widthStyled || '100%'};
   text-align: justify;
   margin-right: ${responsive.small};
-  font-family: 'Inter-Bold';
-  font-size: ${defaultStyle.fontSize.medium};
+  font-family: ${defaultStyle.fontFamily.interBold};
+  font-size: ${defaultStyle.fontSize.small};
   border-width: ${({ border }) => (border ? 1 : 0)}px;
-  border-color: #000;
+  border-color: ${defaultStyle.colors.BLACK};
   border-style: solid;
   padding-left: ${responsive.small};
   padding-right: ${responsive.small};
   color: ${({ theme }) => theme.colors.Text};
   flex-wrap: wrap;
+  z-index: -1;
 `;
 
 export const TopContainer = styled.View`
   width: 100%;
   align-items: flex-start;
   border-bottom-width: 1px;
-  border-color: #000;
+  border-color: ${defaultStyle.colors.BLACK};
   border-style: solid;
   padding: ${responsive.small};
   justify-content: center;
@@ -77,4 +78,5 @@ export const TextRegular = styled.Text`
   font-size: ${defaultStyle.fontSize.small};
   text-align: center;
   line-height: ${defaultStyle.lineHeight.big};
+  z-index: -1;
 `;

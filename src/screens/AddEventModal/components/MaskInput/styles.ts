@@ -12,7 +12,7 @@ export const ContainerInput = styled.View<styledProps>`
   height: 80%;
   width: ${({ width }) => width};
   justify-content: center;
-  z-index: 1;
+  z-index: -1;
 `;
 
 export const Input = styled.TextInput`

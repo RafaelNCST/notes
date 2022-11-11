@@ -31,7 +31,6 @@ import { ADD_EVENT } from '../../store/eventsReducer';
 interface Props {
   closeModal: () => void;
   modalState: boolean;
-  openModal: () => void;
 }
 
 const DATA = [
@@ -44,22 +43,18 @@ const DATA = [
 
 const DATACIRCLE: Array<string> = ['gray', 'green', 'yellow', 'red', 'black'];
 
-export const AddEventModal: React.FC<Props> = ({
-  closeModal,
-  modalState,
-  openModal,
-}) => {
+export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
   const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
   const [showModalWarning, setShowModalWarning] = useState<boolean>(false);
+  const [clearMaskInputs, setClearMaskInputs] = useState<boolean>(false);
+  const [clearDropDown, setClearDropDown] = useState<boolean>(true);
   const [textButtonWarningAffirmative, setTextButtonWarningAffirmative] =
     useState<string>('');
   const [textButtonWarningNegative, setTextButtonWarningNegative] =
     useState<string>('');
-  const [textWarning, setTextWarning] = useState<string>(
-    'Os campos a seguir estão vazios: ',
-  );
+  const [textWarning, setTextWarning] = useState<string>('');
   const [arrayBlankWarning, setArrayBlankWarning] = useState<string[]>([]);
   const [iconWarning, setIconWarning] = useState<string>('');
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
@@ -79,20 +74,34 @@ export const AddEventModal: React.FC<Props> = ({
 
   const theme = useTheme();
 
-  const handleModalWarningNegativeFN = () => {
+  const handleModalWarningBackHome = () => {
     reset({
       index: 0,
       routes: [{ name: 'HomeScreen' }],
     });
   };
 
-  const handleModalWarningAffirmativeFN = () => {
+  const closeModalWarning = () => {
     setShowModalWarning(false);
-    closeModal();
-    setTimeout(() => openModal(), 50);
+  };
+
+  const handleModalWarningAddNewEvent = () => {
+    setArrayEvents({
+      circle: 'white',
+      title: '',
+      category: '',
+      time: '',
+      date: '',
+      description: '',
+    });
+    setClearMaskInputs(true);
+    setTimeout(() => setClearMaskInputs(false), 500);
+    closeModalWarning();
+    setClearDropDown(true);
   };
 
   const handleConfirmBlankInputs = () => {
+    setArrayBlankWarning([]);
     if (
       arrayEvents.circle === 'white' ||
       arrayEvents.category === '' ||
@@ -100,29 +109,26 @@ export const AddEventModal: React.FC<Props> = ({
       arrayEvents.time === '' ||
       arrayEvents.title === ''
     ) {
+      setIconWarning('warning');
+      setTextWarning('Os campos a seguir estão vazios: ');
       if (arrayEvents.circle === 'white') {
         setArrayBlankWarning(['Círculo de importância']);
-        setIconWarning('warning');
       }
 
       if (arrayEvents.category === '') {
         setArrayBlankWarning(prev => [...prev, 'Categoria']);
-        setIconWarning('warning');
       }
 
       if (arrayEvents.date === '' || arrayEvents.date === '//') {
         setArrayBlankWarning(prev => [...prev, 'Data']);
-        setIconWarning('warning');
       }
 
       if (arrayEvents.time === '' || arrayEvents.time === ':') {
         setArrayBlankWarning(prev => [...prev, 'Horário']);
-        setIconWarning('warning');
       }
 
       if (arrayEvents.title === '') {
         setArrayBlankWarning(prev => [...prev, 'Título']);
-        setIconWarning('warning');
       }
       setTextButtonWarningAffirmative('OK');
       return true;
@@ -161,7 +167,7 @@ export const AddEventModal: React.FC<Props> = ({
     }
   };
 
-  const handleAffirmativeCamps = () => {
+  const handleConfirmCamps = () => {
     setArrayBlankWarning([]);
     handleConfirmOrganizationMaskInputs();
     setTextWarning(
@@ -178,7 +184,7 @@ export const AddEventModal: React.FC<Props> = ({
     if (handleConfirmBlankInputs()) {
       setShowModalWarning(true);
     } else {
-      handleAffirmativeCamps();
+      handleConfirmCamps();
     }
   };
 
@@ -191,13 +197,14 @@ export const AddEventModal: React.FC<Props> = ({
 
         <Modal visible={showModalWarning} transparent animationType="fade">
           <ModalWarning
-            actionNegative={handleModalWarningNegativeFN}
-            actionAffirmative={handleModalWarningAffirmativeFN}
+            actionNegative={handleModalWarningBackHome}
+            actionAffirmative={handleModalWarningAddNewEvent}
             text={textWarning}
             iconName={iconWarning}
             arrayBlankWarnings={arrayBlankWarning}
             textButtonAffirmative={textButtonWarningAffirmative}
             textButtonNegative={textButtonWarningNegative}
+            closeModal={closeModalWarning}
           />
         </Modal>
 
@@ -215,7 +222,7 @@ export const AddEventModal: React.FC<Props> = ({
                   accessibilityLabel="Menu suspenso com os círculos de urgência">
                   <DropDownCircle
                     Data={DATACIRCLE}
-                    zIndex={4}
+                    zIndex={5}
                     setArrayEvents={setArrayEvents}
                     arrayEvents={arrayEvents}
                   />
@@ -223,6 +230,7 @@ export const AddEventModal: React.FC<Props> = ({
                 <InputTexts
                   heightStyled="40px"
                   widthStyled="75%"
+                  value={arrayEvents.title}
                   placeholder="Um título para se lembrar!"
                   placeholderTextColor={
                     focusTitle ? '#777676' : theme.colors.Text
@@ -251,6 +259,8 @@ export const AddEventModal: React.FC<Props> = ({
                   zIndex={5}
                   setArrayEvents={setArrayEvents}
                   arrayEvents={arrayEvents}
+                  firstRun={clearDropDown}
+                  setFirstRun={setClearDropDown}
                 />
               </ContainerTexts>
               <ContainerTexts>
@@ -265,6 +275,7 @@ export const AddEventModal: React.FC<Props> = ({
                   type="time"
                   arrayEvents={arrayEvents}
                   setArrayEvents={setArrayEvents}
+                  clearMaskInputs={clearMaskInputs}
                 />
               </ContainerTexts>
               <ContainerTexts>
@@ -277,6 +288,7 @@ export const AddEventModal: React.FC<Props> = ({
                   type="date"
                   arrayEvents={arrayEvents}
                   setArrayEvents={setArrayEvents}
+                  clearMaskInputs={clearMaskInputs}
                 />
               </ContainerTexts>
 
@@ -286,6 +298,7 @@ export const AddEventModal: React.FC<Props> = ({
               <ScrollView showsVerticalScrollIndicator={false}>
                 <InputTexts
                   placeholder="Descreve seu compromisso ai cara!"
+                  value={arrayEvents.description}
                   placeholderTextColor={
                     focusDescription ? '#777676' : theme.colors.Text
                   }

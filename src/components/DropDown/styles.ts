@@ -41,9 +41,9 @@ export const SubContainerSelected = styled.View`
 export const TextSelected = styled.Text<StyledProps>`
   color: ${({ color }) => color};
   font-family: 'Inter-SemiBold';
-  font-size: ${defaultStyle.fontSize.small};
+  font-size: ${defaultStyle.fontSize.extraSmall};
   text-align: center;
-  line-height: 20px;
+  line-height: ${defaultStyle.lineHeight.big};
 `;
 
 export const Option = styled.TouchableHighlight`
@@ -54,8 +54,8 @@ export const Option = styled.TouchableHighlight`
 
 export const TextDropDown = styled.Text`
   color: #000;
-  font-family: 'Inter-SemiBold';
-  font-size: ${defaultStyle.fontSize.small};
+  font-family: ${defaultStyle.fontFamily.interBold};
+  font-size: ${defaultStyle.fontSize.extraSmall};
   text-align: center;
-  line-height: 20px;
+  line-height: ${defaultStyle.lineHeight.big};
 `;

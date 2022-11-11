@@ -23,6 +23,8 @@ interface Props {
   zIndex?: number;
   setArrayEvents: Dispatch<SetStateAction<eventsProps>>;
   arrayEvents?: eventsProps;
+  firstRun: boolean;
+  setFirstRun: Dispatch<SetStateAction<boolean>>;
 }
 
 export const DropDown: React.FC<Props> = ({
@@ -30,6 +32,8 @@ export const DropDown: React.FC<Props> = ({
   zIndex,
   setArrayEvents,
   arrayEvents,
+  firstRun,
+  setFirstRun,
 }) => {
   const placeholder: string = 'Selecione uma categoria';
 
@@ -37,7 +41,6 @@ export const DropDown: React.FC<Props> = ({
 
   const movimentMenu = useRef(new Animated.Value(-dataSize)).current;
   const heightMenu = useRef(new Animated.Value(30)).current;
-  const [firstRun, setFirstRun] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
 
   const handleDropDrown = () => {
@@ -88,7 +91,6 @@ export const DropDown: React.FC<Props> = ({
         accessibilityRole="Button"
         accessibilityLabel="Abrir menu suspenso com categorias de urgência"
         onPress={onClickDropDown}
-        activeOpacity={0.5}
         underlayColor="#cac8c8">
         <SubContainerSelected>
           <TextSelected color={firstRun ? '#9e9d9d' : '#363636'}>

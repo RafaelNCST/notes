@@ -5,15 +5,29 @@ import responsive from '../../styles/themes/responsive';
 
 interface styledProps {
   colorButton?: 'affirmative' | 'negative';
+  height?: string;
+  border?: 'top' | 'bot';
 }
+
+export const SpaceModal = styled.View<styledProps>`
+  height: ${({ height }) => height};
+  width: 100%;
+  border-style: solid;
+  border-color: ${defaultStyle.colors.BLACK};
+  border-bottom-width: ${({ border }) => (border === 'bot' ? '1px' : '0px')};
+  border-top-width: ${({ border }) => (border === 'top' ? '1px' : '0px')};
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.BackGround};
+`;
 
 export const Content = styled.View`
   width: 70%;
-  height: 300px;
-  background-color: #fff;
-  justify-content: space-evenly;
+  height: 350px;
+  background-color: ${({ theme }) => theme.colors.BackGround};
+  justify-content: space-between;
   align-items: center;
-  border-radius: 12px;
+  border: 1px solid ${defaultStyle.colors.BLACK};
 `;
 
 export const ContainerText = styled.View`
@@ -22,19 +36,19 @@ export const ContainerText = styled.View`
 `;
 
 export const ContainerIcon = styled.View`
-  border-radius: 30px;
-  border-width: 2px;
-  border-color: #000;
+  border-radius: 50px;
+  border-width: 1px;
+  border-color: ${defaultStyle.colors.BLACK};
   border-style: solid;
   justify-content: center;
   align-items: center;
-  height: 60px;
-  width: 60px;
+  height: 80px;
+  width: 80px;
+  background-color: ${defaultStyle.colors.WHITE};
 `;
 
 export const ContainerButton = styled.View`
   width: 100%;
-  height: 45px;
   align-items: center;
   flex-direction: row;
   justify-content: space-evenly;
@@ -46,15 +60,16 @@ export const SubContainerText = styled.View`
 `;
 
 export const TextBlankWarning = styled.Text`
-  color: ${defaultStyle.colors.GREEN_AFIRMATIVE};
-  font-family: 'Inter-SemiBold';
-  font-size: ${responsive.small};
+  color: ${defaultStyle.colors.RED_NEGATIVE};
+  font-family: ${defaultStyle.fontFamily.interSemiBold};
+  font-size: ${responsive.medium};
   text-align: center;
   line-height: 18px;
+  margin-top: ${responsive.extraSmall};
 `;
 
 export const TextModalTitle = styled.Text`
-  color: ${defaultStyle.colors.RED_NEGATIVE};
+  color: ${defaultStyle.colors.WHITE};
   font-family: ${defaultStyle.fontFamily.interBold};
   font-size: ${responsive.medium};
   text-align: center;
@@ -62,16 +77,16 @@ export const TextModalTitle = styled.Text`
 `;
 
 export const TextModalRegular = styled.Text`
-  color: ${defaultStyle.colors.RED_NEGATIVE};
+  color: ${({ theme }) => theme.colors.Text};
   font-family: ${defaultStyle.fontFamily.interRegular};
-  font-size: ${responsive.small};
+  font-size: ${responsive.medium};
   text-align: center;
   line-height: ${defaultStyle.lineHeight.big};
 `;
 
 export const ButtonOk = styled(TouchableOpacity)<styledProps>`
-  width: 40%;
-  height: 40px;
+  width: 35%;
+  height: 90%;
   background-color: ${({ colorButton }) =>
     colorButton === 'affirmative'
       ? defaultStyle.colors.GREEN_AFIRMATIVE

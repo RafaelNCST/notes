@@ -47,23 +47,23 @@ export const ContentInfo: React.FC<Props> = ({ setOpen }) => {
         <ContentWords>
           <LineIconsInfo
             IconName="radio-button-unchecked"
-            Text="Descreva com um círculo seu nível de emergência, quanto mais perto de preto pior é. *"
+            Text="Escolha um círculo colorido apenas ilustrativo para demonstrar a urgência do evento"
           />
           <LineIconsInfo
             IconName="title"
-            Text="Um título para seu evento com limite de 35 caracteres. *"
+            Text="Um título para seu evento com limite de 35 caracteres"
           />
           <LineIconsInfo
             IconName="warning"
-            Text="Na seção categoria, descreva com palavras seu nível de importância. *"
+            Text="Na seção categoria, descreva com palavras seu nível de importância"
           />
           <LineIconsInfo
             IconName="schedule"
-            Text="Coloque o horário do evento. (Formato brasileiro) *"
+            Text="Coloque o horário do evento. (Formato brasileiro)"
           />
           <LineIconsInfo
             IconName="calendar-today"
-            Text="Descreva uma data que seja acima da data atual. (Formato brasileiro) *"
+            Text="Descreva uma data que seja acima da data atual. (Formato brasileiro)"
           />
         </ContentWords>
       </ContentInfoStyled>
