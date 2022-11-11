@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { defaultStyle } from '../../../../styles/themes/defaultStyle';
 
 export const SubContainerWords = styled.View`
   flex-direction: row;
@@ -12,7 +13,15 @@ export const ContainerIcon = styled.View`
   border-radius: 30px;
   height: 25px;
   width: 25px;
-  background-color: ${({ theme }) => theme.colors.Primary};
+  background-color: ${defaultStyle.colors.BLUE_DARK};
   justify-content: center;
   align-items: center;
+`;
+
+export const TextModalRegular = styled.Text`
+  color: ${defaultStyle.colors.BLACK};
+  font-family: ${defaultStyle.fontFamily.interBold};
+  font-size: ${defaultStyle.fontSize.small};
+  text-align: center;
+  line-height: ${defaultStyle.lineHeight.big};
 `;

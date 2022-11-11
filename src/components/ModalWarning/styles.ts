@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native';
+import { defaultStyle } from '../../styles/themes/defaultStyle';
 import responsive from '../../styles/themes/responsive';
 
 interface styledProps {
@@ -45,20 +46,36 @@ export const SubContainerText = styled.View`
 `;
 
 export const TextBlankWarning = styled.Text`
-  color: ${({ theme }) => theme.colors.Color_Negative};
+  color: ${defaultStyle.colors.GREEN_AFIRMATIVE};
   font-family: 'Inter-SemiBold';
-  font-size: ${responsive.P};
+  font-size: ${responsive.small};
   text-align: center;
   line-height: 18px;
+`;
+
+export const TextModalTitle = styled.Text`
+  color: ${defaultStyle.colors.RED_NEGATIVE};
+  font-family: ${defaultStyle.fontFamily.interBold};
+  font-size: ${responsive.medium};
+  text-align: center;
+  line-height: ${defaultStyle.lineHeight.big};
+`;
+
+export const TextModalRegular = styled.Text`
+  color: ${defaultStyle.colors.RED_NEGATIVE};
+  font-family: ${defaultStyle.fontFamily.interRegular};
+  font-size: ${responsive.small};
+  text-align: center;
+  line-height: ${defaultStyle.lineHeight.big};
 `;
 
 export const ButtonOk = styled(TouchableOpacity)<styledProps>`
   width: 40%;
   height: 40px;
-  background-color: ${({ theme, colorButton }) =>
+  background-color: ${({ colorButton }) =>
     colorButton === 'affirmative'
-      ? theme.colors.Color_Afirmative
-      : theme.colors.Color_Negative};
+      ? defaultStyle.colors.GREEN_AFIRMATIVE
+      : defaultStyle.colors.RED_NEGATIVE};
   justify-content: center;
   align-items: center;
   border-radius: 12px;

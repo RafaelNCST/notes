@@ -12,8 +12,8 @@ export const EventsSlice = createSlice({
       state.data.push(action.payload);
       AsyncStorage.setItem('@ArrayEvents', JSON.stringify(state.data));
     },
-    INITIALIZE_APP(state, action: PayloadAction<eventsProps>) {
-      state.data = action.payload;
+    INITIALIZE_APP(state, action: PayloadAction<eventsProps[]>) {
+      state.data = action?.payload;
     },
     // EDIT_EVENT(state, action: PayloadAction<string>) {
     //   state.data[0].circle = action.payload;

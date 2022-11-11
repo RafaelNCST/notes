@@ -1,6 +1,5 @@
 import React from 'react';
-import { TextModalRegular } from '../../../../styles/globalStyles';
-import { SubContainerWords, ContainerIcon } from './styles';
+import { SubContainerWords, ContainerIcon, TextModalRegular } from './styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
@@ -14,7 +13,9 @@ export const LineIconsInfo: React.FC<Props> = ({ IconName, Text }) => {
       <ContainerIcon>
         <Icon name={IconName} size={15} color="#fff" />
       </ContainerIcon>
-      <TextModalRegular>{Text}</TextModalRegular>
+      <TextModalRegular accessibilityRole="Text" accessibilityLabel={Text}>
+        {Text}
+      </TextModalRegular>
     </SubContainerWords>
   );
 };

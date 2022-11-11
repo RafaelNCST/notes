@@ -7,14 +7,12 @@ import {
   ContainerTitle,
   BottomContainer,
 } from './styles';
-import { HeaderMenu } from '../../components/HeaderMenu';
+import { BottomMenu, HeaderMenu, CircleEvent } from '../../components';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../routes/types';
 import { useRoute } from '@react-navigation/native';
-import { BottomMenu } from '../../components/BottomMenu';
-import { CircleEvent } from '../../components/CircleEvent';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export const DetailsEvent = () => {

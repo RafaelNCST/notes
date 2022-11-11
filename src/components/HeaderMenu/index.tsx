@@ -1,8 +1,12 @@
 import React from 'react';
-import { TextSubTitle } from '../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components';
-import { Container, ContainerButtonLeft, ContainerButtonRight } from './styles';
+import {
+  Container,
+  ContainerButtonLeft,
+  ContainerButtonRight,
+  TextSubTitle,
+} from './styles';
 
 interface Props {
   textDate: string;
@@ -23,13 +27,21 @@ export const HeaderMenu: React.FC<Props> = ({
 
   return (
     <Container>
-      <ContainerButtonLeft onPress={actionLeftButton}>
+      <ContainerButtonLeft
+        onPress={actionLeftButton}
+        accessibilityRole="Button"
+        accessibilityLabel="Botão de ação da esquerda">
         {iconLeft && (
           <Icon name={iconLeft} size={20} color={theme.colors.Text} />
         )}
       </ContainerButtonLeft>
-      <TextSubTitle>{textDate}</TextSubTitle>
-      <ContainerButtonRight onPress={actionRightButton}>
+      <TextSubTitle accessibilityRole="Text" accessibilityLabel={textDate}>
+        {textDate}
+      </TextSubTitle>
+      <ContainerButtonRight
+        onPress={actionRightButton}
+        accessibilityRole="Button"
+        accessibilityLabel="Botão de ação da direita">
         {iconRight && (
           <Icon name={iconRight} size={20} color={theme.colors.Text} />
         )}

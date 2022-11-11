@@ -1,9 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Home } from '../screens/Home';
-import { DetailsEvent } from '../screens/DetailsEvent';
 import { RootStackParamList } from './types';
-import { Settings } from '../screens/Settings';
+
+import { Home, Settings, DetailsEvent } from '../screens';
+
 import { Provider } from 'react-redux';
 import { Store } from '../store';
 

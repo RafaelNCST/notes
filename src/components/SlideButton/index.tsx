@@ -32,7 +32,9 @@ export const SlideButton: React.FC<Props> = ({
   });
 
   return (
-    <Container>
+    <Container
+      accessibilityRole="Button"
+      accessibilityLabel="Botão para trocar o tema do App entre night e day">
       <Switch style={{ transform: [{ translateX: left }] }} />
       <ContainerPosition onPress={() => startAnimation(0)}>
         {ImageOne ? ImageOne() : null}

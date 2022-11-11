@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { BodyScreen, TextRegular } from '../../styles/globalStyles';
+import { BodyScreen } from '../../styles/globalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
 import { Modal } from 'react-native';
-import { BottomMenu } from '../../components/BottomMenu';
-import { HeaderMenu } from '../../components/HeaderMenu';
+import { BottomMenu, HeaderMenu } from '../../components';
 import { MaskInput } from './components/MaskInput';
 import { DropDown } from '../../components/DropDown';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
@@ -24,6 +23,7 @@ import {
   ContainerTexts,
   DropDownCircleContainer,
   InputTexts,
+  TextRegular,
 } from './styles';
 import { eventsProps } from '../../store/types';
 import { ADD_EVENT } from '../../store/eventsReducer';
@@ -210,7 +210,9 @@ export const AddEventModal: React.FC<Props> = ({
           <Content>
             <TopContainer>
               <ContainerTitle>
-                <DropDownCircleContainer>
+                <DropDownCircleContainer
+                  accessibilityRole="Button"
+                  accessibilityLabel="Menu suspenso com os círculos de urgência">
                   <DropDownCircle
                     Data={DATACIRCLE}
                     zIndex={4}
@@ -237,8 +239,13 @@ export const AddEventModal: React.FC<Props> = ({
                   maxLength={35}
                 />
               </ContainerTitle>
+
               <ContainerTexts>
-                <TextRegular>Categoria: </TextRegular>
+                <TextRegular
+                  accessibilityRole="Text"
+                  accessibilityLabel="Categoria">
+                  Categoria:{' '}
+                </TextRegular>
                 <DropDown
                   Data={DATA}
                   zIndex={5}
@@ -247,7 +254,11 @@ export const AddEventModal: React.FC<Props> = ({
                 />
               </ContainerTexts>
               <ContainerTexts>
-                <TextRegular>Horário:</TextRegular>
+                <TextRegular
+                  accessibilityRole="Text"
+                  accessibilityLabel="Horário">
+                  Horário:
+                </TextRegular>
                 <MaskInput
                   separator=":"
                   linesNumber={2}
@@ -257,7 +268,9 @@ export const AddEventModal: React.FC<Props> = ({
                 />
               </ContainerTexts>
               <ContainerTexts>
-                <TextRegular>Data:</TextRegular>
+                <TextRegular accessibilityRole="Text" accessibilityLabel="Data">
+                  Data:
+                </TextRegular>
                 <MaskInput
                   separator="/"
                   linesNumber={3}

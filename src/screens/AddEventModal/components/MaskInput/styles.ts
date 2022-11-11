@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { defaultStyle } from '../../../../styles/themes/defaultStyle';
 import responsive from '../../../../styles/themes/responsive';
 
 interface styledProps {
@@ -7,7 +8,7 @@ interface styledProps {
 
 export const ContainerInput = styled.View<styledProps>`
   flex-direction: row;
-  margin-left: ${responsive.M};
+  margin-left: ${responsive.medium};
   height: 80%;
   width: ${({ width }) => width};
   justify-content: center;
@@ -15,7 +16,7 @@ export const ContainerInput = styled.View<styledProps>`
 `;
 
 export const Input = styled.TextInput`
-  font-size: ${responsive.P};
+  font-size: ${defaultStyle.fontSize.small};
   color: ${({ theme }) => theme.colors.Text};
   padding: 0px;
   text-align: center;
@@ -26,7 +27,7 @@ export const Input = styled.TextInput`
 `;
 
 export const SeparatorText = styled.Text`
-  font-size: 12px;
+  font-size: ${defaultStyle.fontSize.small};
   margin-left: 5px;
   margin-right: 5px;
   text-align: center;

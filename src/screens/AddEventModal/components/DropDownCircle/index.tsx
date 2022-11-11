@@ -15,7 +15,7 @@ import {
   CircleContainer,
   SubContainerSelected,
 } from './styles';
-import { CircleEvent } from '../../../../components/CircleEvent';
+import { CircleEvent } from '../../../../components';
 import { eventsProps } from '../../../../store/types';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -88,6 +88,8 @@ export const DropDownCircle: React.FC<Props> = ({
   return (
     <DropDownContainer zIndex={zIndex} style={{ height: heightControl }}>
       <Selected
+        accessibilityRole="Button"
+        accessibilityLabel="Abrir Menu suspenso"
         onPress={onClickDropDown}
         activeOpacity={0.5}
         underlayColor="#cac8c8">
@@ -113,6 +115,8 @@ export const DropDownCircle: React.FC<Props> = ({
 
           return (
             <Option
+              accessibilityRole="Button"
+              accessibilityLabel={`Opção com bola ${item}`}
               activeOpacity={0.8}
               underlayColor="#cac8c8"
               key={String(index)}

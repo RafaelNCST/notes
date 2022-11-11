@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import responsive from '../../../../styles/themes/responsive';
+import { defaultStyle } from '../../../../styles/themes/defaultStyle';
 
 export const Container = styled.TouchableOpacity`
   height: 30px;
@@ -7,7 +8,7 @@ export const Container = styled.TouchableOpacity`
   border-radius: 30px;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.Primary};
+  background-color: ${defaultStyle.colors.BLUE_DARK};
   position: absolute;
   right: 20px;
   bottom: 20px;
@@ -27,15 +28,23 @@ export const TopContent = styled.View`
   width: 100%;
   justify-content: space-between;
   flex-direction: row;
-  padding-left: ${responsive.PM};
-  padding-right: ${responsive.PM};
+  padding-left: ${responsive.extraMedium};
+  padding-right: ${responsive.extraMedium};
 `;
 
 export const ContentWords = styled.View`
-  padding-left: ${responsive.P};
-  padding-right: ${responsive.P};
+  padding-left: ${responsive.small};
+  padding-right: ${responsive.small};
   justify-content: space-evenly;
   flex: 1;
+`;
+
+export const TextModalTitle = styled.Text`
+  color: ${defaultStyle.colors.RED_NEGATIVE};
+  font-family: ${defaultStyle.fontFamily.interBold};
+  font-size: ${defaultStyle.fontSize.medium};
+  text-align: center;
+  line-height: ${defaultStyle.lineHeight.big};
 `;
 
 export const CloseButton = styled.TouchableOpacity``;

@@ -2,16 +2,14 @@ import React, { Dispatch, SetStateAction } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { LineIconsInfo } from '../LineIconsInfo';
 
-import {
-  TextModalTitle,
-  BodyScreenModal,
-} from '../../../../styles/globalStyles';
+import { BodyScreenModal } from '../../../../styles/globalStyles';
 import {
   Container,
   ContentInfoStyled,
   TopContent,
   CloseButton,
   ContentWords,
+  TextModalTitle,
 } from './styles';
 
 interface Props {
@@ -20,7 +18,10 @@ interface Props {
 
 export const InfoButton: React.FC<Props> = ({ setOpen }) => {
   return (
-    <Container onPress={() => setOpen(true)}>
+    <Container
+      onPress={() => setOpen(true)}
+      accessibilityRole="Button"
+      accessibilityLabel="Botão com modal que demonstra detalhes adicionais dos campos">
       <Icon name="help" size={15} color="#fff" />
     </Container>
   );
@@ -31,8 +32,15 @@ export const ContentInfo: React.FC<Props> = ({ setOpen }) => {
     <BodyScreenModal>
       <ContentInfoStyled>
         <TopContent>
-          <TextModalTitle>Obrigatórios *</TextModalTitle>
-          <CloseButton onPress={() => setOpen(false)}>
+          <TextModalTitle
+            accessibilityRole="Text"
+            accessibilityLabel="Obrigatórios">
+            Obrigatórios
+          </TextModalTitle>
+          <CloseButton
+            onPress={() => setOpen(false)}
+            accessibilityRole="Button"
+            accessibilityLabel="Fechar Modal">
             <Icon name="close" size={15} color="#000" />
           </CloseButton>
         </TopContent>

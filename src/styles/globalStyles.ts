@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import responsive from './themes/responsive';
 
 interface PropsImage {
   width: string;
@@ -18,53 +17,13 @@ export const BodyScreenModal = styled.SafeAreaView`
   align-items: center;
 `;
 
-export const TextSuperTitle = styled.Text`
-  color: ${({ theme }) => theme.colors.Text};
-  font-family: 'Inter-ExtraBold';
-  font-size: ${responsive.G};
-  text-align: center;
-  line-height: 20px;
-`;
-
-export const TextTitle = styled.Text`
-  color: ${({ theme }) => theme.colors.Text};
-  font-family: 'Inter-Bold';
-  font-size: ${responsive.M};
-  text-align: center;
-  line-height: 20px;
-`;
-
-export const TextSubTitle = styled.Text`
-  color: ${({ theme }) => theme.colors.Text};
-  font-family: 'Inter-SemiBold';
-  font-size: ${responsive.PM};
-  text-align: center;
-  line-height: 20px;
-`;
-
-export const TextRegular = styled.Text`
-  color: ${({ theme }) => theme.colors.Text};
-  font-family: 'Inter-Regular';
-  font-size: ${responsive.P};
-  text-align: justify;
-  line-height: 20px;
-`;
-
-export const TextModalTitle = styled.Text`
-  color: #000;
-  font-family: 'Inter-Bold';
-  font-size: ${responsive.PM};
-  text-align: justify;
-  line-height: 20px;
-`;
-
-export const TextModalRegular = styled.Text`
-  color: #000;
-  font-family: 'Inter-Regular';
-  font-size: ${responsive.P};
-  text-align: justify;
-  line-height: 15px;
-`;
+// export const Text = styled.Text`
+//   color: ${({ theme }) => theme.colors.Text};
+//   font-family: ${defaultStyle.fontFamily.interBold};
+//   font-size: ${defaultStyle.fontSize.enormous};
+//   text-align: center;
+//   line-height: ${defaultStyle.lineHeight.small};
+// `;
 
 export const Image = styled.Image<PropsImage>`
   width: ${({ width }) => width};

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { defaultStyle } from '../../styles/themes/defaultStyle';
 
 export const Container = styled.View`
   height: 50px;
@@ -16,6 +17,14 @@ export const ContainerButtonLeft = styled.TouchableOpacity`
   justify-content: center;
   position: absolute;
   left: 20px;
+`;
+
+export const TextSubTitle = styled.Text`
+  color: ${({ theme }) => theme.colors.Text};
+  font-family: ${defaultStyle.fontFamily.interBold};
+  font-size: ${defaultStyle.fontSize.medium};
+  text-align: center;
+  line-height: ${defaultStyle.lineHeight.big};
 `;
 
 export const ContainerButtonRight = styled.TouchableOpacity`

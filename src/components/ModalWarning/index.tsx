@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  BodyScreenModal,
-  TextModalRegular,
-  TextModalTitle,
-} from '../../styles/globalStyles';
+import { BodyScreenModal } from '../../styles/globalStyles';
 import {
   Content,
   ContainerText,
@@ -12,8 +8,10 @@ import {
   ContainerIcon,
   SubContainerText,
   TextBlankWarning,
+  TextModalTitle,
+  TextModalRegular,
 } from './styles';
-import { useTheme } from 'styled-components';
+import { defaultStyle } from '../../styles/themes/defaultStyle';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
@@ -35,8 +33,6 @@ export const ModalWarning: React.FC<Props> = ({
   textButtonAffirmative,
   textButtonNegative,
 }) => {
-  const theme = useTheme();
-
   return (
     <BodyScreenModal>
       <Content>
@@ -45,8 +41,8 @@ export const ModalWarning: React.FC<Props> = ({
             name={iconName}
             color={
               iconName === 'done'
-                ? theme.colors.Color_Afirmative
-                : theme.colors.Color_Negative
+                ? defaultStyle.colors.GREEN_AFIRMATIVE
+                : defaultStyle.colors.RED_NEGATIVE
             }
             size={iconName === 'done' ? 50 : 40}
           />

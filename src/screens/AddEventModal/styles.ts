@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { defaultStyle } from '../../styles/themes/defaultStyle';
 import responsive from '../../styles/themes/responsive';
 
 interface styledProps {
@@ -20,21 +21,21 @@ export const Content = styled.View`
 export const DropDownCircleContainer = styled.View`
   width: 20%;
   height: 40px;
-  margin-right: ${responsive.P};
+  margin-right: ${responsive.small};
 `;
 
 export const InputTexts = styled.TextInput<styledProps>`
   height: ${({ heightStyled }) => heightStyled || '100%'};
   width: ${({ widthStyled }) => widthStyled || '100%'};
   text-align: justify;
-  margin-right: ${responsive.P};
+  margin-right: ${responsive.small};
   font-family: 'Inter-Bold';
-  font-size: ${responsive.P};
+  font-size: ${defaultStyle.fontSize.medium};
   border-width: ${({ border }) => (border ? 1 : 0)}px;
   border-color: #000;
   border-style: solid;
-  padding-left: ${responsive.P};
-  /* padding-right: ${responsive.P}; */
+  padding-left: ${responsive.small};
+  padding-right: ${responsive.small};
   color: ${({ theme }) => theme.colors.Text};
   flex-wrap: wrap;
 `;
@@ -45,27 +46,35 @@ export const TopContainer = styled.View`
   border-bottom-width: 1px;
   border-color: #000;
   border-style: solid;
-  padding: ${responsive.P};
+  padding: ${responsive.small};
   justify-content: center;
 `;
 
 export const ContainerTitle = styled.View`
   width: 100%;
   flex-direction: row;
-  margin-bottom: ${responsive.P};
+  margin-bottom: ${responsive.small};
   align-items: center;
 `;
 
 export const BottomContainer = styled.View`
   flex: 1;
   width: 100%;
-  padding: ${responsive.P};
+  padding: ${responsive.small};
   z-index: -1;
 `;
 
 export const ContainerTexts = styled.View`
-  margin-bottom: ${responsive.M};
+  margin-bottom: ${responsive.medium};
   flex-direction: row;
   padding: 0px;
   height: 20px;
+`;
+
+export const TextRegular = styled.Text`
+  color: ${({ theme }) => theme.colors.Text};
+  font-family: ${defaultStyle.fontFamily.interBold};
+  font-size: ${defaultStyle.fontSize.small};
+  text-align: center;
+  line-height: ${defaultStyle.lineHeight.big};
 `;

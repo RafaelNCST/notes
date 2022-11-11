@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import responsive from '../../styles/themes/responsive';
+import { defaultStyle } from '../../styles/themes/defaultStyle';
 import { Animated } from 'react-native';
 
 interface StyledProps {
@@ -33,14 +34,14 @@ export const SubContainerSelected = styled.View`
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
-  padding-left: ${responsive.EP};
-  padding-right: ${responsive.EP};
+  padding-left: ${responsive.extraSmall};
+  padding-right: ${responsive.extraSmall};
 `;
 
 export const TextSelected = styled.Text<StyledProps>`
   color: ${({ color }) => color};
   font-family: 'Inter-SemiBold';
-  font-size: ${responsive.EP};
+  font-size: ${defaultStyle.fontSize.small};
   text-align: center;
   line-height: 20px;
 `;
@@ -54,7 +55,7 @@ export const Option = styled.TouchableHighlight`
 export const TextDropDown = styled.Text`
   color: #000;
   font-family: 'Inter-SemiBold';
-  font-size: ${responsive.EP};
+  font-size: ${defaultStyle.fontSize.small};
   text-align: center;
   line-height: 20px;
 `;

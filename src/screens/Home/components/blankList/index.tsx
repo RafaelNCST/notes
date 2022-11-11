@@ -1,11 +1,14 @@
 import React from 'react';
-import { TextSubTitle } from '../../../../styles/globalStyles';
-import { Container } from './styles';
+import { Container, TextSubTitle } from './styles';
 
 export const BlankList = () => {
   return (
     <Container>
-      <TextSubTitle>{'Não há eventos adicionados para hoje :)'}</TextSubTitle>
+      <TextSubTitle
+        accessibilityRole="Text"
+        accessibilityLabel="Não há eventos adicionados para hoje :)">
+        {'Não há eventos adicionados para hoje :)'}
+      </TextSubTitle>
     </Container>
   );
 };

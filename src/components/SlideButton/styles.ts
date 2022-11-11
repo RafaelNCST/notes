@@ -11,7 +11,7 @@ export const Container = styled.View`
   padding: 5px;
   justify-content: center;
   flex-direction: row;
-  margin-right: ${responsive.P};
+  margin-right: ${responsive.small};
 `;
 
 export const Switch = styled(Animated.View)`

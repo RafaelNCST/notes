@@ -17,6 +17,8 @@ export const BottomMenu: React.FC<Props> = ({
     <Container>
       {buttonExists && (
         <ContainerButton
+          accessibilityRole="Button"
+          accessibilityLabel="Botão de ação da barra de baixo"
           activeOpacity={0.8}
           underlayColor="#525050"
           onPress={buttonAction}>

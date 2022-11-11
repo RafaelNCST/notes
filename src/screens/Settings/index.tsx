@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { BottomMenu } from '../../components/BottomMenu';
-import { HeaderMenu } from '../../components/HeaderMenu';
-import { BodyScreen, TextRegular } from '../../styles/globalStyles';
+import { BottomMenu, HeaderMenu } from '../../components';
+import { BodyScreen } from '../../styles/globalStyles';
 import {
   Container,
   Content,
   SubContainer,
   SquareMarker,
   Marker,
+  TextRegular,
 } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -31,14 +31,20 @@ export const Settings = () => {
         <Content>
           <SubContainer>
             <SlideButton setEvent={setTheme} />
-            <TextRegular>Dark Mode/Light Mode</TextRegular>
+            <TextRegular
+              accessibilityRole="Text"
+              accessibilityLabel="Dark Mode/Light Mode">
+              Dark Mode/Light Mode
+            </TextRegular>
           </SubContainer>
           <SubContainer>
             <SquareMarker onPress={() => setEraseEvents(prev => !prev)}>
               {eraseEvents ? <Marker /> : null}
             </SquareMarker>
-            <TextRegular>
-              Ligar/Desligar Apagamento Automático de eventos passados
+            <TextRegular
+              accessibilityRole="Text"
+              accessibilityLabel="Ligar/Desligar Apagamento Automático de eventos passados">
+              Ligar/Desligar Apagamento Automático
             </TextRegular>
           </SubContainer>
         </Content>

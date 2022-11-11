@@ -85,6 +85,8 @@ export const DropDown: React.FC<Props> = ({
   return (
     <DropDownContainer zIndex={zIndex} style={{ height: heightControl }}>
       <Selected
+        accessibilityRole="Button"
+        accessibilityLabel="Abrir menu suspenso com categorias de urgência"
         onPress={onClickDropDown}
         activeOpacity={0.5}
         underlayColor="#cac8c8">
@@ -106,6 +108,8 @@ export const DropDown: React.FC<Props> = ({
 
           return (
             <Option
+              accessibilityRole="Button"
+              accessibilityLabel={`Opção com conteúdo ${item}`}
               activeOpacity={0.8}
               underlayColor="#cac8c8"
               key={String(index)}
