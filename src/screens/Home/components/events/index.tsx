@@ -17,7 +17,7 @@ export const Events: React.FC<eventsProps> = ({
   const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const detailsEvent = () => {
-    navigate('DetailsEvent', { time, description, circle });
+    navigate('DetailsEvent', { time, description, circle, category, date });
   };
 
   return (
@@ -27,8 +27,17 @@ export const Events: React.FC<eventsProps> = ({
       accessibilityLabel="Navega para tela de detalhes de eventos">
       <CircleEvent colorEvent={circle} />
       <ContainerText>
-        <TextRegular> {time} </TextRegular>
-        <TextRegular numberOfLines={1}> {title} </TextRegular>
+        <TextRegular accessibilityRole="Text" accessibilityLabel={time}>
+          {' '}
+          {time}{' '}
+        </TextRegular>
+        <TextRegular
+          accessibilityRole="Text"
+          accessibilityLabel={title}
+          numberOfLines={1}>
+          {' '}
+          {title}{' '}
+        </TextRegular>
       </ContainerText>
     </ButtonLine>
   );

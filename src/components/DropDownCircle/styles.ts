@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { defaultStyle } from '../../../../styles/themes/defaultStyle';
+import { defaultStyle } from '../../styles/themes/defaultStyle';
 import { Animated } from 'react-native';
 
 interface StyledProps {

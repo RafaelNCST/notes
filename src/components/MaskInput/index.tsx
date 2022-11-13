@@ -5,10 +5,10 @@ import React, {
   Dispatch,
   SetStateAction,
 } from 'react';
-import { eventsProps } from '../../../../store/types';
+import { eventsProps } from '../../store/types';
 import { TextInput } from 'react-native';
 import { ContainerInput, Input, SeparatorText } from './styles';
-import { DATA_MASK_MONTH, February } from '../../../../helpers/monthMask';
+import { DATA_MASK_MONTH, February } from '../../helpers/monthMask';
 
 interface Props {
   separator: string;
@@ -17,6 +17,7 @@ interface Props {
   arrayEvents: eventsProps;
   setArrayEvents: Dispatch<SetStateAction<eventsProps>>;
   clearMaskInputs: boolean;
+  disabled?: boolean;
 }
 
 export const MaskInput: React.FC<Props> = ({
@@ -26,6 +27,7 @@ export const MaskInput: React.FC<Props> = ({
   arrayEvents,
   setArrayEvents,
   clearMaskInputs,
+  disabled,
 }) => {
   const [firstInput, setFirstInput] = useState<string>('');
   const [secondInput, setSecondInput] = useState<string>('');
@@ -173,6 +175,7 @@ export const MaskInput: React.FC<Props> = ({
   return (
     <ContainerInput width={linesNumber === 2 ? '60px' : '105px'}>
       <Input
+        disabled={disabled}
         ref={ref_input1}
         maxLength={2}
         onChangeText={(event: string) => {
@@ -189,6 +192,7 @@ export const MaskInput: React.FC<Props> = ({
       />
       <SeparatorText>{separator}</SeparatorText>
       <Input
+        disabled={disabled}
         ref={ref_input2}
         maxLength={2}
         onChangeText={(event: string) => {
@@ -207,6 +211,7 @@ export const MaskInput: React.FC<Props> = ({
         <>
           <SeparatorText>{separator}</SeparatorText>
           <Input
+            disabled={disabled}
             ref={ref_input3}
             maxLength={4}
             onChangeText={(event: string) => handleChangeDateYear(event)}

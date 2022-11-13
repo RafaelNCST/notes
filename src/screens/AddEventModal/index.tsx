@@ -3,16 +3,16 @@ import { BodyScreen } from '../../styles/globalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
 import { Modal } from 'react-native';
-import { BottomMenu, HeaderMenu } from '../../components';
-import { MaskInput } from './components/MaskInput';
+import { BottomMenu, HeaderMenu, DropDownCircle } from '../../components';
+import { MaskInput } from '../../components/MaskInput';
 import { DropDown } from '../../components/DropDown';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
 import { ModalWarning } from '../../components/ModalWarning';
-import { DropDownCircle } from './components/DropDownCircle';
 import { InfoButton } from './components/InfoButton';
 import { useNavigation } from '@react-navigation/native';
 import { ContentInfo } from './components/InfoButton';
 import { RootStackParamList } from '../../routes/types';
+import { DATA_CATEGORY, DATA_CIRCLE } from '../../utils';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
   Container,
@@ -32,16 +32,6 @@ interface Props {
   closeModal: () => void;
   modalState: boolean;
 }
-
-const DATA = [
-  'Sem importância',
-  'Indiferente',
-  'Importante',
-  'Extremamente importante',
-  'Vida ou morte',
-];
-
-const DATACIRCLE: Array<string> = ['gray', 'green', 'yellow', 'red', 'black'];
 
 export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
@@ -221,7 +211,7 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
                   accessibilityRole="Button"
                   accessibilityLabel="Menu suspenso com os círculos de urgência">
                   <DropDownCircle
-                    Data={DATACIRCLE}
+                    Data={DATA_CIRCLE}
                     zIndex={5}
                     setArrayEvents={setArrayEvents}
                     arrayEvents={arrayEvents}
@@ -255,7 +245,7 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
                   Categoria:{' '}
                 </TextRegular>
                 <DropDown
-                  Data={DATA}
+                  Data={DATA_CATEGORY}
                   zIndex={5}
                   setArrayEvents={setArrayEvents}
                   arrayEvents={arrayEvents}

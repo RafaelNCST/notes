@@ -15,8 +15,8 @@ import {
   CircleContainer,
   SubContainerSelected,
 } from './styles';
-import { CircleEvent } from '../../../../components';
-import { eventsProps } from '../../../../store/types';
+import { CircleEvent } from '..';
+import { eventsProps } from '../../store/types';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
