@@ -6,6 +6,7 @@ export type RootStackParamList = {
     circle: string | undefined;
     category: string | undefined;
     date: string | undefined;
+    message: string | undefined;
   };
   SettingsScreen: undefined;
 };

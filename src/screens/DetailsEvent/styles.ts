@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { defaultStyle } from '../../styles/themes/defaultStyle';
+import { TextInput } from 'react-native';
 import responsive from '../../styles/themes/responsive';
 
 interface styledProps {
@@ -25,11 +26,10 @@ export const DropDownCircleContainer = styled.View`
 `;
 
 export const TopContainer = styled.View`
-  height: 15%;
   width: 100%;
   align-items: flex-start;
   border-bottom-width: 1px;
-  border-color: #000;
+  border-color: ${defaultStyle.colors.BLACK};
   border-style: solid;
   padding: ${responsive.small};
   justify-content: center;
@@ -39,6 +39,7 @@ export const ContainerTitle = styled.View`
   width: 100%;
   flex-direction: row;
   margin-bottom: ${responsive.small};
+  align-items: center;
 `;
 
 export const BottomContainer = styled.View`
@@ -63,7 +64,7 @@ export const TextTitle = styled.Text`
   line-height: ${defaultStyle.lineHeight.big};
 `;
 
-export const InputTexts = styled.TextInput<styledProps>`
+export const InputTexts = styled(TextInput)<styledProps>`
   height: ${({ heightStyled }) => heightStyled || '100%'};
   width: ${({ widthStyled }) => widthStyled || '100%'};
   text-align: justify;
@@ -78,6 +79,7 @@ export const InputTexts = styled.TextInput<styledProps>`
   color: ${({ theme }) => theme.colors.Text};
   flex-wrap: wrap;
   z-index: -1;
+  margin-left: ${responsive.medium};
 `;
 
 export const ContainerTexts = styled.View`
