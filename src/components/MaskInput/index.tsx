@@ -16,7 +16,7 @@ interface Props {
   type: string;
   arrayEvents: eventsProps;
   setArrayEvents: Dispatch<SetStateAction<eventsProps>>;
-  clearMaskInputs: boolean;
+  clearMaskInputs?: boolean;
   disabled?: boolean;
 }
 
@@ -29,9 +29,20 @@ export const MaskInput: React.FC<Props> = ({
   clearMaskInputs,
   disabled,
 }) => {
-  const [firstInput, setFirstInput] = useState<string>('');
-  const [secondInput, setSecondInput] = useState<string>('');
-  const [thirdInput, setThirdInput] = useState<string>('');
+  const firstInputEdit =
+    type === 'date'
+      ? arrayEvents?.date?.split('/')[0]
+      : arrayEvents?.time?.split(':')[0];
+  const secondInputEdit =
+    type === 'date'
+      ? arrayEvents?.date?.split('/')[1]
+      : arrayEvents?.time?.split(':')[1];
+  const ThirdInputEdit =
+    type === 'date' ? arrayEvents?.date?.split('/')[2] : null;
+
+  const [firstInput, setFirstInput] = useState<string>(firstInputEdit || '');
+  const [secondInput, setSecondInput] = useState<string>(secondInputEdit || '');
+  const [thirdInput, setThirdInput] = useState<string>(ThirdInputEdit || '');
 
   const date = new Date();
 

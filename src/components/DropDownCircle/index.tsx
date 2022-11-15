@@ -25,6 +25,8 @@ interface Props {
   zIndex?: number;
   setArrayEvents: Dispatch<SetStateAction<eventsProps>>;
   arrayEvents?: eventsProps;
+  firstRun: boolean;
+  setFirstRun: Dispatch<SetStateAction<boolean>>;
 }
 
 export const DropDownCircle: React.FC<Props> = ({
@@ -32,12 +34,13 @@ export const DropDownCircle: React.FC<Props> = ({
   zIndex,
   setArrayEvents,
   arrayEvents,
+  firstRun,
+  setFirstRun,
 }) => {
   const dataSize: number = Data.length * 45;
 
   const movimentMenu = useRef(new Animated.Value(-dataSize)).current;
   const heightMenu = useRef(new Animated.Value(45)).current;
-  const [firstRun, setFirstRun] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
 
   const handleDropDrown = () => {

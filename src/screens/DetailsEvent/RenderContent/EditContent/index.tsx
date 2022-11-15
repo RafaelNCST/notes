@@ -9,164 +9,24 @@ import {
   InputTexts,
   ContainerTexts,
 } from '../../styles';
-import { ContentProps } from '../types';
+import { ContentEditProps } from '../types';
 import { DropDown, DropDownCircle, MaskInput } from '../../../../components';
 import { useTheme } from 'styled-components';
 import { DATA_CATEGORY, DATA_CIRCLE } from '../../../../utils';
-import { eventsProps } from '../../../../store/types';
 // import { useAppDispatch } from '../../../../store/hooks/useAppDispatch';
 // import { EDIT_EVENT } from '../../../../store/eventsReducer';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export const EditContent: React.FC<ContentProps> = ({
-  time,
-  message,
-  category,
-  date,
-  circle,
+export const EditContent: React.FC<ContentEditProps> = ({
+  arrayEvents,
+  setArrayEvents,
 }) => {
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
-  const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
-  const [showModalWarning, setShowModalWarning] = useState<boolean>(false);
-  const [clearMaskInputs, setClearMaskInputs] = useState<boolean>(false);
-  const [clearDropDown, setClearDropDown] = useState<boolean>(true);
-  const [textButtonWarningAffirmative, setTextButtonWarningAffirmative] =
-    useState<string>('');
-  const [textButtonWarningNegative, setTextButtonWarningNegative] =
-    useState<string>('');
-  const [textWarning, setTextWarning] = useState<string>('');
-  const [arrayBlankWarning, setArrayBlankWarning] = useState<string[]>([]);
-  const [iconWarning, setIconWarning] = useState<string>('');
-  const [arrayEvents, setArrayEvents] = useState<eventsProps>({
-    circle: 'white',
-    title: '',
-    category: '',
-    time: '',
-    date: '',
-    description: '',
-  });
-
-  // const { reset } = useNavigation<StackNavigationProp<RootStackParamList>>();
-
-  // const dateToday = new Date();
-
-  // const dispatch = useAppDispatch();
+  const [firstRunCircleDrop, setFirstRunCircleDrop] = useState<boolean>(false);
+  const [firstRunDropDown, setFirstRunDropDown] = useState<boolean>(false);
 
   const theme = useTheme();
-
-  // const handleModalWarningBackHome = () => {
-  //   reset({
-  //     index: 0,
-  //     routes: [{ name: 'HomeScreen' }],
-  //   });
-  // };
-
-  // const closeModalWarning = () => {
-  //   setShowModalWarning(false);
-  // };
-
-  // const handleModalWarningAddNewEvent = () => {
-  //   setArrayEvents({
-  //     circle: 'white',
-  //     title: '',
-  //     category: '',
-  //     time: '',
-  //     date: '',
-  //     description: '',
-  //   });
-  //   setClearMaskInputs(true);
-  //   setTimeout(() => setClearMaskInputs(false), 500);
-  //   closeModalWarning();
-  //   setClearDropDown(true);
-  // };
-
-  // const handleConfirmBlankInputs = () => {
-  //   setArrayBlankWarning([]);
-  //   if (
-  //     arrayEvents.circle === 'white' ||
-  //     arrayEvents.category === '' ||
-  //     arrayEvents.date === '' ||
-  //     arrayEvents.time === '' ||
-  //     arrayEvents.title === ''
-  //   ) {
-  //     setIconWarning('warning');
-  //     setTextWarning('Os campos a seguir estão vazios: ');
-  //     if (arrayEvents.circle === 'white') {
-  //       setArrayBlankWarning(['Círculo de importância']);
-  //     }
-
-  //     if (arrayEvents.category === '') {
-  //       setArrayBlankWarning(prev => [...prev, 'Categoria']);
-  //     }
-
-  //     if (arrayEvents.date === '' || arrayEvents.date === '//') {
-  //       setArrayBlankWarning(prev => [...prev, 'Data']);
-  //     }
-
-  //     if (arrayEvents.time === '' || arrayEvents.time === ':') {
-  //       setArrayBlankWarning(prev => [...prev, 'Horário']);
-  //     }
-
-  //     if (arrayEvents.title === '') {
-  //       setArrayBlankWarning(prev => [...prev, 'Título']);
-  //     }
-  //     setTextButtonWarningAffirmative('OK');
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // };
-
-  // const handleConfirmOrganizationMaskInputs = () => {
-  //   const year = dateToday.getFullYear();
-  //   const inputDate = arrayEvents.date?.split('/');
-  //   const [inputDay, inputMonth, inputYear] = inputDate || [];
-  //   const inputTime = arrayEvents.time?.split(':');
-  //   const [inputHour, inputSeconds] = inputTime || [];
-
-  //   if (
-  //     inputDay.length === 1 ||
-  //     inputMonth.length === 1 ||
-  //     inputYear.length === 1
-  //   ) {
-  //     setArrayEvents(prevState => ({
-  //       ...prevState,
-  //       date: `${inputDay.length === 1 ? '0' + inputDay : inputDay}/${
-  //         inputMonth.length === 1 ? '0' + inputMonth : inputMonth
-  //       }/${inputYear.length <= 3 ? year : inputYear}`,
-  //     }));
-  //   }
-
-  //   if (inputHour.length === 1 || inputSeconds.length === 1) {
-  //     setArrayEvents(prevState => ({
-  //       ...prevState,
-  //       time: `${inputHour.length === 1 ? '0' + inputHour : inputHour}:${
-  //         inputSeconds.length === 1 ? '0' + inputSeconds : inputSeconds
-  //       }`,
-  //     }));
-  //   }
-  // };
-
-  // const handleConfirmCamps = () => {
-  //   setArrayBlankWarning([]);
-  //   handleConfirmOrganizationMaskInputs();
-  //   setTextWarning(
-  //     'Você adicionou um evento com sucesso! Deseja voltar ao menu principal ou continuar a adicionar?',
-  //   );
-  //   setIconWarning('done');
-  //   setTextButtonWarningAffirmative('CONTINUAR');
-  //   setTextButtonWarningNegative('VOLTAR');
-  //   setShowModalWarning(true);
-  // };
-
-  // const onClickConfirmEvent = () => {
-  //   if (handleConfirmBlankInputs()) {
-  //     setShowModalWarning(true);
-  //   } else {
-  //     handleConfirmCamps();
-  //   }
-  // };
 
   return (
     <Content>
@@ -180,6 +40,8 @@ export const EditContent: React.FC<ContentProps> = ({
               zIndex={5}
               setArrayEvents={setArrayEvents}
               arrayEvents={arrayEvents}
+              firstRun={firstRunCircleDrop}
+              setFirstRun={setFirstRunCircleDrop}
             />
           </DropDownCircleContainer>
           <InputTexts
@@ -187,6 +49,7 @@ export const EditContent: React.FC<ContentProps> = ({
             widthStyled="75%"
             value={arrayEvents.title}
             placeholder="Um título para se lembrar!"
+            paddingLeft={true}
             placeholderTextColor={focusTitle ? '#777676' : theme.colors.Text}
             onChangeText={(event: string) =>
               setArrayEvents(prevState => ({
@@ -209,8 +72,8 @@ export const EditContent: React.FC<ContentProps> = ({
             zIndex={5}
             setArrayEvents={setArrayEvents}
             arrayEvents={arrayEvents}
-            firstRun={clearDropDown}
-            setFirstRun={setClearDropDown}
+            firstRun={firstRunDropDown}
+            setFirstRun={setFirstRunDropDown}
           />
         </ContainerTexts>
         <ContainerTexts>
@@ -223,7 +86,6 @@ export const EditContent: React.FC<ContentProps> = ({
             type="time"
             arrayEvents={arrayEvents}
             setArrayEvents={setArrayEvents}
-            clearMaskInputs={clearMaskInputs}
           />
         </ContainerTexts>
         <ContainerTexts>
@@ -236,7 +98,6 @@ export const EditContent: React.FC<ContentProps> = ({
             type="date"
             arrayEvents={arrayEvents}
             setArrayEvents={setArrayEvents}
-            clearMaskInputs={clearMaskInputs}
           />
         </ContainerTexts>
       </TopContainer>
@@ -248,6 +109,7 @@ export const EditContent: React.FC<ContentProps> = ({
             placeholderTextColor={
               focusDescription ? '#777676' : theme.colors.Text
             }
+            paddingLeft={false}
             onChangeText={(event: string) =>
               setArrayEvents(prevState => ({
                 ...prevState,

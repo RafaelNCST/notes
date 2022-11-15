@@ -27,7 +27,6 @@ export const DropDownCircleContainer = styled.View`
 export const InputTexts = styled.TextInput<styledProps>`
   height: ${({ heightStyled }) => heightStyled || '100%'};
   width: ${({ widthStyled }) => widthStyled || '100%'};
-  text-align: justify;
   margin-right: ${responsive.small};
   font-family: ${defaultStyle.fontFamily.interBold};
   font-size: ${defaultStyle.fontSize.small};

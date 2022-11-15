@@ -16,14 +16,13 @@ import { defaultStyle } from '../../styles/themes/defaultStyle';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
-  actionNegative: () => void;
+  actionNegative?: () => void;
   actionAffirmative: () => void;
   text: string;
   iconName: string;
   arrayBlankWarnings?: string[];
   textButtonAffirmative: string;
-  textButtonNegative: string;
-  closeModal: () => void;
+  textButtonNegative?: string;
 }
 
 export const ModalWarning: React.FC<Props> = ({
@@ -34,7 +33,6 @@ export const ModalWarning: React.FC<Props> = ({
   arrayBlankWarnings,
   textButtonAffirmative,
   textButtonNegative,
-  closeModal,
 }) => {
   return (
     <BodyScreenModal>
@@ -68,7 +66,7 @@ export const ModalWarning: React.FC<Props> = ({
         </ContainerText>
         <SpaceModal height="15%" border="top">
           <ContainerButton>
-            {textButtonNegative !== '' && (
+            {textButtonNegative && (
               <ButtonOk
                 accessibilityRole="button"
                 accessibilityLabel="Botão de ação"
@@ -81,7 +79,7 @@ export const ModalWarning: React.FC<Props> = ({
               accessibilityRole="button"
               accessibilityLabel="Botão de ação"
               colorButton="affirmative"
-              onPress={iconName === 'done' ? actionAffirmative : closeModal}>
+              onPress={actionAffirmative}>
               <TextModalTitle>{textButtonAffirmative}</TextModalTitle>
             </ButtonOk>
           </ContainerButton>

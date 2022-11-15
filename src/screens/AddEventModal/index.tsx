@@ -37,7 +37,10 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
   const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
-  const [showModalWarning, setShowModalWarning] = useState<boolean>(false);
+  const [showModalWarningSucess, setShowModalWarningSucess] =
+    useState<boolean>(false);
+  const [showModalWarningError, setShowModalWarningError] =
+    useState<boolean>(false);
   const [clearMaskInputs, setClearMaskInputs] = useState<boolean>(false);
   const [clearDropDown, setClearDropDown] = useState<boolean>(true);
   const [textButtonWarningAffirmative, setTextButtonWarningAffirmative] =
@@ -47,6 +50,7 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
   const [textWarning, setTextWarning] = useState<string>('');
   const [arrayBlankWarning, setArrayBlankWarning] = useState<string[]>([]);
   const [iconWarning, setIconWarning] = useState<string>('');
+  const [firstRun, setFirstRun] = useState<boolean>(true);
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
     circle: 'white',
     title: '',
@@ -71,10 +75,6 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
     });
   };
 
-  const closeModalWarning = () => {
-    setShowModalWarning(false);
-  };
-
   const handleModalWarningAddNewEvent = () => {
     setArrayEvents({
       circle: 'white',
@@ -86,8 +86,12 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
     });
     setClearMaskInputs(true);
     setTimeout(() => setClearMaskInputs(false), 500);
-    closeModalWarning();
+    setShowModalWarningSucess(false);
     setClearDropDown(true);
+  };
+
+  const actionModalErrorButton = () => {
+    setShowModalWarningError(false);
   };
 
   const handleConfirmBlankInputs = () => {
@@ -166,13 +170,13 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
     setIconWarning('done');
     setTextButtonWarningAffirmative('CONTINUAR');
     setTextButtonWarningNegative('VOLTAR');
-    setShowModalWarning(true);
+    setShowModalWarningSucess(true);
     dispatch(ADD_EVENT(arrayEvents));
   };
 
   const onClickConfirmEvent = () => {
     if (handleConfirmBlankInputs()) {
-      setShowModalWarning(true);
+      setShowModalWarningError(true);
     } else {
       handleConfirmCamps();
     }
@@ -185,16 +189,27 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
           <ContentInfo setOpen={setShowModalInfo} />
         </Modal>
 
-        <Modal visible={showModalWarning} transparent animationType="fade">
+        <Modal
+          visible={showModalWarningSucess}
+          transparent
+          animationType="fade">
           <ModalWarning
             actionNegative={handleModalWarningBackHome}
             actionAffirmative={handleModalWarningAddNewEvent}
             text={textWarning}
             iconName={iconWarning}
-            arrayBlankWarnings={arrayBlankWarning}
             textButtonAffirmative={textButtonWarningAffirmative}
             textButtonNegative={textButtonWarningNegative}
-            closeModal={closeModalWarning}
+          />
+        </Modal>
+
+        <Modal visible={showModalWarningError} transparent animationType="fade">
+          <ModalWarning
+            actionAffirmative={actionModalErrorButton}
+            text={textWarning}
+            iconName={iconWarning}
+            arrayBlankWarnings={arrayBlankWarning}
+            textButtonAffirmative={textButtonWarningAffirmative}
           />
         </Modal>
 
@@ -215,6 +230,8 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
                     zIndex={5}
                     setArrayEvents={setArrayEvents}
                     arrayEvents={arrayEvents}
+                    firstRun={firstRun}
+                    setFirstRun={setFirstRun}
                   />
                 </DropDownCircleContainer>
                 <InputTexts

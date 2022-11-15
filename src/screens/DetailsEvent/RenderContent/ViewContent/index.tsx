@@ -13,8 +13,9 @@ import { ContentProps } from '../types';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export const ViewContent: React.FC<ContentProps> = ({
+  title,
   time,
-  message,
+  description,
   category,
   date,
   circle,
@@ -24,44 +25,31 @@ export const ViewContent: React.FC<ContentProps> = ({
       <TopContainer>
         <ContainerTitle>
           <CircleEvent colorEvent={circle} />
+          <TextTitle marginLeft={true}>{title}</TextTitle>
         </ContainerTitle>
         <ContainerTexts>
-          <TextRegular accessibilityRole="Text" accessibilityLabel="Categoria">
+          <TextTitle accessibilityRole="Text" accessibilityLabel="Categoria">
             Categoria:{' '}
-          </TextRegular>
-          <TextTitle>{category}</TextTitle>
+          </TextTitle>
+          <TextRegular>{category}</TextRegular>
         </ContainerTexts>
 
         <ContainerTexts>
-          <TextRegular accessibilityRole="Text" accessibilityLabel="Horário">
+          <TextTitle accessibilityRole="Text" accessibilityLabel="Horário">
             Horário:
-          </TextRegular>
-          {/* <MaskInput
-            separator=":"
-            linesNumber={2}
-            type="time"
-            arrayEvents={arrayEvents}
-            setArrayEvents={setArrayEvents}
-            clearMaskInputs={clearMaskInputs}
-          /> */}
+          </TextTitle>
+          <TextRegular>{time}</TextRegular>
         </ContainerTexts>
         <ContainerTexts>
-          <TextRegular accessibilityRole="Text" accessibilityLabel="Data">
+          <TextTitle accessibilityRole="Text" accessibilityLabel="Data">
             Data:
-          </TextRegular>
-          {/* <MaskInput
-            separator="/"
-            linesNumber={3}
-            type="date"
-            arrayEvents={arrayEvents}
-            setArrayEvents={setArrayEvents}
-            clearMaskInputs={clearMaskInputs}
-          /> */}
+          </TextTitle>
+          <TextRegular>{date}</TextRegular>
         </ContainerTexts>
       </TopContainer>
       <BottomContainer>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <TextRegular>{message}</TextRegular>
+          <TextRegular>{description}</TextRegular>
         </ScrollView>
       </BottomContainer>
     </Content>
