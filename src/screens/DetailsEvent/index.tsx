@@ -14,6 +14,11 @@ import { DropDownModal } from './components/DropDownModal';
 import { Modal } from 'react-native';
 import { ModalWarning } from '../../components';
 import { HeaderMenu } from '../../components';
+import { EDIT_EVENT, RELOAD_CHANGES } from '../../store/eventsReducer';
+import { confirmUniqueTitleName } from '../../utils/Add_Event_Functions';
+import { useAppSelector } from '../../store/hooks/useAppSelector';
+import { handleConfirmOrganizationMaskInputs } from '../../utils/Add_Event_Functions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const DetailsEvent = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -24,8 +29,7 @@ export const DetailsEvent = () => {
     useState<string>('');
   const [textWarning, setTextWarning] = useState<string>('');
   const [iconWarning, setIconWarning] = useState<string>('');
-  const [showModalEditSucess, setShowModalEditSucess] =
-    useState<boolean>(false);
+  const [showModalEditOk, setShowModalEditOk] = useState<boolean>(false);
   const [showModalWarningEdit, setShowModalWarningEdit] =
     useState<boolean>(false);
   const [showModalWarningDelete, setShowModalWarningDelete] =
@@ -37,6 +41,7 @@ export const DetailsEvent = () => {
     useNavigation<StackNavigationProp<RootStackParamList>>();
   const { title, time, description, category, date, circle } =
     useRoute<RouteProp<RootStackParamList>>()?.params || {};
+
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
     circle: circle,
     title: title,
@@ -46,33 +51,8 @@ export const DetailsEvent = () => {
     description: description,
   });
 
-  const dateToday = new Date();
-
   const dispatch = useAppDispatch();
-
-  // const handleModalWarningBackHome = () => {
-  //   reset({
-  //     index: 0,
-  //     routes: [{ name: 'HomeScreen' }],
-  //   });
-  // };
-
-  // const closeModalWarning = () => {
-  //   setShowModalWarning(false);
-  // };
-
-  // const handleModalWarningAddNewEvent = () => {
-  //   setArrayEvents({
-  //     circle: 'white',
-  //     title: '',
-  //     category: '',
-  //     time: '',
-  //     date: '',
-  //     description: '',
-  //   });
-  //   setTimeout(() => setClearMaskInputs(false), 500);
-  //   closeModalWarning();
-  // };
+  const { data } = useAppSelector(store => store.Events);
 
   const handleConfirmModification = () => {
     if (
@@ -93,49 +73,48 @@ export const DetailsEvent = () => {
     }
   };
 
-  const handleConfirmOrganizationMaskInputs = () => {
-    const year = dateToday.getFullYear();
-    const inputDate = arrayEvents.date?.split('/');
-    const [inputDay, inputMonth, inputYear] = inputDate || [];
-    const inputTime = arrayEvents.time?.split(':');
-    const [inputHour, inputSeconds] = inputTime || [];
-
-    if (
-      inputDay.length === 1 ||
-      inputMonth.length === 1 ||
-      inputYear.length === 1
-    ) {
-      setArrayEvents(prevState => ({
-        ...prevState,
-        date: `${inputDay.length === 1 ? '0' + inputDay : inputDay}/${
-          inputMonth.length === 1 ? '0' + inputMonth : inputMonth
-        }/${inputYear.length <= 3 ? year : inputYear}`,
-      }));
-    }
-
-    if (inputHour.length === 1 || inputSeconds.length === 1) {
-      setArrayEvents(prevState => ({
-        ...prevState,
-        time: `${inputHour.length === 1 ? '0' + inputHour : inputHour}:${
-          inputSeconds.length === 1 ? '0' + inputSeconds : inputSeconds
-        }`,
-      }));
+  const addEventInArray = async () => {
+    if (confirmUniqueTitleName(arrayEvents.title, data)) {
+      setTextWarning(
+        'O título que você escolheu já foi usado. Note que seu título deve ser único',
+      );
+      setTextButtonWarningAffirmative('OK');
+      setIconWarning('warning');
+      setShowModalEditOk(true);
+    } else {
+      const stringArraySavedEvents = await AsyncStorage.getItem('@ArrayEvents');
+      const parsedArraySavedEvents = JSON.parse(
+        stringArraySavedEvents as string,
+      );
+      if (parsedArraySavedEvents) {
+        const newArray = parsedArraySavedEvents.map((item: eventsProps) => {
+          if (item.title === title) {
+            item = arrayEvents;
+          }
+          return item;
+        });
+        dispatch(EDIT_EVENT(newArray));
+        dispatch(RELOAD_CHANGES());
+      }
     }
   };
 
   const onClickConfirmEditEvent = () => {
-    handleConfirmOrganizationMaskInputs();
+    handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
     setTextWarning('Tudo feito');
     setIconWarning('done');
     setTextButtonWarningAffirmative('OK');
-    setShowModalEditSucess(true);
-    //Aqui faz a edição no Async
+    setShowModalEditOk(true);
+    addEventInArray();
   };
 
   const actionConfirmSaveOk = () => {
     setEditMode(false);
-    setShowModalEditSucess(false);
-    console.log('Salvou com estilo');
+    setShowModalEditOk(false);
+  };
+
+  const actionConfirmErrorOk = () => {
+    setShowModalEditOk(false);
   };
 
   const openOptionsModalDropDown = () => {
@@ -169,10 +148,10 @@ export const DetailsEvent = () => {
   };
 
   const actionSaveChanges = () => {
-    handleConfirmOrganizationMaskInputs();
+    handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
     setEditMode(false);
     setShowModalWarningEdit(false);
-    console.log('SALVOUUUU');
+    addEventInArray();
   };
 
   const actionDeleteOption = () => {
@@ -185,7 +164,8 @@ export const DetailsEvent = () => {
   };
 
   const actionDeleteOptionYes = () => {
-    console.log('Excluiuuu');
+    const newArray = data.filter(item => item.title !== title);
+    dispatch(EDIT_EVENT(newArray));
     setShowModalWarningDelete(false);
     reset({
       index: 0,
@@ -216,17 +196,21 @@ export const DetailsEvent = () => {
           text={textWarning}
           textButtonAffirmative={textButtonWarningAffirmative}
           textButtonNegative={textButtonWarningNegative}
-          actionNegative={actionDeleteOptionYes}
-          actionAffirmative={actionDeleteOptionNo}
+          actionNegative={actionDeleteOptionNo}
+          actionAffirmative={actionDeleteOptionYes}
         />
       </Modal>
 
-      <Modal visible={showModalEditSucess} transparent animationType="slide">
+      <Modal visible={showModalEditOk} transparent animationType="slide">
         <ModalWarning
           iconName={iconWarning}
           text={textWarning}
           textButtonAffirmative={textButtonWarningAffirmative}
-          actionAffirmative={actionConfirmSaveOk}
+          actionAffirmative={
+            iconWarning === 'warning'
+              ? actionConfirmErrorOk
+              : actionConfirmSaveOk
+          }
         />
       </Modal>
 
@@ -253,14 +237,7 @@ export const DetailsEvent = () => {
             setArrayEvents={setArrayEvents}
           />
         ) : (
-          <ViewContent
-            title={title}
-            time={time}
-            description={description}
-            category={category}
-            date={date}
-            circle={circle}
-          />
+          <ViewContent {...arrayEvents} />
         )}
         <BottomMenu
           buttonExists={editMode ? true : false}

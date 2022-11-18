@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { BodyScreen } from '../../styles/globalStyles';
-import { Container, Content } from './styles';
+import { Container, Content, ContentSpinner } from './styles';
 import { BottomMenu, HeaderMenu } from '../../components';
 import { Events } from './components/events';
 import { AddEventModal } from '../AddEventModal';
@@ -12,18 +12,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BlankList } from './components/blankList';
 import { RootStackParamList } from '../../routes/types';
 import { eventsProps } from '../../store/types';
-import { getEventsArrayAsync } from '../../store/eventsReducer/thunk';
 import { MONTHS } from '../../helpers/months';
+import { ActivityIndicator } from 'react-native';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
 import { INITIALIZE_APP } from '../../store/eventsReducer';
+import { defaultStyle } from '../../styles/themes/defaultStyle';
 
 export const Home: React.FC = () => {
   const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const dispatch = useAppDispatch();
+  const reload_changes = useAppSelector(store => store.Events.reload);
 
   const [showModalAddEvent, setShowModalAddEvent] = useState<boolean>(false);
   const [dataEvents, setDataEvents] = useState<object[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const date = new Date();
 
@@ -43,14 +46,8 @@ export const Home: React.FC = () => {
       : date.getFullYear(),
   );
 
-  const { data } = useAppSelector(store => store.Events);
-
   const openModalAddEvent = () => {
     setShowModalAddEvent(true);
-  };
-
-  const closeModalAddEvent = () => {
-    setShowModalAddEvent(false);
   };
 
   const handleNavigationOptions = () => {
@@ -74,7 +71,8 @@ export const Home: React.FC = () => {
       getEventsToday(parsedArraySavedEvents);
       dispatch(INITIALIZE_APP(parsedArraySavedEvents));
     }
-    console.log(parsedArraySavedEvents);
+
+    setLoading(false);
   };
 
   const reset = () => {
@@ -83,9 +81,8 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     getAsyncStorageEvents();
-    getEventsArrayAsync();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reload_changes]);
 
   return (
     <BodyScreen>
@@ -98,23 +95,29 @@ export const Home: React.FC = () => {
           actionRightButton={handleNavigationOptions}
         />
         <Content>
-          <FlatList
-            data={dataEvents}
-            contentContainerStyle={{
-              flex: 1,
-            }}
-            ListEmptyComponent={<BlankList />}
-            keyExtractor={(_, index) => String(index)}
-            renderItem={({ item }) => {
-              return <Events {...item} />;
-            }}
-          />
+          {loading ? (
+            <ContentSpinner>
+              <ActivityIndicator
+                size={30}
+                color={defaultStyle.colors.GREEN_AFIRMATIVE}
+              />
+            </ContentSpinner>
+          ) : (
+            <FlatList
+              data={dataEvents}
+              contentContainerStyle={{
+                flex: 1,
+              }}
+              ListEmptyComponent={<BlankList />}
+              keyExtractor={(_, index) => String(index)}
+              renderItem={({ item }) => {
+                return <Events {...item} />;
+              }}
+            />
+          )}
         </Content>
 
-        <AddEventModal
-          closeModal={closeModalAddEvent}
-          modalState={showModalAddEvent}
-        />
+        <AddEventModal modalState={showModalAddEvent} />
 
         <BottomMenu
           buttonExists={true}

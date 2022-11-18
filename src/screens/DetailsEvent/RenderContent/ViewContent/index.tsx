@@ -5,12 +5,14 @@ import {
   ContainerTitle,
   BottomContainer,
   TextRegular,
-  TextTitle,
   ContainerTexts,
 } from '../../styles';
+import { TextTitle } from './styles';
 import { CircleEvent } from '../../../../components';
 import { ContentProps } from '../types';
 import { ScrollView } from 'react-native-gesture-handler';
+
+const blankDescription = 'Sem descrição por aqui  ಥ_ಥ';
 
 export const ViewContent: React.FC<ContentProps> = ({
   title,
@@ -49,7 +51,7 @@ export const ViewContent: React.FC<ContentProps> = ({
       </TopContainer>
       <BottomContainer>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <TextRegular>{description}</TextRegular>
+          <TextRegular>{description || blankDescription}</TextRegular>
         </ScrollView>
       </BottomContainer>
     </Content>

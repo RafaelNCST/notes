@@ -69,7 +69,7 @@ export const MaskInput: React.FC<Props> = ({
     } else {
       setFirstInput(event);
       if (event.length === 2) {
-        if (parseInt(event, 10) >= 23) {
+        if (parseInt(event, 10) >= 24) {
           setFirstInput(prev => '0' + (prev ? prev[1] : ''));
           ref_input2?.current?.focus();
         } else {

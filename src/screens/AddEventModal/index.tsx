@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ContentInfo } from './components/InfoButton';
 import { RootStackParamList } from '../../routes/types';
 import { DATA_CATEGORY, DATA_CIRCLE } from '../../utils';
+import { useAppSelector } from '../../store/hooks/useAppSelector';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
   Container,
@@ -26,14 +27,17 @@ import {
   TextRegular,
 } from './styles';
 import { eventsProps } from '../../store/types';
+import {
+  handleConfirmOrganizationMaskInputs,
+  confirmUniqueTitleName,
+} from '../../utils/Add_Event_Functions';
 import { ADD_EVENT } from '../../store/eventsReducer';
 
 interface Props {
-  closeModal: () => void;
   modalState: boolean;
 }
 
-export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
+export const AddEventModal: React.FC<Props> = ({ modalState }) => {
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
   const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
@@ -62,11 +66,17 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
 
   const { reset } = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-  const date = new Date();
-
   const dispatch = useAppDispatch();
+  const { data } = useAppSelector(store => store.Events);
 
   const theme = useTheme();
+
+  const onCloseAddEventModal = () => {
+    reset({
+      index: 0,
+      routes: [{ name: 'HomeScreen' }],
+    });
+  };
 
   const handleModalWarningBackHome = () => {
     reset({
@@ -96,74 +106,54 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
 
   const handleConfirmBlankInputs = () => {
     setArrayBlankWarning([]);
-    if (
-      arrayEvents.circle === 'white' ||
-      arrayEvents.category === '' ||
-      arrayEvents.date === '' ||
-      arrayEvents.time === '' ||
-      arrayEvents.title === ''
-    ) {
+    if (confirmUniqueTitleName(arrayEvents.title, data)) {
       setIconWarning('warning');
-      setTextWarning('Os campos a seguir estão vazios: ');
-      if (arrayEvents.circle === 'white') {
-        setArrayBlankWarning(['Círculo de importância']);
-      }
-
-      if (arrayEvents.category === '') {
-        setArrayBlankWarning(prev => [...prev, 'Categoria']);
-      }
-
-      if (arrayEvents.date === '' || arrayEvents.date === '//') {
-        setArrayBlankWarning(prev => [...prev, 'Data']);
-      }
-
-      if (arrayEvents.time === '' || arrayEvents.time === ':') {
-        setArrayBlankWarning(prev => [...prev, 'Horário']);
-      }
-
-      if (arrayEvents.title === '') {
-        setArrayBlankWarning(prev => [...prev, 'Título']);
-      }
+      setTextWarning(
+        'O título que você escolheu já foi usado. Note que seu título deve ser único',
+      );
       setTextButtonWarningAffirmative('OK');
-      return true;
     } else {
-      return false;
-    }
-  };
+      if (
+        arrayEvents.circle === 'white' ||
+        arrayEvents.category === '' ||
+        arrayEvents.date === '' ||
+        arrayEvents.date === '//' ||
+        arrayEvents.time === '' ||
+        arrayEvents.time === ':' ||
+        arrayEvents.title === ''
+      ) {
+        setIconWarning('warning');
+        setTextWarning('Os campos a seguir estão vazios: ');
+        if (arrayEvents.circle === 'white') {
+          setArrayBlankWarning(['Círculo de importância']);
+        }
 
-  const handleConfirmOrganizationMaskInputs = () => {
-    const year = date.getFullYear();
-    const inputDate = arrayEvents.date?.split('/');
-    const [inputDay, inputMonth, inputYear] = inputDate || [];
-    const inputTime = arrayEvents.time?.split(':');
-    const [inputHour, inputSeconds] = inputTime || [];
+        if (arrayEvents.category === '') {
+          setArrayBlankWarning(prev => [...prev, 'Categoria']);
+        }
 
-    if (
-      inputDay.length === 1 ||
-      inputMonth.length === 1 ||
-      inputYear.length === 1
-    ) {
-      setArrayEvents(prevState => ({
-        ...prevState,
-        date: `${inputDay.length === 1 ? '0' + inputDay : inputDay}/${
-          inputMonth.length === 1 ? '0' + inputMonth : inputMonth
-        }/${inputYear.length <= 3 ? year : inputYear}`,
-      }));
-    }
+        if (arrayEvents.date === '' || arrayEvents.date === '//') {
+          setArrayBlankWarning(prev => [...prev, 'Data']);
+        }
 
-    if (inputHour.length === 1 || inputSeconds.length === 1) {
-      setArrayEvents(prevState => ({
-        ...prevState,
-        time: `${inputHour.length === 1 ? '0' + inputHour : inputHour}:${
-          inputSeconds.length === 1 ? '0' + inputSeconds : inputSeconds
-        }`,
-      }));
+        if (arrayEvents.time === '' || arrayEvents.time === ':') {
+          setArrayBlankWarning(prev => [...prev, 'Horário']);
+        }
+
+        if (arrayEvents.title === '') {
+          setArrayBlankWarning(prev => [...prev, 'Título']);
+        }
+        setTextButtonWarningAffirmative('OK');
+        return true;
+      } else {
+        return false;
+      }
     }
   };
 
   const handleConfirmCamps = () => {
     setArrayBlankWarning([]);
-    handleConfirmOrganizationMaskInputs();
+    handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
     setTextWarning(
       'Você adicionou um evento com sucesso! Deseja voltar ao menu principal ou continuar a adicionar?',
     );
@@ -217,7 +207,7 @@ export const AddEventModal: React.FC<Props> = ({ closeModal, modalState }) => {
           <HeaderMenu
             textDate="Adicionar Evento"
             iconRight="close"
-            actionRightButton={closeModal}
+            actionRightButton={onCloseAddEventModal}
           />
           <Content>
             <TopContainer>

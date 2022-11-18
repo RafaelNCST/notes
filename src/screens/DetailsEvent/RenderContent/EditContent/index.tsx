@@ -5,10 +5,9 @@ import {
   ContainerTitle,
   BottomContainer,
   TextRegular,
-  DropDownCircleContainer,
-  InputTexts,
   ContainerTexts,
 } from '../../styles';
+import { DropDownCircleContainer, InputTexts } from './styles';
 import { ContentEditProps } from '../types';
 import { DropDown, DropDownCircle, MaskInput } from '../../../../components';
 import { useTheme } from 'styled-components';

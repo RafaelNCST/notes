@@ -2,21 +2,23 @@ import React, { useRef, Dispatch, SetStateAction } from 'react';
 import { Container, Switch, ContainerPosition } from './styles';
 import { Animated } from 'react-native';
 interface Props {
+  event: number;
   ImageOne?: () => SVGRectElement;
   ImageTwo?: () => SVGRectElement;
-  setEvent?: Dispatch<SetStateAction<boolean>>;
+  setEvent?: Dispatch<SetStateAction<number>>;
 }
 
 export const SlideButton: React.FC<Props> = ({
   ImageOne,
   ImageTwo,
   setEvent,
+  event,
 }) => {
-  const positionSwitch = useRef(new Animated.Value(0)).current;
+  const positionSwitch = useRef(new Animated.Value(event)).current;
 
   const startAnimation = (toValue: number) => {
     if (setEvent) {
-      setEvent(toValue === 0 ? false : true);
+      setEvent(toValue === 0 ? -2 : 22);
     }
     Animated.timing(positionSwitch, {
       toValue,

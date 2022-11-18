@@ -11,7 +11,7 @@ export interface eventsProps {
 
 export interface InitialStateProps {
   data: Array<eventsProps>;
-  isLoading?: boolean;
+  reload?: boolean;
 }
 
 export type AppDispatch = typeof Store.dispatch;

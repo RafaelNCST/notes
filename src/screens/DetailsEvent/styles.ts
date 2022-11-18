@@ -1,15 +1,6 @@
 import styled from 'styled-components/native';
 import { defaultStyle } from '../../styles/themes/defaultStyle';
-import { TextInput } from 'react-native';
 import responsive from '../../styles/themes/responsive';
-
-interface styledProps {
-  border?: boolean;
-  heightStyled?: string;
-  widthStyled?: string;
-  marginLeft?: boolean;
-  paddingLeft?: boolean;
-}
 
 export const Container = styled.View`
   flex: 1;
@@ -19,13 +10,6 @@ export const Container = styled.View`
 export const Content = styled.View`
   flex: 1;
   width: 100%;
-`;
-
-export const DropDownCircleContainer = styled.View`
-  width: 20%;
-  height: 40px;
-  margin-right: ${responsive.small};
-  z-index: 5;
 `;
 
 export const TopContainer = styled.View`
@@ -59,33 +43,6 @@ export const TextRegular = styled.Text`
   text-align: justify;
   line-height: ${defaultStyle.lineHeight.big};
   margin-left: ${responsive.extraSmall};
-`;
-
-export const TextTitle = styled.Text<styledProps>`
-  color: ${({ theme }) => theme.colors.Text};
-  font-family: ${defaultStyle.fontFamily.interBold};
-  font-size: ${defaultStyle.fontSize.small};
-  text-align: center;
-  line-height: ${defaultStyle.lineHeight.big};
-  margin-left: ${({ marginLeft }) => (marginLeft ? responsive.extraSmall : 0)};
-`;
-
-export const InputTexts = styled(TextInput)<styledProps>`
-  height: ${({ heightStyled }) => heightStyled || '100%'};
-  width: ${({ widthStyled }) => widthStyled || '100%'};
-  text-align: justify;
-  margin-right: ${responsive.small};
-  font-family: ${defaultStyle.fontFamily.interBold};
-  font-size: ${defaultStyle.fontSize.small};
-  border-width: ${({ border }) => (border ? 1 : 0)}px;
-  border-color: ${defaultStyle.colors.BLACK};
-  border-style: solid;
-  padding-left: ${({ paddingLeft }) => (paddingLeft ? responsive.medium : 0)};
-  padding-right: ${responsive.small};
-  color: ${({ theme }) => theme.colors.Text};
-  flex-wrap: wrap;
-  z-index: -1;
-  margin-left: ${responsive.medium};
 `;
 
 export const ContainerTexts = styled.View`

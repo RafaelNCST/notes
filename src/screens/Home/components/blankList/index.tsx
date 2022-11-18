@@ -6,7 +6,7 @@ export const BlankList = () => {
     <Container>
       <TextSubTitle
         accessibilityRole="Text"
-        accessibilityLabel="Não há eventos adicionados para hoje :)">
+        accessibilityLabel="Não há eventos planejados para hoje :)">
         {'Não há eventos adicionados para hoje :)'}
       </TextSubTitle>
     </Container>

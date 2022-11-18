@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from './initialState';
 import { eventsProps } from '../types';
-import { getArrayOfEventsAsync } from './thunk';
+// import { getArrayOfEventsAsync } from './thunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const EventsSlice = createSlice({
@@ -17,9 +17,13 @@ export const EventsSlice = createSlice({
     },
     EDIT_EVENT(state, action: PayloadAction<eventsProps[]>) {
       state.data = action?.payload;
+      AsyncStorage.setItem('@ArrayEvents', JSON.stringify(state.data));
+    },
+    RELOAD_CHANGES(state) {
+      state.reload = !state.reload;
     },
   },
-  extraReducers: builder => {
-    getArrayOfEventsAsync(builder);
-  },
+  // extraReducers: builder => {
+  //   getArrayOfEventsAsync(builder);
+  // },
 });
