@@ -52,5 +52,6 @@ export default {
     'Ei, psiu, só um aviso, mas você tem um evento com título semelhante ao que você colocou (❁´◡`❁)':
       'Ei, psiu, só um aviso, mas você tem um evento com título semelhante ao que você colocou (❁´◡`❁)',
     ENTENDI: 'ENTENDI',
+    'Detalhes do evento': 'Detalhes do evento',
   },
 };

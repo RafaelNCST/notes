@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import {
   Container,
   ContainerButtonLeft,
@@ -24,6 +25,7 @@ export const HeaderMenu: React.FC<Props> = ({
   actionRightButton,
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Container>
@@ -36,7 +38,7 @@ export const HeaderMenu: React.FC<Props> = ({
         )}
       </ContainerButtonLeft>
       <TextSubTitle accessibilityRole="Text" accessibilityLabel={textDate}>
-        {textDate}
+        {t(textDate)}
       </TextSubTitle>
       <ContainerButtonRight
         onPress={actionRightButton}

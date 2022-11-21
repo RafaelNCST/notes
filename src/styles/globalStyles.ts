@@ -17,14 +17,6 @@ export const BodyScreenModal = styled.SafeAreaView`
   align-items: center;
 `;
 
-// export const Text = styled.Text`
-//   color: ${({ theme }) => theme.colors.Text};
-//   font-family: ${defaultStyle.fontFamily.interBold};
-//   font-size: ${defaultStyle.fontSize.enormous};
-//   text-align: center;
-//   line-height: ${defaultStyle.lineHeight.small};
-// `;
-
 export const Image = styled.Image<PropsImage>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};

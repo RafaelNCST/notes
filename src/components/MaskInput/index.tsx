@@ -8,7 +8,7 @@ import React, {
 import { eventsProps } from '../../store/types';
 import { TextInput } from 'react-native';
 import { ContainerInput, Input, SeparatorText } from './styles';
-import { DATA_MASK_MONTH, February } from '../../helpers/monthMask';
+import { DATA_MASK_MONTH, February } from '../../helpers';
 
 interface Props {
   separator: string;

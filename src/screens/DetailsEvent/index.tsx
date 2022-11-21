@@ -15,9 +15,11 @@ import { Modal } from 'react-native';
 import { ModalWarning } from '../../components';
 import { HeaderMenu } from '../../components';
 import { EDIT_EVENT } from '../../store/eventsReducer';
-import { confirmUniqueTitleName } from '../../helpers/Add_Event_Functions';
+import {
+  confirmUniqueTitleName,
+  handleConfirmOrganizationMaskInputs,
+} from '../../helpers';
 import { useAppSelector } from '../../store/hooks/useAppSelector';
-import { handleConfirmOrganizationMaskInputs } from '../../helpers/Add_Event_Functions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const DetailsEvent = () => {
@@ -221,7 +223,7 @@ export const DetailsEvent = () => {
         />
 
         <HeaderMenu
-          textDate="22 de julho de 2022"
+          textDate="Detalhes do evento"
           iconLeft="arrow-back-ios"
           iconRight={editMode ? 'cancel' : 'more-horiz'}
           actionRightButton={

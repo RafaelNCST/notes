@@ -3,18 +3,18 @@ import { FlatList } from 'react-native-gesture-handler';
 import { BodyScreen } from '../../styles/globalStyles';
 import { Container, Content, ContentSpinner } from './styles';
 import { BottomMenu, HeaderMenu } from '../../components';
-import { Events } from './components/events';
 import { AddEventModal } from '../AddEventModal';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppSelector } from '../../store/hooks/useAppSelector';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BlankList } from './components/blankList';
+import { BlankList, Events } from './components';
 import { RootStackParamList } from '../../routes/types';
 import { eventsProps } from '../../store/types';
-import { MONTHS } from '../../utils/months';
 import { ActivityIndicator } from 'react-native';
+import { GET_TITLE_DATE_TODAY } from '../../helpers';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
+import { ConsumerMainContext } from '../../contexts/consumer';
 import { INITIALIZE_APP } from '../../store/eventsReducer';
 import 'moment/locale/pt-br';
 import moment from 'moment';
@@ -28,30 +28,14 @@ export const Home: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const reload_changes = useAppSelector(store => store.Events.reload);
+  const { language } = ConsumerMainContext();
 
   const [showModalAddEvent, setShowModalAddEvent] = useState<boolean>(false);
   const [dataEvents, setDataEvents] = useState<object[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const date = new Date();
-
-  const actualMoment = momentz.tz('America/Manaus').format();
-
-  const day: string = String(
-    String(date.getDate()).length === 1
-      ? '0' + String(date.getDate())
-      : date.getDate(),
-  );
-  const month: string = String(
-    String(date.getMonth() + 1).length === 1
-      ? '0' + String(date.getMonth() + 1)
-      : date.getMonth() + 1,
-  );
-  const year = String(
-    String(date.getFullYear()).length === 1
-      ? '0' + String(date.getFullYear())
-      : date.getFullYear(),
-  );
+  const actualMoment = momentz.tz('America/Manaus');
+  const TITLE_DATE_TODAY = GET_TITLE_DATE_TODAY(language);
 
   const openModalAddEvent = () => {
     setShowModalAddEvent(true);
@@ -62,12 +46,11 @@ export const Home: React.FC = () => {
   };
 
   const getEventsToday = (resultArraySavedEvents: eventsProps[]) => {
-    const dateToday = `${day}/${month}/${year}`;
+    const dateToday = actualMoment.format('DD/MM/YYYY');
     if (resultArraySavedEvents) {
       const eventsToday = resultArraySavedEvents.filter(
         item => item.date === dateToday,
       );
-      console.log(actualMoment);
       setDataEvents(eventsToday);
     }
   };
@@ -96,7 +79,7 @@ export const Home: React.FC = () => {
     <BodyScreen>
       <Container>
         <HeaderMenu
-          textDate={`${day} de ${MONTHS[String(date.getMonth())]} de ${year}`}
+          textDate={TITLE_DATE_TODAY}
           iconLeft="calendar-today"
           iconRight="settings"
           actionLeftButton={() => console.log('pressouuu')}

@@ -8,12 +8,11 @@ import {
   SquareMarker,
   TextRegular,
 } from './styles';
-import { CheckMark } from './components/CheckMark';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SlideButton } from '../../components/SlideButton';
 import { RootStackParamList } from '../../routes/types';
-import { DropDown } from './components/DropDown';
+import { DropDown, CheckMark } from './components';
 import { useTranslation } from 'react-i18next';
 import { DATA_DROPDOWN_LANGUAGES } from '../../utils';
 import { ConsumerMainContext } from '../../contexts/consumer';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DropDownModalProps } from '../types';
+import { DropDownModalProps } from './types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   BodyScreenModalDropDown,
@@ -9,12 +9,8 @@ import {
   ContainerOutItens,
 } from './styles';
 import { useTranslation } from 'react-i18next';
+import { DATA } from './data';
 import { defaultStyle } from '../../../../styles/themes/defaultStyle';
-
-const DATA = [
-  { Name: 'Editar', Icon: 'edit' },
-  { Name: 'Excluir', Icon: 'delete' },
-];
 
 export const DropDownModal: React.FC<DropDownModalProps> = ({
   open,
@@ -24,7 +20,9 @@ export const DropDownModal: React.FC<DropDownModalProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
 
   return (
     <BodyScreenModalDropDown onPress={() => setOpen(false)}>

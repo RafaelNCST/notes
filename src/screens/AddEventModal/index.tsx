@@ -31,7 +31,7 @@ import { eventsProps } from '../../store/types';
 import {
   handleConfirmOrganizationMaskInputs,
   confirmUniqueTitleName,
-} from '../../helpers/Add_Event_Functions';
+} from '../../helpers';
 import { WARNING_TYPES } from './types';
 import { ADD_EVENT } from '../../store/eventsReducer';
 
@@ -205,7 +205,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
   };
 
   return (
-    <Modal visible={modalState} animationType="slide">
+    <Modal visible={modalState} animationType="slide" transparent>
       <BodyScreen>
         <Modal visible={showModalInfo} transparent animationType="fade">
           <ContentInfo setOpen={setShowModalInfo} />
