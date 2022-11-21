@@ -18,8 +18,6 @@ export const EventsSlice = createSlice({
     EDIT_EVENT(state, action: PayloadAction<eventsProps[]>) {
       state.data = action?.payload;
       AsyncStorage.setItem('@ArrayEvents', JSON.stringify(state.data));
-    },
-    RELOAD_CHANGES(state) {
       state.reload = !state.reload;
     },
   },

@@ -13,6 +13,7 @@ import {
   SpaceModal,
 } from './styles';
 import { defaultStyle } from '../../styles/themes/defaultStyle';
+import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
@@ -34,6 +35,8 @@ export const ModalWarning: React.FC<Props> = ({
   textButtonAffirmative,
   textButtonNegative,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <BodyScreenModal>
       <Content>
@@ -51,7 +54,7 @@ export const ModalWarning: React.FC<Props> = ({
         </ContainerIcon>
         <ContainerText>
           <TextModalRegular accessibilityRole="Text" accessibilityLabel={text}>
-            {text}
+            {t(text)}
           </TextModalRegular>
           <SubContainerText>
             {arrayBlankWarnings?.map((item, index) => (
@@ -59,7 +62,7 @@ export const ModalWarning: React.FC<Props> = ({
                 accessibilityRole="Text"
                 accessibilityLabel={item}
                 key={index}>
-                {item}
+                {t(item)}
               </TextBlankWarning>
             ))}
           </SubContainerText>
@@ -72,7 +75,7 @@ export const ModalWarning: React.FC<Props> = ({
                 accessibilityLabel="Botão de ação"
                 colorButton="negative"
                 onPress={actionNegative}>
-                <TextModalTitle>{textButtonNegative}</TextModalTitle>
+                <TextModalTitle>{t(textButtonNegative)}</TextModalTitle>
               </ButtonOk>
             )}
             <ButtonOk
@@ -80,7 +83,7 @@ export const ModalWarning: React.FC<Props> = ({
               accessibilityLabel="Botão de ação"
               colorButton="affirmative"
               onPress={actionAffirmative}>
-              <TextModalTitle>{textButtonAffirmative}</TextModalTitle>
+              <TextModalTitle>{t(textButtonAffirmative)}</TextModalTitle>
             </ButtonOk>
           </ContainerButton>
         </SpaceModal>

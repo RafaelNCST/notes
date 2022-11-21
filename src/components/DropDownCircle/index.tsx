@@ -16,12 +16,13 @@ import {
   SubContainerSelected,
 } from './styles';
 import { CircleEvent } from '..';
+import { DATA_CIRCLE_TYPES, ITEM_CIRCLE_TYPES } from '../../utils';
 import { eventsProps } from '../../store/types';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
-  Data: Array<string>;
+  Data: DATA_CIRCLE_TYPES;
   zIndex?: number;
   setArrayEvents: Dispatch<SetStateAction<eventsProps>>;
   arrayEvents?: eventsProps;
@@ -59,7 +60,7 @@ export const DropDownCircle: React.FC<Props> = ({
     }).start();
   };
 
-  const handleSelectedOption = (item: string) => {
+  const handleSelectedOption = (item: ITEM_CIRCLE_TYPES) => {
     setArrayEvents({
       ...arrayEvents,
       circle: item,
@@ -111,7 +112,7 @@ export const DropDownCircle: React.FC<Props> = ({
         style={{
           transform: [{ translateY: movimentControl }],
         }}>
-        {Data.map((item, index: number) => {
+        {Data.map((item: ITEM_CIRCLE_TYPES, index: number) => {
           if (item === arrayEvents?.circle) {
             return null;
           }

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { LineIconsInfo } from '../LineIconsInfo';
-
+import { useTranslation } from 'react-i18next';
 import { BodyScreenModal } from '../../../../styles/globalStyles';
 import {
   Container,
@@ -28,6 +28,8 @@ export const InfoButton: React.FC<Props> = ({ setOpen }) => {
 };
 
 export const ContentInfo: React.FC<Props> = ({ setOpen }) => {
+  const { t } = useTranslation();
+
   return (
     <BodyScreenModal>
       <ContentInfoStyled>
@@ -35,7 +37,7 @@ export const ContentInfo: React.FC<Props> = ({ setOpen }) => {
           <TextModalTitle
             accessibilityRole="Text"
             accessibilityLabel="Obrigatórios">
-            Obrigatórios
+            {t('Obrigatórios')}
           </TextModalTitle>
           <CloseButton
             onPress={() => setOpen(false)}
@@ -59,11 +61,11 @@ export const ContentInfo: React.FC<Props> = ({ setOpen }) => {
           />
           <LineIconsInfo
             IconName="schedule"
-            Text="Coloque o horário do evento. (Formato brasileiro)"
+            Text="Coloque o horário do evento de acordo com o formato escolhido nas configurações"
           />
           <LineIconsInfo
             IconName="calendar-today"
-            Text="Descreva uma data que seja acima da data atual. (Formato brasileiro)"
+            Text="Descreva uma data que seja acima da data atual de acordo com o formato escolhido nas configurações"
           />
         </ContentWords>
       </ContentInfoStyled>

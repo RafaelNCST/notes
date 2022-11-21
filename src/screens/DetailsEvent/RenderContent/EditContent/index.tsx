@@ -14,6 +14,7 @@ import { useTheme } from 'styled-components';
 import { DATA_CATEGORY, DATA_CIRCLE } from '../../../../utils';
 // import { useAppDispatch } from '../../../../store/hooks/useAppDispatch';
 // import { EDIT_EVENT } from '../../../../store/eventsReducer';
+import { useTranslation } from 'react-i18next';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export const EditContent: React.FC<ContentEditProps> = ({
@@ -26,6 +27,7 @@ export const EditContent: React.FC<ContentEditProps> = ({
   const [firstRunDropDown, setFirstRunDropDown] = useState<boolean>(false);
 
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Content>
@@ -64,7 +66,7 @@ export const EditContent: React.FC<ContentEditProps> = ({
         </ContainerTitle>
         <ContainerTexts>
           <TextRegular accessibilityRole="Text" accessibilityLabel="Categoria">
-            Categoria:{' '}
+            {t('Categoria')}:{' '}
           </TextRegular>
           <DropDown
             Data={DATA_CATEGORY}
@@ -77,7 +79,7 @@ export const EditContent: React.FC<ContentEditProps> = ({
         </ContainerTexts>
         <ContainerTexts>
           <TextRegular accessibilityRole="Text" accessibilityLabel="Horário">
-            Horário:
+            {t('Horário')}:
           </TextRegular>
           <MaskInput
             separator=":"
@@ -89,7 +91,7 @@ export const EditContent: React.FC<ContentEditProps> = ({
         </ContainerTexts>
         <ContainerTexts>
           <TextRegular accessibilityRole="Text" accessibilityLabel="Data">
-            Data:
+            {t('Data')}:
           </TextRegular>
           <MaskInput
             separator="/"
@@ -103,8 +105,8 @@ export const EditContent: React.FC<ContentEditProps> = ({
       <BottomContainer>
         <ScrollView showsVerticalScrollIndicator={false}>
           <InputTexts
-            placeholder="Descreve seu compromisso ai cara!"
             value={arrayEvents.description}
+            placeholder={t('Descreve seu compromisso ai cara!') as string}
             placeholderTextColor={
               focusDescription ? '#777676' : theme.colors.Text
             }

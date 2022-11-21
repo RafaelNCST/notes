@@ -4,7 +4,8 @@ export interface PropsChildren {
   children: React.ReactNode;
 }
 
-export type languages = 'Português(BR)' | 'Inglês';
+export type languages = 'Português(BR)' | 'English';
+
 export interface mainContextTypes {
   theme: number;
   setTheme: Dispatch<SetStateAction<number>>;
@@ -12,4 +13,6 @@ export interface mainContextTypes {
   setLanguage: Dispatch<SetStateAction<languages>>;
   language: languages;
   automaticEraseEventsPastDays: boolean;
+  loading: boolean;
+  saveLanguage: (item: languages) => void;
 }

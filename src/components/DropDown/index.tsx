@@ -6,6 +6,7 @@ import React, {
   SetStateAction,
 } from 'react';
 import { Animated } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import {
   DropDownContainer,
   DropDownSubContainer,
@@ -16,10 +17,11 @@ import {
   SubContainerSelected,
 } from './styles';
 import { eventsProps } from '../../store/types';
+import { CATEGORYS_TYPES, ITEM_TYPES } from '../../utils';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Props {
-  Data: Array<string>;
+  Data: CATEGORYS_TYPES;
   zIndex?: number;
   setArrayEvents: Dispatch<SetStateAction<eventsProps>>;
   arrayEvents?: eventsProps;
@@ -35,6 +37,8 @@ export const DropDown: React.FC<Props> = ({
   firstRun,
   setFirstRun,
 }) => {
+  const { t } = useTranslation();
+
   const placeholder: string = 'Selecione uma categoria';
 
   const dataSize: number = Data.length * 30;
@@ -59,7 +63,7 @@ export const DropDown: React.FC<Props> = ({
     }).start();
   };
 
-  const handleSelectedOption = (item: string) => {
+  const handleSelectedOption = (item: ITEM_TYPES) => {
     setArrayEvents({ ...arrayEvents, category: item });
     setFirstRun(false);
     setOpen(false);
@@ -94,7 +98,7 @@ export const DropDown: React.FC<Props> = ({
         underlayColor="#cac8c8">
         <SubContainerSelected>
           <TextSelected color={firstRun ? '#9e9d9d' : '#363636'}>
-            {firstRun ? placeholder : arrayEvents?.category}
+            {firstRun ? t(placeholder) : t(arrayEvents?.category as ITEM_TYPES)}
           </TextSelected>
           <Icon name="expand-more" size={20} color="#000" />
         </SubContainerSelected>
@@ -103,7 +107,7 @@ export const DropDown: React.FC<Props> = ({
         style={{
           transform: [{ translateY: movimentControl }],
         }}>
-        {Data.map((item, index) => {
+        {Data.map((item: ITEM_TYPES, index: number) => {
           if (item === arrayEvents?.category) {
             return null;
           }
@@ -116,7 +120,7 @@ export const DropDown: React.FC<Props> = ({
               underlayColor="#cac8c8"
               key={String(index)}
               onPress={() => handleSelectedOption(item)}>
-              <TextDropDown>{item}</TextDropDown>
+              <TextDropDown>{t(item)}</TextDropDown>
             </Option>
           );
         })}

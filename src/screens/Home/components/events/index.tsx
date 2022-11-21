@@ -7,6 +7,7 @@ import { eventsProps } from '../../../../store/types';
 import { ButtonLine, ContainerText, TextRegular } from './styles';
 
 export const Events: React.FC<eventsProps> = ({
+  id,
   circle,
   title,
   category,
@@ -18,6 +19,7 @@ export const Events: React.FC<eventsProps> = ({
 
   const detailsEvent = () => {
     navigate('DetailsEvent', {
+      id,
       title,
       time,
       description,

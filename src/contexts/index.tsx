@@ -1,16 +1,25 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useEffect, useState } from 'react';
 import { eventsProps } from '../store/types';
+import '../helpers/i18n';
 import { mainContextTypes, PropsChildren, languages } from './types';
+import { useTranslation } from 'react-i18next';
+import { DEFAULT_VALUES } from './defaultValues';
+import { LANGUAGE_LIST } from '../utils/languagesTypes';
 
 export const MainContext = createContext({} as mainContextTypes);
 
 export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
-  const [theme, setTheme] = useState<number>(-2);
+  const { i18n } = useTranslation();
+
+  const [theme, setTheme] = useState<number>(DEFAULT_VALUES.THEME);
   const [automaticEraseEventsPastDays, setAutomaticEraseEventsPastDays] =
-    useState<boolean>(false);
-  const [language, setLanguage] = useState<languages>('Português(BR)');
+    useState<boolean>(DEFAULT_VALUES.AUTOMATIC_ERASE_PAST_EVENTS);
+  const [language, setLanguage] = useState<languages>(
+    DEFAULT_VALUES.LANGUAGE[0],
+  );
   const [firstRun, setFirstrun] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const deleteEventPastDays = async () => {
     const dateNow = new Date();
@@ -41,17 +50,23 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     AsyncStorage.setItem('@ArrayEvents', stringNewArray);
   };
 
+  const saveTheme = () => {
+    AsyncStorage.setItem('@Theme', JSON.stringify(theme));
+  };
+
   const saveAutomaticErasePastDays = () => {
     AsyncStorage.setItem(
       '@AutomaticErasePastDays',
       JSON.stringify(automaticEraseEventsPastDays),
     );
-    console.log(automaticEraseEventsPastDays, 'salvo');
   };
 
-  const saveTheme = () => {
-    AsyncStorage.setItem('@Theme', JSON.stringify(theme));
-    console.log(theme, 'salvo');
+  const saveLanguage = (item: languages) => {
+    const chooseLanguage = LANGUAGE_LIST[item];
+    i18n.changeLanguage(chooseLanguage);
+    const arrayLanguage = [item, chooseLanguage];
+    AsyncStorage.setItem('@Language', JSON.stringify(arrayLanguage));
+    console.log(arrayLanguage, 'salvo');
   };
 
   const getSettingsInformations = async () => {
@@ -59,15 +74,23 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     const stringAutomaticErasePastDays = await AsyncStorage.getItem(
       '@AutomaticErasePastDays',
     );
+    const stringLanguage = await AsyncStorage.getItem('@Language');
 
-    setTheme(JSON.parse(stringTheme as string));
-    setAutomaticEraseEventsPastDays(
-      JSON.parse(stringAutomaticErasePastDays as string),
-    );
+    if (stringTheme) {
+      setTheme(JSON.parse(stringTheme as string));
+    }
+    if (stringAutomaticErasePastDays) {
+      setAutomaticEraseEventsPastDays(
+        JSON.parse(stringAutomaticErasePastDays as string),
+      );
+    }
+    if (stringLanguage) {
+      setLanguage(JSON.parse(stringLanguage as string)[0]);
+      i18n.changeLanguage(JSON.parse(stringLanguage as string)[1]);
+    }
 
-    console.log(JSON.parse(stringTheme as string), 'pego');
-    console.log(JSON.parse(stringAutomaticErasePastDays as string), 'pego');
     setFirstrun(false);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -101,6 +124,8 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
         setLanguage,
         language,
         automaticEraseEventsPastDays,
+        loading,
+        saveLanguage,
       }}>
       {children}
     </MainContext.Provider>

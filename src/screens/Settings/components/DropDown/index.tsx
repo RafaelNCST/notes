@@ -23,6 +23,7 @@ interface Props {
   zIndex?: number;
   setChoosedOption: Dispatch<SetStateAction<languages>>;
   choosedOption?: languages;
+  assistFunction?: (item: languages) => void;
 }
 
 export const DropDown: React.FC<Props> = ({
@@ -30,6 +31,7 @@ export const DropDown: React.FC<Props> = ({
   zIndex,
   choosedOption,
   setChoosedOption,
+  assistFunction,
 }) => {
   const dataSize: number = Data.length * 40;
 
@@ -55,6 +57,9 @@ export const DropDown: React.FC<Props> = ({
 
   const handleSelectedOption = (item: languages) => {
     setChoosedOption(item);
+    if (assistFunction) {
+      assistFunction(item);
+    }
     setOpen(false);
   };
 

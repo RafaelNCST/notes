@@ -15,6 +15,7 @@ import { RootStackParamList } from '../../routes/types';
 import { DATA_CATEGORY, DATA_CIRCLE } from '../../utils';
 import { useAppSelector } from '../../store/hooks/useAppSelector';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useTranslation } from 'react-i18next';
 import {
   Container,
   Content,
@@ -30,7 +31,8 @@ import { eventsProps } from '../../store/types';
 import {
   handleConfirmOrganizationMaskInputs,
   confirmUniqueTitleName,
-} from '../../utils/Add_Event_Functions';
+} from '../../helpers/Add_Event_Functions';
+import { WARNING_TYPES } from './types';
 import { ADD_EVENT } from '../../store/eventsReducer';
 
 interface Props {
@@ -38,13 +40,14 @@ interface Props {
 }
 
 export const AddEventModal: React.FC<Props> = ({ modalState }) => {
+  const { t } = useTranslation();
+
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
   const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
   const [showModalWarningSucess, setShowModalWarningSucess] =
     useState<boolean>(false);
-  const [showModalWarningError, setShowModalWarningError] =
-    useState<boolean>(false);
+  const [showModalWarning, setShowModalWarning] = useState<boolean>(false);
   const [clearMaskInputs, setClearMaskInputs] = useState<boolean>(false);
   const [clearDropDown, setClearDropDown] = useState<boolean>(true);
   const [textButtonWarningAffirmative, setTextButtonWarningAffirmative] =
@@ -55,7 +58,9 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
   const [arrayBlankWarning, setArrayBlankWarning] = useState<string[]>([]);
   const [iconWarning, setIconWarning] = useState<string>('');
   const [firstRun, setFirstRun] = useState<boolean>(true);
+  const [warningType, setWarningType] = useState<WARNING_TYPES>('');
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
+    id: '',
     circle: 'white',
     title: '',
     category: '',
@@ -71,14 +76,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
 
   const theme = useTheme();
 
-  const onCloseAddEventModal = () => {
-    reset({
-      index: 0,
-      routes: [{ name: 'HomeScreen' }],
-    });
-  };
-
-  const handleModalWarningBackHome = () => {
+  const backToHome = () => {
     reset({
       index: 0,
       routes: [{ name: 'HomeScreen' }],
@@ -87,6 +85,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
 
   const handleModalWarningAddNewEvent = () => {
     setArrayEvents({
+      id: '',
       circle: 'white',
       title: '',
       category: '',
@@ -100,75 +99,108 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
     setClearDropDown(true);
   };
 
-  const actionModalErrorButton = () => {
-    setShowModalWarningError(false);
+  const actionCloseModalButton = () => {
+    switch (warningType) {
+      case 'error':
+        setShowModalWarning(false);
+        break;
+      case 'warning':
+        if (handleConfirmBlankInputs()) {
+          setShowModalWarning(true);
+        } else {
+          sucessAddEvent();
+        }
+    }
   };
 
   const handleConfirmBlankInputs = () => {
     setArrayBlankWarning([]);
-    if (confirmUniqueTitleName(arrayEvents.title, data)) {
+    if (
+      arrayEvents.circle === 'white' ||
+      arrayEvents.category === '' ||
+      arrayEvents.date === '' ||
+      arrayEvents.date === '//' ||
+      arrayEvents.time === '' ||
+      arrayEvents.time === ':' ||
+      arrayEvents.title === ''
+    ) {
       setIconWarning('warning');
-      setTextWarning(
-        'O título que você escolheu já foi usado. Note que seu título deve ser único',
-      );
-      setTextButtonWarningAffirmative('OK');
-    } else {
-      if (
-        arrayEvents.circle === 'white' ||
-        arrayEvents.category === '' ||
-        arrayEvents.date === '' ||
-        arrayEvents.date === '//' ||
-        arrayEvents.time === '' ||
-        arrayEvents.time === ':' ||
-        arrayEvents.title === ''
-      ) {
-        setIconWarning('warning');
-        setTextWarning('Os campos a seguir estão vazios: ');
-        if (arrayEvents.circle === 'white') {
-          setArrayBlankWarning(['Círculo de importância']);
-        }
-
-        if (arrayEvents.category === '') {
-          setArrayBlankWarning(prev => [...prev, 'Categoria']);
-        }
-
-        if (arrayEvents.date === '' || arrayEvents.date === '//') {
-          setArrayBlankWarning(prev => [...prev, 'Data']);
-        }
-
-        if (arrayEvents.time === '' || arrayEvents.time === ':') {
-          setArrayBlankWarning(prev => [...prev, 'Horário']);
-        }
-
-        if (arrayEvents.title === '') {
-          setArrayBlankWarning(prev => [...prev, 'Título']);
-        }
-        setTextButtonWarningAffirmative('OK');
-        return true;
-      } else {
-        return false;
+      setTextWarning('Os campos a seguir estão vazios:');
+      if (arrayEvents.circle === 'white') {
+        setArrayBlankWarning(['Círculo de urgência']);
       }
+
+      if (arrayEvents.category === '') {
+        setArrayBlankWarning(prev => [...prev, 'Categoria']);
+      }
+
+      if (arrayEvents.date === '' || arrayEvents.date === '//') {
+        setArrayBlankWarning(prev => [...prev, 'Data']);
+      }
+
+      if (arrayEvents.time === '' || arrayEvents.time === ':') {
+        setArrayBlankWarning(prev => [...prev, 'Horário']);
+      }
+
+      if (arrayEvents.title === '') {
+        setArrayBlankWarning(prev => [...prev, 'Título']);
+      }
+      setWarningType('error');
+      setTextButtonWarningAffirmative('OK');
+      return true;
+    } else {
+      return false;
     }
   };
 
-  const handleConfirmCamps = () => {
+  const sucessAddEvent = () => {
     setArrayBlankWarning([]);
-    handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
-    setTextWarning(
-      'Você adicionou um evento com sucesso! Deseja voltar ao menu principal ou continuar a adicionar?',
-    );
-    setIconWarning('done');
-    setTextButtonWarningAffirmative('CONTINUAR');
-    setTextButtonWarningNegative('VOLTAR');
-    setShowModalWarningSucess(true);
-    dispatch(ADD_EVENT(arrayEvents));
+    setArrayEvents(prevState => ({
+      ...prevState,
+      id: `${arrayEvents.title}-${arrayEvents.date}-${arrayEvents.time}`,
+    }));
+    if (arrayEvents.id) {
+      handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
+      setTextWarning(
+        'Você adicionou um evento com sucesso! Deseja voltar ao menu principal ou continuar a adicionar?',
+      );
+      setIconWarning('done');
+      setTextButtonWarningAffirmative('CONTINUAR');
+      setTextButtonWarningNegative('VOLTAR');
+      setShowModalWarningSucess(true);
+      dispatch(ADD_EVENT(arrayEvents));
+    }
+  };
+
+  const warningsShow = () => {
+    const limityQuantity = 1;
+    if (confirmUniqueTitleName(arrayEvents.title, data, limityQuantity)) {
+      setIconWarning('warning');
+      setWarningType('warning');
+      setTextWarning(
+        'Ei, fica de olho que tem um título em algum evento seu igualzinho ao que você quer colocar (❁´◡`❁) (NOTE QUE ISSO É APENAS UM AVISO)',
+      );
+      setTextButtonWarningAffirmative('ENTENDI');
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const onClickConfirmEvent = () => {
-    if (handleConfirmBlankInputs()) {
-      setShowModalWarningError(true);
+    setIconWarning('');
+    setTextButtonWarningAffirmative('');
+    setTextButtonWarningNegative('');
+    setTextWarning('');
+    setArrayBlankWarning([]);
+    if (warningsShow()) {
+      setShowModalWarning(true);
     } else {
-      handleConfirmCamps();
+      if (handleConfirmBlankInputs()) {
+        setShowModalWarning(true);
+      } else {
+        sucessAddEvent();
+      }
     }
   };
 
@@ -184,7 +216,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
           transparent
           animationType="fade">
           <ModalWarning
-            actionNegative={handleModalWarningBackHome}
+            actionNegative={backToHome}
             actionAffirmative={handleModalWarningAddNewEvent}
             text={textWarning}
             iconName={iconWarning}
@@ -193,9 +225,9 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
           />
         </Modal>
 
-        <Modal visible={showModalWarningError} transparent animationType="fade">
+        <Modal visible={showModalWarning} transparent animationType="fade">
           <ModalWarning
-            actionAffirmative={actionModalErrorButton}
+            actionAffirmative={actionCloseModalButton}
             text={textWarning}
             iconName={iconWarning}
             arrayBlankWarnings={arrayBlankWarning}
@@ -207,7 +239,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
           <HeaderMenu
             textDate="Adicionar Evento"
             iconRight="close"
-            actionRightButton={onCloseAddEventModal}
+            actionRightButton={backToHome}
           />
           <Content>
             <TopContainer>
@@ -228,7 +260,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
                   heightStyled="40px"
                   widthStyled="75%"
                   value={arrayEvents.title}
-                  placeholder="Um título para se lembrar!"
+                  placeholder={t('Um título para se lembrar!')}
                   placeholderTextColor={
                     focusTitle ? '#777676' : theme.colors.Text
                   }
@@ -249,7 +281,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
                 <TextRegular
                   accessibilityRole="Text"
                   accessibilityLabel="Categoria">
-                  Categoria:{' '}
+                  {t('Categoria')}:{' '}
                 </TextRegular>
                 <DropDown
                   Data={DATA_CATEGORY}
@@ -264,7 +296,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
                 <TextRegular
                   accessibilityRole="Text"
                   accessibilityLabel="Horário">
-                  Horário:
+                  {t('Horário')}:
                 </TextRegular>
                 <MaskInput
                   separator=":"
@@ -277,7 +309,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
               </ContainerTexts>
               <ContainerTexts>
                 <TextRegular accessibilityRole="Text" accessibilityLabel="Data">
-                  Data:
+                  {t('Data')}:
                 </TextRegular>
                 <MaskInput
                   separator="/"
@@ -294,7 +326,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
             <BottomContainer>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <InputTexts
-                  placeholder="Descreve seu compromisso ai cara!"
+                  placeholder={t('Descreve seu compromisso ai cara!')}
                   value={arrayEvents.description}
                   placeholderTextColor={
                     focusDescription ? '#777676' : theme.colors.Text

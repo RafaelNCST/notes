@@ -12,11 +12,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BlankList } from './components/blankList';
 import { RootStackParamList } from '../../routes/types';
 import { eventsProps } from '../../store/types';
-import { MONTHS } from '../../helpers/months';
+import { MONTHS } from '../../utils/months';
 import { ActivityIndicator } from 'react-native';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
 import { INITIALIZE_APP } from '../../store/eventsReducer';
+import 'moment/locale/pt-br';
+import moment from 'moment';
+import momentz from 'moment-timezone';
 import { defaultStyle } from '../../styles/themes/defaultStyle';
+
+moment.locale('pt-br');
 
 export const Home: React.FC = () => {
   const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -29,6 +34,8 @@ export const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const date = new Date();
+
+  const actualMoment = momentz.tz('America/Manaus').format();
 
   const day: string = String(
     String(date.getDate()).length === 1
@@ -60,6 +67,7 @@ export const Home: React.FC = () => {
       const eventsToday = resultArraySavedEvents.filter(
         item => item.date === dateToday,
       );
+      console.log(actualMoment);
       setDataEvents(eventsToday);
     }
   };

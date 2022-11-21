@@ -8,6 +8,7 @@ import {
   TextRegular,
   ContainerOutItens,
 } from './styles';
+import { useTranslation } from 'react-i18next';
 import { defaultStyle } from '../../../../styles/themes/defaultStyle';
 
 const DATA = [
@@ -21,6 +22,8 @@ export const DropDownModal: React.FC<DropDownModalProps> = ({
   actionEditOption,
   actionDeleteOption,
 }) => {
+  const { t } = useTranslation();
+
   if (!open) return null;
 
   return (
@@ -33,7 +36,7 @@ export const DropDownModal: React.FC<DropDownModalProps> = ({
               item.Name === 'Editar' ? actionEditOption : actionDeleteOption
             }>
             <ContainerOutItens>
-              <TextRegular>{item.Name}</TextRegular>
+              <TextRegular>{t(item.Name)}</TextRegular>
               <Icon
                 name={item.Icon}
                 size={25}

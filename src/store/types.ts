@@ -1,9 +1,11 @@
+import { ITEM_TYPES, ITEM_CIRCLE_TYPES } from '../utils';
 import { Store } from '.';
 
 export interface eventsProps {
-  circle?: string;
+  id?: string;
+  circle?: ITEM_CIRCLE_TYPES;
   title?: string;
-  category?: string;
+  category?: ITEM_TYPES;
   time?: string;
   date?: string;
   description?: string;

@@ -14,11 +14,12 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { SlideButton } from '../../components/SlideButton';
 import { RootStackParamList } from '../../routes/types';
 import { DropDown } from './components/DropDown';
+import { useTranslation } from 'react-i18next';
+import { DATA_DROPDOWN_LANGUAGES } from '../../utils';
 import { ConsumerMainContext } from '../../contexts/consumer';
 
-const data = ['English', 'Português(BR)'];
-
 export const Settings = () => {
+  const { t } = useTranslation();
   const { goBack } = useNavigation<StackNavigationProp<RootStackParamList>>();
   const {
     theme,
@@ -27,6 +28,7 @@ export const Settings = () => {
     setLanguage,
     language,
     automaticEraseEventsPastDays,
+    saveLanguage,
   } = ConsumerMainContext();
 
   return (
@@ -42,8 +44,8 @@ export const Settings = () => {
             <SlideButton event={theme} setEvent={setTheme} />
             <TextRegular
               accessibilityRole="Text"
-              accessibilityLabel="Dark Mode/Light Mode">
-              Dark Mode/Light Mode
+              accessibilityLabel="Modo escuro/Modo claro">
+              {t('Modo escuro/Modo claro')}
             </TextRegular>
           </SubContainer>
           <SubContainer>
@@ -54,20 +56,21 @@ export const Settings = () => {
             <TextRegular
               accessibilityRole="Text"
               accessibilityLabel="Apagar Automaticamente dias passados">
-              Apagar Automaticamente dias passados
+              {t('Apagar automaticamente dias passados')}
             </TextRegular>
           </SubContainer>
           <SubContainer zIndexContainer={6}>
             <DropDown
-              Data={data}
+              Data={DATA_DROPDOWN_LANGUAGES}
               choosedOption={language}
               setChoosedOption={setLanguage}
               zIndex={5}
+              assistFunction={saveLanguage}
             />
             <TextRegular
               accessibilityRole="Text"
               accessibilityLabel="Linguagem Escolhida">
-              Linguagem Escolhida
+              {t('Linguagem Escolhida')}
             </TextRegular>
           </SubContainer>
         </Content>

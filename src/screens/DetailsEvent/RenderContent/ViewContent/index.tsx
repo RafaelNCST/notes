@@ -10,6 +10,8 @@ import {
 import { TextTitle } from './styles';
 import { CircleEvent } from '../../../../components';
 import { ContentProps } from '../types';
+import { useTranslation } from 'react-i18next';
+import { ITEM_TYPES } from '../../../../utils/DATA_CATEGORY';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const blankDescription = 'Sem descrição por aqui  ಥ_ಥ';
@@ -22,6 +24,8 @@ export const ViewContent: React.FC<ContentProps> = ({
   date,
   circle,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Content>
       <TopContainer>
@@ -31,27 +35,27 @@ export const ViewContent: React.FC<ContentProps> = ({
         </ContainerTitle>
         <ContainerTexts>
           <TextTitle accessibilityRole="Text" accessibilityLabel="Categoria">
-            Categoria:{' '}
+            {t('Categoria')}:{' '}
           </TextTitle>
-          <TextRegular>{category}</TextRegular>
+          <TextRegular>{t(category as ITEM_TYPES)}</TextRegular>
         </ContainerTexts>
 
         <ContainerTexts>
           <TextTitle accessibilityRole="Text" accessibilityLabel="Horário">
-            Horário:
+            {t('Horário')}:
           </TextTitle>
           <TextRegular>{time}</TextRegular>
         </ContainerTexts>
         <ContainerTexts>
           <TextTitle accessibilityRole="Text" accessibilityLabel="Data">
-            Data:
+            {t('Data')}:
           </TextTitle>
           <TextRegular>{date}</TextRegular>
         </ContainerTexts>
       </TopContainer>
       <BottomContainer>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <TextRegular>{description || blankDescription}</TextRegular>
+          <TextRegular>{t(description || blankDescription)}</TextRegular>
         </ScrollView>
       </BottomContainer>
     </Content>

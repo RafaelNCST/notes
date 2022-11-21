@@ -14,10 +14,10 @@ import { DropDownModal } from './components/DropDownModal';
 import { Modal } from 'react-native';
 import { ModalWarning } from '../../components';
 import { HeaderMenu } from '../../components';
-import { EDIT_EVENT, RELOAD_CHANGES } from '../../store/eventsReducer';
-import { confirmUniqueTitleName } from '../../utils/Add_Event_Functions';
+import { EDIT_EVENT } from '../../store/eventsReducer';
+import { confirmUniqueTitleName } from '../../helpers/Add_Event_Functions';
 import { useAppSelector } from '../../store/hooks/useAppSelector';
-import { handleConfirmOrganizationMaskInputs } from '../../utils/Add_Event_Functions';
+import { handleConfirmOrganizationMaskInputs } from '../../helpers/Add_Event_Functions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const DetailsEvent = () => {
@@ -39,10 +39,11 @@ export const DetailsEvent = () => {
 
   const { goBack, reset } =
     useNavigation<StackNavigationProp<RootStackParamList>>();
-  const { title, time, description, category, date, circle } =
+  const { title, time, description, category, date, circle, id } =
     useRoute<RouteProp<RootStackParamList>>()?.params || {};
 
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
+    id: id,
     circle: circle,
     title: title,
     category: category,
@@ -50,6 +51,9 @@ export const DetailsEvent = () => {
     date: date,
     description: description,
   });
+
+  const [actualArrayEvents, setActualArrayEvents] =
+    useState<eventsProps>(arrayEvents);
 
   const dispatch = useAppDispatch();
   const { data } = useAppSelector(store => store.Events);
@@ -74,11 +78,12 @@ export const DetailsEvent = () => {
   };
 
   const addEventInArray = async () => {
-    if (confirmUniqueTitleName(arrayEvents.title, data)) {
+    const limitQuantity = 2;
+    if (confirmUniqueTitleName(arrayEvents.title, data, limitQuantity)) {
       setTextWarning(
-        'O título que você escolheu já foi usado. Note que seu título deve ser único',
+        'Ei, fica de olho que tem um título em algum evento seu igualzinho ao que você quer colocar (❁´◡`❁) (NOTE QUE ISSO É APENAS UM AVISO)',
       );
-      setTextButtonWarningAffirmative('OK');
+      setTextButtonWarningAffirmative('ENTENDI!');
       setIconWarning('warning');
       setShowModalEditOk(true);
     } else {
@@ -88,13 +93,12 @@ export const DetailsEvent = () => {
       );
       if (parsedArraySavedEvents) {
         const newArray = parsedArraySavedEvents.map((item: eventsProps) => {
-          if (item.title === title) {
+          if (item.id === id) {
             item = arrayEvents;
           }
           return item;
         });
         dispatch(EDIT_EVENT(newArray));
-        dispatch(RELOAD_CHANGES());
       }
     }
   };
@@ -122,6 +126,7 @@ export const DetailsEvent = () => {
   };
 
   const actionEditOption = () => {
+    setActualArrayEvents(arrayEvents);
     setEditMode(true);
     setModalOptionsDropDown(false);
   };
@@ -135,16 +140,9 @@ export const DetailsEvent = () => {
   };
 
   const actionDiscardChanges = () => {
-    setArrayEvents({
-      circle: circle,
-      title: title,
-      category: category,
-      time: time,
-      date: date,
-      description: description,
-    });
     setEditMode(false);
     setShowModalWarningEdit(false);
+    setArrayEvents(actualArrayEvents);
   };
 
   const actionSaveChanges = () => {
@@ -164,7 +162,7 @@ export const DetailsEvent = () => {
   };
 
   const actionDeleteOptionYes = () => {
-    const newArray = data.filter(item => item.title !== title);
+    const newArray = data.filter(item => item.id !== id);
     dispatch(EDIT_EVENT(newArray));
     setShowModalWarningDelete(false);
     reset({

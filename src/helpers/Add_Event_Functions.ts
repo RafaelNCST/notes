@@ -33,17 +33,20 @@ export const handleConfirmOrganizationMaskInputs = (
       }`,
     }));
   }
+
+  return true;
 };
 
 export const confirmUniqueTitleName = (
   title: string | undefined,
   data: eventsProps[],
+  limitQuantity: number,
 ) => {
-  for (let item of data) {
-    if (title === item.title) {
-      return true;
-    }
-  }
+  const lenghtDataDuplicatedName = data.filter(item => title === item.title);
 
-  return false;
+  if (lenghtDataDuplicatedName.length >= limitQuantity) {
+    return true;
+  } else {
+    return false;
+  }
 };
