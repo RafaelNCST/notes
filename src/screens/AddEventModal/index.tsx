@@ -7,7 +7,7 @@ import { BottomMenu, HeaderMenu, DropDownCircle } from '../../components';
 import { MaskInput } from '../../components/MaskInput';
 import { DropDown } from '../../components/DropDown';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
-import { ModalWarning } from '../../components/ModalWarning';
+import { ModalMessage } from '../../components/ModalMessage';
 import { InfoButton } from './components/InfoButton';
 import { useNavigation } from '@react-navigation/native';
 import { ContentInfo } from './components/InfoButton';
@@ -215,7 +215,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
           visible={showModalWarningSucess}
           transparent
           animationType="fade">
-          <ModalWarning
+          <ModalMessage
             actionNegative={backToHome}
             actionAffirmative={handleModalWarningAddNewEvent}
             text={textWarning}
@@ -226,7 +226,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
         </Modal>
 
         <Modal visible={showModalWarning} transparent animationType="fade">
-          <ModalWarning
+          <ModalMessage
             actionAffirmative={actionCloseModalButton}
             text={textWarning}
             iconName={iconWarning}

@@ -26,7 +26,7 @@ interface Props {
   textButtonNegative?: string;
 }
 
-export const ModalWarning: React.FC<Props> = ({
+export const ModalMessage: React.FC<Props> = ({
   actionNegative,
   actionAffirmative,
   text,

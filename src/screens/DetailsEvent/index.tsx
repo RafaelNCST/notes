@@ -12,7 +12,7 @@ import { eventsProps } from '../../store/types';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
 import { DropDownModal } from './components/DropDownModal';
 import { Modal } from 'react-native';
-import { ModalWarning } from '../../components';
+import { ModalMessage } from '../../components';
 import { HeaderMenu } from '../../components';
 import { EDIT_EVENT } from '../../store/eventsReducer';
 import {
@@ -180,7 +180,7 @@ export const DetailsEvent = () => {
   return (
     <BodyScreen>
       <Modal visible={showModalWarningEdit} transparent animationType="slide">
-        <ModalWarning
+        <ModalMessage
           iconName={iconWarning}
           text={textWarning}
           textButtonAffirmative={textButtonWarningAffirmative}
@@ -191,7 +191,7 @@ export const DetailsEvent = () => {
       </Modal>
 
       <Modal visible={showModalWarningDelete} transparent animationType="slide">
-        <ModalWarning
+        <ModalMessage
           iconName={iconWarning}
           text={textWarning}
           textButtonAffirmative={textButtonWarningAffirmative}
@@ -202,7 +202,7 @@ export const DetailsEvent = () => {
       </Modal>
 
       <Modal visible={showModalEditOk} transparent animationType="slide">
-        <ModalWarning
+        <ModalMessage
           iconName={iconWarning}
           text={textWarning}
           textButtonAffirmative={textButtonWarningAffirmative}
