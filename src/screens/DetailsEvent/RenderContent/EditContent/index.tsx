@@ -12,8 +12,6 @@ import { ContentEditProps } from '../types';
 import { DropDown, DropDownCircle, MaskInput } from '../../../../components';
 import { useTheme } from 'styled-components';
 import { DATA_CATEGORY, DATA_CIRCLE } from '../../../../utils';
-// import { useAppDispatch } from '../../../../store/hooks/useAppDispatch';
-// import { EDIT_EVENT } from '../../../../store/eventsReducer';
 import { useTranslation } from 'react-i18next';
 import { ScrollView } from 'react-native-gesture-handler';
 

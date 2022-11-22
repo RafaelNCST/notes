@@ -1,1 +1,1 @@
-export type WARNING_TYPES = 'error' | 'warning' | '';
+export type WARNING_TYPES = 'error' | 'warning' | 'sucess' | '';

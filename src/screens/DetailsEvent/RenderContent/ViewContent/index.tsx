@@ -12,9 +12,8 @@ import { CircleEvent } from '../../../../components';
 import { ContentProps } from '../types';
 import { useTranslation } from 'react-i18next';
 import { ITEM_TYPES } from '../../../../utils/DATA_CATEGORY';
+import { BLANK_DESCRIPTION_TEXTS } from './dataBlankDescriptions';
 import { ScrollView } from 'react-native-gesture-handler';
-
-const blankDescription = 'Sem descrição por aqui  ಥ_ಥ';
 
 export const ViewContent: React.FC<ContentProps> = ({
   title,
@@ -55,7 +54,9 @@ export const ViewContent: React.FC<ContentProps> = ({
       </TopContainer>
       <BottomContainer>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <TextRegular>{t(description || blankDescription)}</TextRegular>
+          <TextRegular>
+            {t(description || BLANK_DESCRIPTION_TEXTS[0])}
+          </TextRegular>
         </ScrollView>
       </BottomContainer>
     </Content>

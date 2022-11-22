@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-// import responsive from '../../styles/themes/responsive';
 
 export const Container = styled.View`
   flex: 1;
@@ -18,3 +17,9 @@ export const ContentSpinner = styled.View`
   justify-content: center;
   align-items: center;
 `;
+
+export const ListEvents = styled.FlatList.attrs(() => ({
+  contentContainerStyle: {
+    flex: 1,
+  },
+}))``;

@@ -6,7 +6,7 @@ export default {
     'Um título para se lembrar!': 'A title to remember!',
     Categoria: 'Category',
     'Selecione uma categoria': 'Select a category',
-    Horário: 'time',
+    Horário: 'Time',
     Data: 'Date',
     Obrigatórios: 'Required camps',
     'Modo escuro/Modo claro': 'Dark Mode/Light Mode',
@@ -42,12 +42,12 @@ export default {
     'Você tem modificações não salvas, o que deseja fazer?':
       'You have unsaved changes, what do you want to do?',
     Salvar: 'Save',
-    Descartar: 'Discard',
+    DESCARTAR: 'Discard',
     'Tudo feito!': 'All Done!',
     'Você deseja mesmo excluir esse evento?':
       'Do you really want to delete this event?',
-    Sim: 'Yes',
-    Não: 'No',
+    SIM: 'Yes',
+    NAO: 'No',
     'Ei, psiu, só um aviso, mas você tem um evento com título semelhante ao que você colocou (❁´◡`❁)':
       'Hey, just a warning, but you have an event with a title similar to the one you entered (❁´◡`❁)',
     ENTENDI: 'DONE',

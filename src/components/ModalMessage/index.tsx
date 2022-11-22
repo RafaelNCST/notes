@@ -21,7 +21,7 @@ interface Props {
   actionAffirmative: () => void;
   text: string;
   iconName: string;
-  arrayBlankWarnings?: string[];
+  arrayBlankError?: string[];
   textButtonAffirmative: string;
   textButtonNegative?: string;
 }
@@ -31,7 +31,7 @@ export const ModalMessage: React.FC<Props> = ({
   actionAffirmative,
   text,
   iconName,
-  arrayBlankWarnings,
+  arrayBlankError,
   textButtonAffirmative,
   textButtonNegative,
 }) => {
@@ -57,7 +57,7 @@ export const ModalMessage: React.FC<Props> = ({
             {t(text)}
           </TextModalRegular>
           <SubContainerText>
-            {arrayBlankWarnings?.map((item, index) => (
+            {arrayBlankError?.map((item, index) => (
               <TextBlankWarning
                 accessibilityRole="Text"
                 accessibilityLabel={item}

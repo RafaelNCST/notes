@@ -15,25 +15,32 @@ import { Modal } from 'react-native';
 import { ModalMessage } from '../../components';
 import { HeaderMenu } from '../../components';
 import { EDIT_EVENT } from '../../store/eventsReducer';
+import { MODAL_MESSAGES, MODAL_TEXT_BUTTONS } from '../../utils';
 import {
-  confirmUniqueTitleName,
   handleConfirmOrganizationMaskInputs,
+  checkErrors,
+  checkWarnings,
 } from '../../helpers';
 import { useAppSelector } from '../../store/hooks/useAppSelector';
+import { WARNING_TYPES } from '../AddEventModal/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const limitQuantity = 2;
 
 export const DetailsEvent = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
 
-  const [textButtonWarningAffirmative, setTextButtonWarningAffirmative] =
+  const [textButtonMessageAffirmative, setTextButtonMessageAffirmative] =
     useState<string>('');
-  const [textButtonWarningNegative, setTextButtonWarningNegative] =
+  const [textButtonMessageNegative, setTextButtonMessageNegative] =
     useState<string>('');
-  const [textWarning, setTextWarning] = useState<string>('');
-  const [iconWarning, setIconWarning] = useState<string>('');
+  const [textMessage, setTextMessage] = useState<string>('');
+  const [arrayBlankError, setArrayBlankError] = useState<string[]>([]);
+  const [iconMessage, setIconMessage] = useState<string>('');
   const [showModalEditOk, setShowModalEditOk] = useState<boolean>(false);
   const [showModalWarningEdit, setShowModalWarningEdit] =
     useState<boolean>(false);
+  const [messageType, setMessageType] = useState<WARNING_TYPES>('');
   const [showModalWarningDelete, setShowModalWarningDelete] =
     useState<boolean>(false);
   const [ModalOptionsDropDown, setModalOptionsDropDown] =
@@ -59,60 +66,6 @@ export const DetailsEvent = () => {
 
   const dispatch = useAppDispatch();
   const { data } = useAppSelector(store => store.Events);
-
-  const handleConfirmModification = () => {
-    if (
-      arrayEvents.circle !== circle ||
-      arrayEvents.category !== category ||
-      arrayEvents.date !== date ||
-      arrayEvents.time !== time ||
-      arrayEvents.title !== title ||
-      arrayEvents.description !== description
-    ) {
-      setIconWarning('warning');
-      setTextWarning('Você tem modificações não salvas, o que deseja fazer?');
-      setTextButtonWarningAffirmative('Salvar');
-      setTextButtonWarningNegative('Descartar');
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const addEventInArray = async () => {
-    const limitQuantity = 2;
-    if (confirmUniqueTitleName(arrayEvents.title, data, limitQuantity)) {
-      setTextWarning(
-        'Ei, fica de olho que tem um título em algum evento seu igualzinho ao que você quer colocar (❁´◡`❁) (NOTE QUE ISSO É APENAS UM AVISO)',
-      );
-      setTextButtonWarningAffirmative('ENTENDI!');
-      setIconWarning('warning');
-      setShowModalEditOk(true);
-    } else {
-      const stringArraySavedEvents = await AsyncStorage.getItem('@ArrayEvents');
-      const parsedArraySavedEvents = JSON.parse(
-        stringArraySavedEvents as string,
-      );
-      if (parsedArraySavedEvents) {
-        const newArray = parsedArraySavedEvents.map((item: eventsProps) => {
-          if (item.id === id) {
-            item = arrayEvents;
-          }
-          return item;
-        });
-        dispatch(EDIT_EVENT(newArray));
-      }
-    }
-  };
-
-  const onClickConfirmEditEvent = () => {
-    handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
-    setTextWarning('Tudo feito');
-    setIconWarning('done');
-    setTextButtonWarningAffirmative('OK');
-    setShowModalEditOk(true);
-    addEventInArray();
-  };
 
   const actionConfirmSaveOk = () => {
     setEditMode(false);
@@ -148,17 +101,14 @@ export const DetailsEvent = () => {
   };
 
   const actionSaveChanges = () => {
-    handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
-    setEditMode(false);
-    setShowModalWarningEdit(false);
-    addEventInArray();
+    onClickConfirmEditEvent();
   };
 
   const actionDeleteOption = () => {
-    setIconWarning('cancel');
-    setTextWarning('Você deseja mesmo excluir esse evento?');
-    setTextButtonWarningAffirmative('Sim');
-    setTextButtonWarningNegative('Não');
+    setIconMessage(MODAL_MESSAGES.WARNING.ICON);
+    setTextMessage(MODAL_MESSAGES.WARNING.CONFIRM_DELETED);
+    setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.SIM);
+    setTextButtonMessageNegative(MODAL_TEXT_BUTTONS.NAO);
     setModalOptionsDropDown(false);
     setShowModalWarningDelete(true);
   };
@@ -177,14 +127,70 @@ export const DetailsEvent = () => {
     setShowModalWarningDelete(false);
   };
 
+  const handleConfirmModification = () => {
+    if (
+      arrayEvents.circle !== circle ||
+      arrayEvents.category !== category ||
+      arrayEvents.date !== date ||
+      arrayEvents.time !== time ||
+      arrayEvents.title !== title ||
+      arrayEvents.description !== description
+    ) {
+      setIconMessage(MODAL_MESSAGES.WARNING.ICON);
+      setTextMessage(MODAL_MESSAGES.WARNING.CONFIRM_CHANGES);
+      setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.SALVAR);
+      setTextButtonMessageNegative(MODAL_TEXT_BUTTONS.DESCARTAR);
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const addEventInArray = async () => {
+    const stringArraySavedEvents = await AsyncStorage.getItem('@ArrayEvents');
+    const parsedArraySavedEvents = JSON.parse(stringArraySavedEvents as string);
+    if (parsedArraySavedEvents) {
+      const newArray = parsedArraySavedEvents.map((item: eventsProps) => {
+        if (item.id === id) {
+          item = arrayEvents;
+        }
+        return item;
+      });
+      dispatch(EDIT_EVENT(newArray));
+    }
+  };
+
+  const onClickConfirmEditEvent = () => {
+    if (checkErrors(arrayEvents, setArrayBlankError)) {
+      setIconMessage(MODAL_MESSAGES.ERROR.ICON);
+      setTextMessage(MODAL_MESSAGES.ERROR.BLANK);
+      setMessageType(MODAL_MESSAGES.ERROR.TYPE);
+      setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.OK);
+      setShowModalEditOk(true);
+    } else if (checkWarnings(arrayEvents, data, limitQuantity)) {
+      setIconMessage(MODAL_MESSAGES.WARNING.ICON);
+      setMessageType(MODAL_MESSAGES.WARNING.TYPE);
+      setTextMessage(MODAL_MESSAGES.WARNING.DUPLICATED);
+      setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.ENTENDI);
+      setShowModalEditOk(true);
+    } else {
+      handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
+      setTextMessage(MODAL_MESSAGES.SUCESS.EDIT_SUCESS);
+      setIconMessage(MODAL_MESSAGES.SUCESS.ICON);
+      setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.OK);
+      setShowModalEditOk(true);
+      addEventInArray();
+    }
+  };
+
   return (
     <BodyScreen>
       <Modal visible={showModalWarningEdit} transparent animationType="slide">
         <ModalMessage
-          iconName={iconWarning}
-          text={textWarning}
-          textButtonAffirmative={textButtonWarningAffirmative}
-          textButtonNegative={textButtonWarningNegative}
+          iconName={iconMessage}
+          text={textMessage}
+          textButtonAffirmative={textButtonMessageAffirmative}
+          textButtonNegative={textButtonMessageNegative}
           actionNegative={actionDiscardChanges}
           actionAffirmative={actionSaveChanges}
         />
@@ -192,10 +198,10 @@ export const DetailsEvent = () => {
 
       <Modal visible={showModalWarningDelete} transparent animationType="slide">
         <ModalMessage
-          iconName={iconWarning}
-          text={textWarning}
-          textButtonAffirmative={textButtonWarningAffirmative}
-          textButtonNegative={textButtonWarningNegative}
+          iconName={iconMessage}
+          text={textMessage}
+          textButtonAffirmative={textButtonMessageAffirmative}
+          textButtonNegative={textButtonMessageNegative}
           actionNegative={actionDeleteOptionNo}
           actionAffirmative={actionDeleteOptionYes}
         />
@@ -203,13 +209,12 @@ export const DetailsEvent = () => {
 
       <Modal visible={showModalEditOk} transparent animationType="slide">
         <ModalMessage
-          iconName={iconWarning}
-          text={textWarning}
-          textButtonAffirmative={textButtonWarningAffirmative}
+          iconName={iconMessage}
+          text={textMessage}
+          textButtonAffirmative={textButtonMessageAffirmative}
+          arrayBlankError={arrayBlankError}
           actionAffirmative={
-            iconWarning === 'warning'
-              ? actionConfirmErrorOk
-              : actionConfirmSaveOk
+            messageType === 'error' ? actionConfirmErrorOk : actionConfirmSaveOk
           }
         />
       </Modal>

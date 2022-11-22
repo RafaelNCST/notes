@@ -37,7 +37,7 @@ export const handleConfirmOrganizationMaskInputs = (
   return true;
 };
 
-export const confirmUniqueTitleName = (
+const confirmUniqueTitleName = (
   title: string | undefined,
   data: eventsProps[],
   limitQuantity: number,
@@ -45,6 +45,57 @@ export const confirmUniqueTitleName = (
   const lenghtDataDuplicatedName = data.filter(item => title === item.title);
 
   if (lenghtDataDuplicatedName.length >= limitQuantity) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const checkWarnings = (
+  arrayEvents: eventsProps,
+  data: eventsProps[],
+  limityQuantity: number,
+) => {
+  if (confirmUniqueTitleName(arrayEvents.title, data, limityQuantity)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const checkErrors = (
+  arrayEvents: eventsProps,
+  setArrayBlankError: Dispatch<SetStateAction<string[]>>,
+) => {
+  setArrayBlankError([]);
+  if (
+    arrayEvents.circle === 'white' ||
+    arrayEvents.category === '' ||
+    arrayEvents.date === '' ||
+    arrayEvents.date === '//' ||
+    arrayEvents.time === '' ||
+    arrayEvents.time === ':' ||
+    arrayEvents.title === ''
+  ) {
+    if (arrayEvents.circle === 'white') {
+      setArrayBlankError(['Círculo de urgência']);
+    }
+
+    if (arrayEvents.category === '') {
+      setArrayBlankError(prev => [...prev, 'Categoria']);
+    }
+
+    if (arrayEvents.date === '' || arrayEvents.date === '//') {
+      setArrayBlankError(prev => [...prev, 'Data']);
+    }
+
+    if (arrayEvents.time === '' || arrayEvents.time === ':') {
+      setArrayBlankError(prev => [...prev, 'Horário']);
+    }
+
+    if (arrayEvents.title === '') {
+      setArrayBlankError(prev => [...prev, 'Título']);
+    }
     return true;
   } else {
     return false;

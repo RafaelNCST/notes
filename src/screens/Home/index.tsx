@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList } from 'react-native-gesture-handler';
 import { BodyScreen } from '../../styles/globalStyles';
-import { Container, Content, ContentSpinner } from './styles';
+import { Container, Content, ContentSpinner, ListEvents } from './styles';
 import { BottomMenu, HeaderMenu } from '../../components';
 import { AddEventModal } from '../AddEventModal';
 import { useNavigation } from '@react-navigation/native';
@@ -10,18 +9,22 @@ import { useAppSelector } from '../../store/hooks/useAppSelector';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BlankList, Events } from './components';
 import { RootStackParamList } from '../../routes/types';
-import { eventsProps } from '../../store/types';
 import { ActivityIndicator } from 'react-native';
 import { GET_TITLE_DATE_TODAY } from '../../helpers';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
 import { ConsumerMainContext } from '../../contexts/consumer';
 import { INITIALIZE_APP } from '../../store/eventsReducer';
+import { eventsProps } from '../../store/types';
 import 'moment/locale/pt-br';
 import moment from 'moment';
 import momentz from 'moment-timezone';
 import { defaultStyle } from '../../styles/themes/defaultStyle';
 
 moment.locale('pt-br');
+
+interface RenderItemProps {
+  item: eventsProps;
+}
 
 export const Home: React.FC = () => {
   const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -94,14 +97,11 @@ export const Home: React.FC = () => {
               />
             </ContentSpinner>
           ) : (
-            <FlatList
+            <ListEvents
               data={dataEvents}
-              contentContainerStyle={{
-                flex: 1,
-              }}
               ListEmptyComponent={<BlankList />}
-              keyExtractor={(_, index) => String(index)}
-              renderItem={({ item }) => {
+              keyExtractor={(item: eventsProps) => item.id}
+              renderItem={({ item }: RenderItemProps) => {
                 return <Events {...item} />;
               }}
             />

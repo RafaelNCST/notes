@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BodyScreen } from '../../styles/globalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
@@ -12,7 +12,12 @@ import { InfoButton } from './components/InfoButton';
 import { useNavigation } from '@react-navigation/native';
 import { ContentInfo } from './components/InfoButton';
 import { RootStackParamList } from '../../routes/types';
-import { DATA_CATEGORY, DATA_CIRCLE } from '../../utils';
+import {
+  DATA_CATEGORY,
+  DATA_CIRCLE,
+  MODAL_MESSAGES,
+  MODAL_TEXT_BUTTONS,
+} from '../../utils';
 import { useAppSelector } from '../../store/hooks/useAppSelector';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +35,8 @@ import {
 import { eventsProps } from '../../store/types';
 import {
   handleConfirmOrganizationMaskInputs,
-  confirmUniqueTitleName,
+  checkWarnings,
+  checkErrors,
 } from '../../helpers';
 import { WARNING_TYPES } from './types';
 import { ADD_EVENT } from '../../store/eventsReducer';
@@ -39,26 +45,26 @@ interface Props {
   modalState: boolean;
 }
 
-export const AddEventModal: React.FC<Props> = ({ modalState }) => {
-  const { t } = useTranslation();
+const limityQuantity = 1;
 
+export const AddEventModal: React.FC<Props> = ({ modalState }) => {
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
   const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
-  const [showModalWarningSucess, setShowModalWarningSucess] =
+  const [showModalSucess, setShowModalSucess] = useState<boolean>(false);
+  const [showModalWarningAndError, setShowModalWarningAndError] =
     useState<boolean>(false);
-  const [showModalWarning, setShowModalWarning] = useState<boolean>(false);
   const [clearMaskInputs, setClearMaskInputs] = useState<boolean>(false);
   const [clearDropDown, setClearDropDown] = useState<boolean>(true);
-  const [textButtonWarningAffirmative, setTextButtonWarningAffirmative] =
+  const [textButtonMessageAffirmative, setTextButtonMessageAffirmative] =
     useState<string>('');
-  const [textButtonWarningNegative, setTextButtonWarningNegative] =
+  const [textButtonMessageNegative, setTextButtonMessageNegative] =
     useState<string>('');
-  const [textWarning, setTextWarning] = useState<string>('');
-  const [arrayBlankWarning, setArrayBlankWarning] = useState<string[]>([]);
-  const [iconWarning, setIconWarning] = useState<string>('');
+  const [textMessage, setTextMessage] = useState<string>('');
+  const [arrayBlankError, setArrayBlankError] = useState<string[]>([]);
+  const [iconMessage, setIconMessage] = useState<string>('');
   const [firstRun, setFirstRun] = useState<boolean>(true);
-  const [warningType, setWarningType] = useState<WARNING_TYPES>('');
+  const [messageType, setMessageType] = useState<WARNING_TYPES>('');
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
     id: '',
     circle: 'white',
@@ -70,20 +76,20 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
   });
 
   const { reset } = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const { data } = useAppSelector(store => store.Events);
+  const { t } = useTranslation();
 
   const dispatch = useAppDispatch();
-  const { data } = useAppSelector(store => store.Events);
-
   const theme = useTheme();
 
-  const backToHome = () => {
+  const actionButtonBackToHome = () => {
     reset({
       index: 0,
       routes: [{ name: 'HomeScreen' }],
     });
   };
 
-  const handleModalWarningAddNewEvent = () => {
+  const actionButtonContinueAddEvent = () => {
     setArrayEvents({
       id: '',
       circle: 'white',
@@ -95,114 +101,56 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
     });
     setClearMaskInputs(true);
     setTimeout(() => setClearMaskInputs(false), 500);
-    setShowModalWarningSucess(false);
+    setShowModalSucess(false);
     setClearDropDown(true);
   };
 
   const actionCloseModalButton = () => {
-    switch (warningType) {
-      case 'error':
-        setShowModalWarning(false);
-        break;
-      case 'warning':
-        if (handleConfirmBlankInputs()) {
-          setShowModalWarning(true);
-        } else {
-          sucessAddEvent();
-        }
+    if (messageType === MODAL_MESSAGES.ERROR.TYPE) {
+      setShowModalWarningAndError(false);
+    } else if (messageType === MODAL_MESSAGES.WARNING.TYPE) {
+      setShowModalWarningAndError(true);
+      sucessAddId();
     }
   };
 
-  const handleConfirmBlankInputs = () => {
-    setArrayBlankWarning([]);
-    if (
-      arrayEvents.circle === 'white' ||
-      arrayEvents.category === '' ||
-      arrayEvents.date === '' ||
-      arrayEvents.date === '//' ||
-      arrayEvents.time === '' ||
-      arrayEvents.time === ':' ||
-      arrayEvents.title === ''
-    ) {
-      setIconWarning('warning');
-      setTextWarning('Os campos a seguir estão vazios:');
-      if (arrayEvents.circle === 'white') {
-        setArrayBlankWarning(['Círculo de urgência']);
-      }
-
-      if (arrayEvents.category === '') {
-        setArrayBlankWarning(prev => [...prev, 'Categoria']);
-      }
-
-      if (arrayEvents.date === '' || arrayEvents.date === '//') {
-        setArrayBlankWarning(prev => [...prev, 'Data']);
-      }
-
-      if (arrayEvents.time === '' || arrayEvents.time === ':') {
-        setArrayBlankWarning(prev => [...prev, 'Horário']);
-      }
-
-      if (arrayEvents.title === '') {
-        setArrayBlankWarning(prev => [...prev, 'Título']);
-      }
-      setWarningType('error');
-      setTextButtonWarningAffirmative('OK');
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const sucessAddEvent = () => {
-    setArrayBlankWarning([]);
+  const sucessAddId = () => {
+    setArrayBlankError([]);
     setArrayEvents(prevState => ({
       ...prevState,
       id: `${arrayEvents.title}-${arrayEvents.date}-${arrayEvents.time}`,
     }));
+  };
+
+  const onClickConfirmAddEvent = () => {
+    if (checkErrors(arrayEvents, setArrayBlankError)) {
+      setIconMessage(MODAL_MESSAGES.ERROR.ICON);
+      setTextMessage(MODAL_MESSAGES.ERROR.BLANK);
+      setMessageType(MODAL_MESSAGES.ERROR.TYPE);
+      setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.OK);
+      setShowModalWarningAndError(true);
+    } else if (checkWarnings(arrayEvents, data, limityQuantity)) {
+      setIconMessage(MODAL_MESSAGES.WARNING.ICON);
+      setMessageType(MODAL_MESSAGES.WARNING.TYPE);
+      setTextMessage(MODAL_MESSAGES.WARNING.DUPLICATED);
+      setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.ENTENDI);
+      setShowModalWarningAndError(true);
+    } else {
+      sucessAddId();
+    }
+  };
+
+  useEffect(() => {
     if (arrayEvents.id) {
       handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
-      setTextWarning(
-        'Você adicionou um evento com sucesso! Deseja voltar ao menu principal ou continuar a adicionar?',
-      );
-      setIconWarning('done');
-      setTextButtonWarningAffirmative('CONTINUAR');
-      setTextButtonWarningNegative('VOLTAR');
-      setShowModalWarningSucess(true);
+      setTextMessage(MODAL_MESSAGES.SUCESS.ADD_SUCESS);
+      setIconMessage(MODAL_MESSAGES.SUCESS.ICON);
+      setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.CONTINUAR);
+      setTextButtonMessageNegative(MODAL_TEXT_BUTTONS.VOLTAR);
+      setShowModalSucess(true);
       dispatch(ADD_EVENT(arrayEvents));
     }
-  };
-
-  const warningsShow = () => {
-    const limityQuantity = 1;
-    if (confirmUniqueTitleName(arrayEvents.title, data, limityQuantity)) {
-      setIconWarning('warning');
-      setWarningType('warning');
-      setTextWarning(
-        'Ei, fica de olho que tem um título em algum evento seu igualzinho ao que você quer colocar (❁´◡`❁) (NOTE QUE ISSO É APENAS UM AVISO)',
-      );
-      setTextButtonWarningAffirmative('ENTENDI');
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const onClickConfirmEvent = () => {
-    setIconWarning('');
-    setTextButtonWarningAffirmative('');
-    setTextButtonWarningNegative('');
-    setTextWarning('');
-    setArrayBlankWarning([]);
-    if (warningsShow()) {
-      setShowModalWarning(true);
-    } else {
-      if (handleConfirmBlankInputs()) {
-        setShowModalWarning(true);
-      } else {
-        sucessAddEvent();
-      }
-    }
-  };
+  }, [arrayEvents.id, arrayEvents, dispatch]);
 
   return (
     <Modal visible={modalState} animationType="slide" transparent>
@@ -211,27 +159,27 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
           <ContentInfo setOpen={setShowModalInfo} />
         </Modal>
 
-        <Modal
-          visible={showModalWarningSucess}
-          transparent
-          animationType="fade">
+        <Modal visible={showModalSucess} transparent animationType="fade">
           <ModalMessage
-            actionNegative={backToHome}
-            actionAffirmative={handleModalWarningAddNewEvent}
-            text={textWarning}
-            iconName={iconWarning}
-            textButtonAffirmative={textButtonWarningAffirmative}
-            textButtonNegative={textButtonWarningNegative}
+            actionNegative={actionButtonBackToHome}
+            actionAffirmative={actionButtonContinueAddEvent}
+            text={textMessage}
+            iconName={iconMessage}
+            textButtonAffirmative={textButtonMessageAffirmative}
+            textButtonNegative={textButtonMessageNegative}
           />
         </Modal>
 
-        <Modal visible={showModalWarning} transparent animationType="fade">
+        <Modal
+          visible={showModalWarningAndError}
+          transparent
+          animationType="fade">
           <ModalMessage
             actionAffirmative={actionCloseModalButton}
-            text={textWarning}
-            iconName={iconWarning}
-            arrayBlankWarnings={arrayBlankWarning}
-            textButtonAffirmative={textButtonWarningAffirmative}
+            text={textMessage}
+            iconName={iconMessage}
+            arrayBlankError={arrayBlankError}
+            textButtonAffirmative={textButtonMessageAffirmative}
           />
         </Modal>
 
@@ -239,7 +187,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
           <HeaderMenu
             textDate="Adicionar Evento"
             iconRight="close"
-            actionRightButton={backToHome}
+            actionRightButton={actionButtonBackToHome}
           />
           <Content>
             <TopContainer>
@@ -347,7 +295,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
           </Content>
           <BottomMenu
             buttonExists={true}
-            buttonAction={onClickConfirmEvent}
+            buttonAction={onClickConfirmAddEvent}
             iconButton="check"
           />
         </Container>
