@@ -38,17 +38,21 @@ export const handleConfirmOrganizationMaskInputs = (
   return true;
 };
 
-const confirmUniqueID = (
-  arrayEvents: eventsProps,
-  data: eventsProps[],
-  limitQuantity: number,
-) => {
-  const { date, title, time } = arrayEvents;
-  const lenghtDataDuplicatedName = data.filter(
-    item => title === item.title && date === item.date && time === item.time,
-  );
+const confirmUniqueID = (arrayEvents: eventsProps, data: eventsProps[]) => {
+  const { date, title, time, id } = arrayEvents;
+  let lenghtDataDuplicatedName = [];
+  if (id) {
+    const removeActualID = data.filter(item => id !== item.id);
+    lenghtDataDuplicatedName = removeActualID.filter(
+      item => title === item.title && date === item.date && time === item.time,
+    );
+  } else {
+    lenghtDataDuplicatedName = data.filter(
+      item => title === item.title && date === item.date && time === item.time,
+    );
+  }
 
-  if (lenghtDataDuplicatedName.length >= limitQuantity) {
+  if (lenghtDataDuplicatedName.length >= 1) {
     return true;
   } else {
     return false;
@@ -58,14 +62,21 @@ const confirmUniqueID = (
 const confirmUniqueTimeAndDay = (
   arrayEvents: eventsProps,
   data: eventsProps[],
-  limitQuantity: number,
 ) => {
-  const { date, time } = arrayEvents;
-  const lenghtDataDuplicatedName = data.filter(
-    item => time === item.time && date === item.date,
-  );
+  const { date, time, id } = arrayEvents;
+  let lenghtDataDuplicatedName = [];
+  if (id) {
+    const removeActualID = data.filter(item => id !== item.id);
+    lenghtDataDuplicatedName = removeActualID.filter(
+      item => time === item.time && date === item.date,
+    );
+  } else {
+    lenghtDataDuplicatedName = data.filter(
+      item => time === item.time && date === item.date,
+    );
+  }
 
-  if (lenghtDataDuplicatedName.length >= limitQuantity) {
+  if (lenghtDataDuplicatedName.length >= 1) {
     return true;
   } else {
     return false;
@@ -73,13 +84,21 @@ const confirmUniqueTimeAndDay = (
 };
 
 const confirmUniqueTitleName = (
-  title: string | undefined,
+  arrayEvents: eventsProps,
   data: eventsProps[],
-  limitQuantity: number,
 ) => {
-  const lenghtDataDuplicatedName = data.filter(item => title === item.title);
+  const { title, id } = arrayEvents;
+  let lenghtDataDuplicatedName = [];
+  if (id) {
+    const removeActualID = data.filter(item => id !== item.id);
+    lenghtDataDuplicatedName = removeActualID.filter(
+      item => title === item.title,
+    );
+  } else {
+    lenghtDataDuplicatedName = data.filter(item => title === item.title);
+  }
 
-  if (lenghtDataDuplicatedName.length >= limitQuantity) {
+  if (lenghtDataDuplicatedName.length >= 1) {
     return true;
   } else {
     return false;
@@ -89,13 +108,12 @@ const confirmUniqueTitleName = (
 export const checkWarnings = (
   arrayEvents: eventsProps,
   data: eventsProps[],
-  limitQuantity: number,
   setWarning: Dispatch<SetStateAction<typeWarning>>,
 ) => {
-  if (confirmUniqueTimeAndDay(arrayEvents, data, limitQuantity)) {
+  if (confirmUniqueTimeAndDay(arrayEvents, data)) {
     setWarning('DUPLICATED_TIME_DATE');
     return true;
-  } else if (confirmUniqueTitleName(arrayEvents.title, data, limitQuantity)) {
+  } else if (confirmUniqueTitleName(arrayEvents, data)) {
     setWarning('DUPLICATED_TITLE');
     return true;
   }
@@ -105,7 +123,6 @@ export const checkErrors = (
   arrayEvents: eventsProps,
   setArrayBlankError: Dispatch<SetStateAction<string[]>>,
   data: eventsProps[],
-  limitQuantity: number,
   setError: Dispatch<SetStateAction<typeError>>,
 ) => {
   setArrayBlankError([]);
@@ -139,7 +156,7 @@ export const checkErrors = (
       setArrayBlankError(prev => [...prev, 'Título']);
     }
     return true;
-  } else if (confirmUniqueID(arrayEvents, data, limitQuantity)) {
+  } else if (confirmUniqueID(arrayEvents, data)) {
     setError('DUPLICATED_ID');
     return true;
   } else {

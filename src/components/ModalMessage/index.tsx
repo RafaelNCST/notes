@@ -12,7 +12,7 @@ import {
   TextModalRegular,
   SpaceModal,
 } from './styles';
-import { defaultStyle } from '../../styles/themes/defaultStyle';
+import { COLOR_MODAL_ICON } from '../../utils/iconMessageModalColors';
 import { useTranslation } from 'react-i18next';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -44,11 +44,7 @@ export const ModalMessage: React.FC<Props> = ({
         <ContainerIcon>
           <Icon
             name={iconName}
-            color={
-              iconName === 'done'
-                ? defaultStyle.colors.GREEN_AFIRMATIVE
-                : defaultStyle.colors.RED_NEGATIVE
-            }
+            color={COLOR_MODAL_ICON[iconName]}
             size={iconName === 'done' ? 60 : 50}
           />
         </ContainerIcon>

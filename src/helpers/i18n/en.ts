@@ -56,5 +56,7 @@ export default {
       "You had title, time and event data repeated with some event, and that's not cool. The Notes uses all three to better identify your events, so we ask that you do not repeat them!",
     'Ei, psiu, só um aviso, mas você tem um evento com data e horários semelhantes ao que você colocou (❁´◡`❁)':
       'Hey, just a warning, but you have an event with a date and times similar to the one you entered (❁´◡`❁)',
+    'Você tem modificações não adicionadas, deseja mesmo sair?':
+      'You have changes not added, do you really want to exit?',
   },
 };

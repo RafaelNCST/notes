@@ -9,7 +9,7 @@ interface MODAL_MESSAGES_TYPES {
     TYPE: 'sucess';
     ICON: 'done';
     ADD_SUCESS: 'Você adicionou um evento com sucesso! Deseja voltar ao menu principal ou continuar a adicionar?';
-    EDIT_SUCESS: 'TUDO FEITO';
+    EDIT_SUCESS: 'Tudo feito!';
   };
   WARNING: {
     TYPE: 'warning';
@@ -18,6 +18,7 @@ interface MODAL_MESSAGES_TYPES {
     DUPLICATED_TIME_AND_DATE: 'Ei, psiu, só um aviso, mas você tem um evento com data e horários semelhantes ao que você colocou (❁´◡`❁)';
     CONFIRM_DELETED: 'Você deseja mesmo excluir esse evento?';
     CONFIRM_CHANGES: 'Você tem modificações não salvas, o que deseja fazer?';
+    CONFIRM_CHANGES_ADD_EVENT: 'Você tem modificações não adicionadas, deseja mesmo sair?';
   };
 }
 
@@ -45,7 +46,7 @@ export const MODAL_MESSAGES: MODAL_MESSAGES_TYPES = {
     ICON: 'done',
     ADD_SUCESS:
       'Você adicionou um evento com sucesso! Deseja voltar ao menu principal ou continuar a adicionar?',
-    EDIT_SUCESS: 'TUDO FEITO',
+    EDIT_SUCESS: 'Tudo feito!',
   },
   WARNING: {
     TYPE: 'warning',
@@ -56,6 +57,8 @@ export const MODAL_MESSAGES: MODAL_MESSAGES_TYPES = {
       'Ei, psiu, só um aviso, mas você tem um evento com data e horários semelhantes ao que você colocou (❁´◡`❁)',
     CONFIRM_DELETED: 'Você deseja mesmo excluir esse evento?',
     CONFIRM_CHANGES: 'Você tem modificações não salvas, o que deseja fazer?',
+    CONFIRM_CHANGES_ADD_EVENT:
+      'Você tem modificações não adicionadas, deseja mesmo sair?',
   },
 };
 

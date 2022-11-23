@@ -6,5 +6,6 @@ export default {
     Inverted: '#363636',
     Text: '#000',
     TextInverted: '#fff',
+    CircleModalBackGroundColor: '#363636',
   },
 };

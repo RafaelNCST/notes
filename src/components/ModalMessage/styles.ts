@@ -44,7 +44,7 @@ export const ContainerIcon = styled.View`
   align-items: center;
   height: 80px;
   width: 80px;
-  background-color: ${defaultStyle.colors.WHITE};
+  background-color: ${({ theme }) => theme.colors.CircleModalBackGroundColor};
 `;
 
 export const ContainerButton = styled.View`

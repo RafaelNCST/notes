@@ -66,7 +66,6 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     i18n.changeLanguage(chooseLanguage);
     const arrayLanguage = [item, chooseLanguage];
     AsyncStorage.setItem('@Language', JSON.stringify(arrayLanguage));
-    console.log(arrayLanguage, 'salvo');
   };
 
   const getSettingsInformations = async () => {

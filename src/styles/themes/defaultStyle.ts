@@ -32,5 +32,6 @@ export const defaultStyle = {
     BLUE_WEAK: '#42E2B8',
     GREEN_AFIRMATIVE: '#57A773',
     RED_NEGATIVE: '#CB2900',
+    YELLOW_WARNING: '#dbd914',
   },
 };

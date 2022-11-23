@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BodyScreen } from '../../styles/globalStyles';
 import { Container } from './styles';
 import { BottomMenu } from '../../components';
@@ -16,6 +16,7 @@ import { ModalMessage } from '../../components';
 import { HeaderMenu } from '../../components';
 import { EDIT_EVENT } from '../../store/eventsReducer';
 import { MODAL_MESSAGES, MODAL_TEXT_BUTTONS } from '../../utils';
+import { typeWarning, typeError } from '../AddEventModal';
 import {
   handleConfirmOrganizationMaskInputs,
   checkErrors,
@@ -25,13 +26,14 @@ import { useAppSelector } from '../../store/hooks/useAppSelector';
 import { WARNING_TYPES } from '../AddEventModal/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const limitQuantity = 2;
-
 export const DetailsEvent = () => {
   const [editMode, setEditMode] = useState<boolean>(false);
 
   const [textButtonMessageAffirmative, setTextButtonMessageAffirmative] =
     useState<string>('');
+  const [controlModal, setControlModal] = useState<boolean>(false);
+  const [error, setError] = useState<typeError>('');
+  const [warning, setWarning] = useState<typeWarning>('');
   const [textButtonMessageNegative, setTextButtonMessageNegative] =
     useState<string>('');
   const [textMessage, setTextMessage] = useState<string>('');
@@ -70,10 +72,16 @@ export const DetailsEvent = () => {
   const actionConfirmSaveOk = () => {
     setEditMode(false);
     setShowModalEditOk(false);
+    setError('');
+    setWarning('');
+    setControlModal(false);
   };
 
   const actionConfirmErrorOk = () => {
     setShowModalEditOk(false);
+    setError('');
+    setWarning('');
+    setControlModal(false);
   };
 
   const openOptionsModalDropDown = () => {
@@ -101,7 +109,8 @@ export const DetailsEvent = () => {
   };
 
   const actionSaveChanges = () => {
-    onClickConfirmEditEvent();
+    setShowModalWarningEdit(false);
+    setControlModal(true);
   };
 
   const actionDeleteOption = () => {
@@ -161,18 +170,14 @@ export const DetailsEvent = () => {
   };
 
   const onClickConfirmEditEvent = () => {
-    if (checkErrors(arrayEvents, setArrayBlankError)) {
+    if (checkErrors(arrayEvents, setArrayBlankError, data, setError)) {
       setIconMessage(MODAL_MESSAGES.ERROR.ICON);
-      setTextMessage(MODAL_MESSAGES.ERROR.BLANK);
       setMessageType(MODAL_MESSAGES.ERROR.TYPE);
       setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.OK);
-      setShowModalEditOk(true);
-    } else if (checkWarnings(arrayEvents, data, limitQuantity)) {
+    } else if (checkWarnings(arrayEvents, data, setWarning)) {
       setIconMessage(MODAL_MESSAGES.WARNING.ICON);
       setMessageType(MODAL_MESSAGES.WARNING.TYPE);
-      setTextMessage(MODAL_MESSAGES.WARNING.DUPLICATED);
       setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.ENTENDI);
-      setShowModalEditOk(true);
     } else {
       handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
       setTextMessage(MODAL_MESSAGES.SUCESS.EDIT_SUCESS);
@@ -182,6 +187,43 @@ export const DetailsEvent = () => {
       addEventInArray();
     }
   };
+
+  //Verificar o Texto de error.
+  useEffect(() => {
+    if (error) {
+      switch (error) {
+        case 'BLANK':
+          setTextMessage(MODAL_MESSAGES.ERROR.BLANK);
+          break;
+        case 'DUPLICATED_ID':
+          setTextMessage(MODAL_MESSAGES.ERROR.DUPLICATED_ID);
+          break;
+      }
+      setShowModalEditOk(true);
+    }
+  }, [error]);
+
+  //Verificar o Texto de warning.
+  useEffect(() => {
+    if (warning) {
+      switch (warning) {
+        case 'DUPLICATED_TIME_DATE':
+          setTextMessage(MODAL_MESSAGES.WARNING.DUPLICATED_TIME_AND_DATE);
+          break;
+        case 'DUPLICATED_TITLE':
+          setTextMessage(MODAL_MESSAGES.WARNING.DUPLICATED_TITLE);
+          break;
+      }
+      setShowModalEditOk(true);
+    }
+  }, [warning]);
+
+  useEffect(() => {
+    if (controlModal) {
+      onClickConfirmEditEvent();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [controlModal]);
 
   return (
     <BodyScreen>

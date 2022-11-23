@@ -9,6 +9,7 @@ declare module 'styled-components' {
       Inverted: string;
       Text: string;
       TextInverted: string;
+      CircleModalBackGroundColor: string;
     };
   }
 }
