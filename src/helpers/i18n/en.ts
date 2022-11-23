@@ -52,5 +52,9 @@ export default {
       'Hey, just a warning, but you have an event with a title similar to the one you entered (❁´◡`❁)',
     ENTENDI: 'DONE',
     'Detalhes do evento': 'Details Event',
+    'Você possuí título, horário e data do eventos repetidos com algum evento, e isso não é legal. O The Notes usa os três para identificar melhor seus eventos, então pedimos que você os mude!':
+      "You had title, time and event data repeated with some event, and that's not cool. The Notes uses all three to better identify your events, so we ask that you do not repeat them!",
+    'Ei, psiu, só um aviso, mas você tem um evento com data e horários semelhantes ao que você colocou (❁´◡`❁)':
+      'Hey, just a warning, but you have an event with a date and times similar to the one you entered (❁´◡`❁)',
   },
 };

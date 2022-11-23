@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import { typeError, typeWarning } from '../screens/AddEventModal';
 import { eventsProps } from '../store/types';
 
 export const handleConfirmOrganizationMaskInputs = (
@@ -37,6 +38,40 @@ export const handleConfirmOrganizationMaskInputs = (
   return true;
 };
 
+const confirmUniqueID = (
+  arrayEvents: eventsProps,
+  data: eventsProps[],
+  limitQuantity: number,
+) => {
+  const { date, title, time } = arrayEvents;
+  const lenghtDataDuplicatedName = data.filter(
+    item => title === item.title && date === item.date && time === item.time,
+  );
+
+  if (lenghtDataDuplicatedName.length >= limitQuantity) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const confirmUniqueTimeAndDay = (
+  arrayEvents: eventsProps,
+  data: eventsProps[],
+  limitQuantity: number,
+) => {
+  const { date, time } = arrayEvents;
+  const lenghtDataDuplicatedName = data.filter(
+    item => time === item.time && date === item.date,
+  );
+
+  if (lenghtDataDuplicatedName.length >= limitQuantity) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 const confirmUniqueTitleName = (
   title: string | undefined,
   data: eventsProps[],
@@ -54,18 +89,24 @@ const confirmUniqueTitleName = (
 export const checkWarnings = (
   arrayEvents: eventsProps,
   data: eventsProps[],
-  limityQuantity: number,
+  limitQuantity: number,
+  setWarning: Dispatch<SetStateAction<typeWarning>>,
 ) => {
-  if (confirmUniqueTitleName(arrayEvents.title, data, limityQuantity)) {
+  if (confirmUniqueTimeAndDay(arrayEvents, data, limitQuantity)) {
+    setWarning('DUPLICATED_TIME_DATE');
     return true;
-  } else {
-    return false;
+  } else if (confirmUniqueTitleName(arrayEvents.title, data, limitQuantity)) {
+    setWarning('DUPLICATED_TITLE');
+    return true;
   }
 };
 
 export const checkErrors = (
   arrayEvents: eventsProps,
   setArrayBlankError: Dispatch<SetStateAction<string[]>>,
+  data: eventsProps[],
+  limitQuantity: number,
+  setError: Dispatch<SetStateAction<typeError>>,
 ) => {
   setArrayBlankError([]);
   if (
@@ -77,6 +118,7 @@ export const checkErrors = (
     arrayEvents.time === ':' ||
     arrayEvents.title === ''
   ) {
+    setError('BLANK');
     if (arrayEvents.circle === 'white') {
       setArrayBlankError(['Círculo de urgência']);
     }
@@ -96,6 +138,9 @@ export const checkErrors = (
     if (arrayEvents.title === '') {
       setArrayBlankError(prev => [...prev, 'Título']);
     }
+    return true;
+  } else if (confirmUniqueID(arrayEvents, data, limitQuantity)) {
+    setError('DUPLICATED_ID');
     return true;
   } else {
     return false;

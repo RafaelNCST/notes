@@ -45,7 +45,10 @@ interface Props {
   modalState: boolean;
 }
 
-const limityQuantity = 1;
+export type typeError = 'BLANK' | 'DUPLICATED_ID' | '';
+export type typeWarning = 'DUPLICATED_TITLE' | 'DUPLICATED_TIME_DATE' | '';
+
+const limitQuantity = 1;
 
 export const AddEventModal: React.FC<Props> = ({ modalState }) => {
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
@@ -61,9 +64,11 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
   const [textButtonMessageNegative, setTextButtonMessageNegative] =
     useState<string>('');
   const [textMessage, setTextMessage] = useState<string>('');
+  const [error, setError] = useState<typeError>('');
   const [arrayBlankError, setArrayBlankError] = useState<string[]>([]);
   const [iconMessage, setIconMessage] = useState<string>('');
   const [firstRun, setFirstRun] = useState<boolean>(true);
+  const [warning, setWarning] = useState<typeWarning>('');
   const [messageType, setMessageType] = useState<WARNING_TYPES>('');
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
     id: '',
@@ -105,15 +110,6 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
     setClearDropDown(true);
   };
 
-  const actionCloseModalButton = () => {
-    if (messageType === MODAL_MESSAGES.ERROR.TYPE) {
-      setShowModalWarningAndError(false);
-    } else if (messageType === MODAL_MESSAGES.WARNING.TYPE) {
-      setShowModalWarningAndError(true);
-      sucessAddId();
-    }
-  };
-
   const sucessAddId = () => {
     setArrayBlankError([]);
     setArrayEvents(prevState => ({
@@ -122,24 +118,40 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
     }));
   };
 
+  const actionCloseModalButton = () => {
+    if (messageType === MODAL_MESSAGES.ERROR.TYPE) {
+      setShowModalWarningAndError(false);
+      setError('');
+    } else if (messageType === MODAL_MESSAGES.WARNING.TYPE) {
+      setShowModalWarningAndError(false);
+      setWarning('');
+      sucessAddId();
+    }
+  };
+
   const onClickConfirmAddEvent = () => {
-    if (checkErrors(arrayEvents, setArrayBlankError)) {
+    if (
+      checkErrors(
+        arrayEvents,
+        setArrayBlankError,
+        data,
+        limitQuantity,
+        setError,
+      )
+    ) {
       setIconMessage(MODAL_MESSAGES.ERROR.ICON);
-      setTextMessage(MODAL_MESSAGES.ERROR.BLANK);
       setMessageType(MODAL_MESSAGES.ERROR.TYPE);
       setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.OK);
-      setShowModalWarningAndError(true);
-    } else if (checkWarnings(arrayEvents, data, limityQuantity)) {
+    } else if (checkWarnings(arrayEvents, data, limitQuantity, setWarning)) {
       setIconMessage(MODAL_MESSAGES.WARNING.ICON);
       setMessageType(MODAL_MESSAGES.WARNING.TYPE);
-      setTextMessage(MODAL_MESSAGES.WARNING.DUPLICATED);
       setTextButtonMessageAffirmative(MODAL_TEXT_BUTTONS.ENTENDI);
-      setShowModalWarningAndError(true);
     } else {
       sucessAddId();
     }
   };
 
+  //SUCESSOOOOOOO
   useEffect(() => {
     if (arrayEvents.id) {
       handleConfirmOrganizationMaskInputs(arrayEvents, setArrayEvents);
@@ -151,6 +163,34 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
       dispatch(ADD_EVENT(arrayEvents));
     }
   }, [arrayEvents.id, arrayEvents, dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      switch (error) {
+        case 'BLANK':
+          setTextMessage(MODAL_MESSAGES.ERROR.BLANK);
+          break;
+        case 'DUPLICATED_ID':
+          setTextMessage(MODAL_MESSAGES.ERROR.DUPLICATED_ID);
+          break;
+      }
+      setShowModalWarningAndError(true);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (warning) {
+      switch (warning) {
+        case 'DUPLICATED_TIME_DATE':
+          setTextMessage(MODAL_MESSAGES.WARNING.DUPLICATED_TIME_AND_DATE);
+          break;
+        case 'DUPLICATED_TITLE':
+          setTextMessage(MODAL_MESSAGES.WARNING.DUPLICATED_TITLE);
+          break;
+      }
+      setShowModalWarningAndError(true);
+    }
+  }, [warning]);
 
   return (
     <Modal visible={modalState} animationType="slide" transparent>

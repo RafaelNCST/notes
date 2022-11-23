@@ -53,5 +53,9 @@ export default {
       'Ei, psiu, só um aviso, mas você tem um evento com título semelhante ao que você colocou (❁´◡`❁)',
     ENTENDI: 'ENTENDI',
     'Detalhes do evento': 'Detalhes do evento',
+    'Você possuí título, horário e data do eventos repetidos com algum evento, e isso não é legal. O The Notes usa os três para identificar melhor seus eventos, então pedimos que você os mude!':
+      'Você possuí título, horário e data do eventos repetidos com algum evento, e isso não é legal. O The Notes usa os três para identificar melhor seus eventos, então pedimos que você os mude!',
+    'Ei, psiu, só um aviso, mas você tem um evento com data e horários semelhantes ao que você colocou (❁´◡`❁)':
+      'Ei, psiu, só um aviso, mas você tem um evento com data e horários semelhantes ao que você colocou (❁´◡`❁)',
   },
 };
