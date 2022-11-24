@@ -24,7 +24,8 @@ import { useAppSelector } from '../../store/hooks/useAppSelector';
 import { StackNavigationProp } from '@react-navigation/stack';
 import moment from 'moment';
 import momentz from 'moment';
-import 'moment/min/locales';
+import 'moment/locale/pt-br';
+import 'moment/locale/en';
 import { useTranslation } from 'react-i18next';
 import {
   Container,
