@@ -30,22 +30,29 @@ export const ContainerTitle = styled.View`
 `;
 
 export const BottomContainer = styled.View`
-  flex: 1;
-  width: 100%;
-  padding: ${responsive.small};
   z-index: -1;
+  flex: 1;
+  padding: ${responsive.small};
 `;
 
 export const TextRegular = styled.Text`
   color: ${({ theme }) => theme.colors.Text};
-  font-family: ${defaultStyle.fontFamily.interRegular};
+  font-family: ${defaultStyle.fontFamily.interBold};
   font-size: ${defaultStyle.fontSize.small};
-  text-align: justify;
+  text-align: center;
   line-height: ${defaultStyle.lineHeight.big};
-  margin-left: ${responsive.extraSmall};
+  z-index: -1;
 `;
 
 export const ContainerTexts = styled.View`
+  margin-bottom: ${responsive.medium};
+  flex-direction: row;
+  padding: 0px;
+  height: 20px;
+  z-index: -1;
+`;
+
+export const ContainerDropDown = styled.View`
   margin-bottom: ${responsive.medium};
   flex-direction: row;
   padding: 0px;

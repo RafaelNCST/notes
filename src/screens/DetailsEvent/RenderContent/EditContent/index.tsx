@@ -6,6 +6,7 @@ import {
   BottomContainer,
   TextRegular,
   ContainerTexts,
+  ContainerDropDown,
 } from '../../styles';
 import { DropDownCircleContainer, InputTexts } from './styles';
 import { ContentEditProps } from '../types';
@@ -48,7 +49,6 @@ export const EditContent: React.FC<ContentEditProps> = ({
             widthStyled="75%"
             value={arrayEvents.title}
             placeholder="Um título para se lembrar!"
-            paddingLeft={true}
             placeholderTextColor={focusTitle ? '#777676' : theme.colors.Text}
             onChangeText={(event: string) =>
               setArrayEvents(prevState => ({
@@ -62,7 +62,8 @@ export const EditContent: React.FC<ContentEditProps> = ({
             maxLength={35}
           />
         </ContainerTitle>
-        <ContainerTexts>
+
+        <ContainerDropDown>
           <TextRegular accessibilityRole="Text" accessibilityLabel="Categoria">
             {t('Categoria')}:{' '}
           </TextRegular>
@@ -74,7 +75,7 @@ export const EditContent: React.FC<ContentEditProps> = ({
             firstRun={firstRunDropDown}
             setFirstRun={setFirstRunDropDown}
           />
-        </ContainerTexts>
+        </ContainerDropDown>
         <ContainerTexts>
           <TextRegular accessibilityRole="Text" accessibilityLabel="Horário">
             {t('Horário')}:
@@ -108,7 +109,6 @@ export const EditContent: React.FC<ContentEditProps> = ({
             placeholderTextColor={
               focusDescription ? '#777676' : theme.colors.Text
             }
-            paddingLeft={false}
             onChangeText={(event: string) =>
               setArrayEvents(prevState => ({
                 ...prevState,

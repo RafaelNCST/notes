@@ -8,21 +8,26 @@ export default {
     'Selecione uma categoria': 'Select a category',
     Horário: 'Time',
     Data: 'Date',
-    Obrigatórios: 'Required camps',
+    'EUA(mês-dia-ano)': 'EUA(month-day-year)',
+    'Brasil(dia-mês-ano)': 'Brazil(day-month-year)',
+    'Regrinhas!': 'Little Rules!',
     'Modo escuro/Modo claro': 'Dark Mode/Light Mode',
     'Descreve seu compromisso ai cara!': 'Hey bro, describe your event!',
-    'Escolha um círculo colorido apenas ilustrativo para demonstrar a urgência do evento':
-      'Choose a colored circle for illustrative purposes only to demonstrate the urgency of the event',
+    'O Círculo colorido é apenas ilustrativo, mas obrigatório viu!':
+      'The colored circle is just illustrative, but mandatory!',
     'Um título para seu evento com limite de 35 caracteres':
       'A title for your event with a 35-character limit',
-    'Na seção categoria, descreva com palavras seu nível de importância':
-      'In the category section, describe in words your level of importance',
-    'Coloque o horário do evento de acordo com o formato escolhido nas configurações':
-      'Put the event time according to the format chosen in the settings',
-    'Descreva uma data que seja acima da data atual de acordo com o formato escolhido nas configurações':
-      'Describe a date that is above the current date according to the chosen format in the settings',
+    'Não coloque título, data e horário iguais, pega muito mal, ok?':
+      'Do not use the same title, date and time, it looks very bad, ok?',
+    'O horário por padrão é em formato 24 horas, mas você pode mudar nas configurações.':
+      'The default time is in 24-hour format, but you can change it in the settings.',
+    'Descreva uma data que seja acima da data atual em! Afinal, não podemos marcar eventos para o passado, ou podemos?':
+      "Describe a date that is above the current date at! After all, we can't set events to the past, can we?",
     'Apagar automaticamente dias passados': 'Automatically delete past days',
-    'Linguagem Escolhida': 'chosen language',
+    'Escolher linguagem': 'Choose Language',
+    'Escolher formato de tempo': 'Choose time format',
+    'Escolher formato de data': 'Choose date format',
+    'Escolher fuso horário': 'Choose time zone',
     Editar: 'Edit',
     Excluir: 'Delete',
     'Sem descrição por aqui  ಥ_ಥ': 'No description around here  ಥ_ಥ',

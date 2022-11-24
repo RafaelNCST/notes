@@ -9,7 +9,7 @@ interface styledProps {
 export const ContainerInput = styled.View<styledProps>`
   flex-direction: row;
   margin-left: ${responsive.medium};
-  height: 80%;
+  height: 100%;
   width: ${({ width }) => width};
   justify-content: center;
   z-index: -1;

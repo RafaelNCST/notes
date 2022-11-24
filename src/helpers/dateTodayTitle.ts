@@ -1,12 +1,7 @@
 import { MONTHS, MONTHS_ENGLISH } from '../utils';
-import { languages } from '../contexts/types';
-import 'moment/locale/pt-br';
-import moment from 'moment';
 import momentz from 'moment-timezone';
 
-moment.locale('pt-br');
-
-export const GET_TITLE_DATE_TODAY = (language: languages) => {
+export const GET_TITLE_DATE_TODAY = (language: string) => {
   const actualMoment = momentz.tz('America/Manaus');
   switch (language) {
     case 'Português(BR)':

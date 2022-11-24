@@ -12,17 +12,19 @@ import { InfoButton } from './components/InfoButton';
 import { useNavigation } from '@react-navigation/native';
 import { ContentInfo } from './components/InfoButton';
 import { RootStackParamList } from '../../routes/types';
+import { ConsumerMainContext } from '../../contexts/consumer';
 import {
   DATA_CATEGORY,
   DATA_CIRCLE,
   MODAL_MESSAGES,
   MODAL_TEXT_BUTTONS,
+  DATE_LOCAL_LIST,
 } from '../../utils';
 import { useAppSelector } from '../../store/hooks/useAppSelector';
 import { StackNavigationProp } from '@react-navigation/stack';
 import moment from 'moment';
 import momentz from 'moment';
-import 'moment/locale/pt-br';
+import 'moment/min/locales';
 import { useTranslation } from 'react-i18next';
 import {
   Container,
@@ -34,6 +36,7 @@ import {
   DropDownCircleContainer,
   InputTexts,
   TextRegular,
+  ContainerDropDown,
 } from './styles';
 import { eventsProps } from '../../store/types';
 import {
@@ -48,12 +51,12 @@ interface Props {
   modalState: boolean;
 }
 
-moment.locale('pt-br');
-
 export type typeError = 'BLANK' | 'DUPLICATED_ID' | '';
 export type typeWarning = 'DUPLICATED_TITLE' | 'DUPLICATED_TIME_DATE' | '';
 
 export const AddEventModal: React.FC<Props> = ({ modalState }) => {
+  const { dateTypeLocal } = ConsumerMainContext();
+
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
   const [showModalInfo, setShowModalInfo] = useState<boolean>(false);
@@ -86,6 +89,8 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
     date: '',
     description: '',
   });
+
+  moment.locale(DATE_LOCAL_LIST[dateTypeLocal]);
 
   const { reset } = useNavigation<StackNavigationProp<RootStackParamList>>();
   const { data } = useAppSelector(store => store.Events);
@@ -306,7 +311,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
                 />
               </ContainerTitle>
 
-              <ContainerTexts>
+              <ContainerDropDown>
                 <TextRegular
                   accessibilityRole="Text"
                   accessibilityLabel="Categoria">
@@ -320,7 +325,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
                   firstRun={clearDropDown}
                   setFirstRun={setClearDropDown}
                 />
-              </ContainerTexts>
+              </ContainerDropDown>
               <ContainerTexts>
                 <TextRegular
                   accessibilityRole="Text"

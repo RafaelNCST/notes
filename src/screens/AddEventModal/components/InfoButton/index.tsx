@@ -37,7 +37,7 @@ export const ContentInfo: React.FC<Props> = ({ setOpen }) => {
           <TextModalTitle
             accessibilityRole="Text"
             accessibilityLabel="Obrigatórios">
-            {t('Obrigatórios')}
+            {t('Regrinhas!')}
           </TextModalTitle>
           <CloseButton
             onPress={() => setOpen(false)}
@@ -49,23 +49,23 @@ export const ContentInfo: React.FC<Props> = ({ setOpen }) => {
         <ContentWords>
           <LineIconsInfo
             IconName="radio-button-unchecked"
-            Text="Escolha um círculo colorido apenas ilustrativo para demonstrar a urgência do evento"
+            Text="O Círculo colorido é apenas ilustrativo, mas obrigatório viu!"
           />
           <LineIconsInfo
             IconName="title"
-            Text="Um título para seu evento com limite de 35 caracteres"
+            Text="Um título para seu evento com limite de 35 caracteres."
           />
           <LineIconsInfo
             IconName="warning"
-            Text="Na seção categoria, descreva com palavras seu nível de importância"
+            Text="Não coloque título, data e horário iguais, pega muito mal, ok?"
           />
           <LineIconsInfo
             IconName="schedule"
-            Text="Coloque o horário do evento de acordo com o formato escolhido nas configurações"
+            Text="O horário por padrão é em formato 24 horas, mas você pode mudar nas configurações."
           />
           <LineIconsInfo
             IconName="calendar-today"
-            Text="Descreva uma data que seja acima da data atual de acordo com o formato escolhido nas configurações"
+            Text="Descreva uma data que seja acima da data atual em! Afinal, não podemos marcar eventos para o passado, ou podemos?"
           />
         </ContentWords>
       </ContentInfoStyled>

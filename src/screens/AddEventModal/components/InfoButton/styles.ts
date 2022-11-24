@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import responsive from '../../../../styles/themes/responsive';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 import { defaultStyle } from '../../../../styles/themes/defaultStyle';
 
 export const Container = styled.TouchableOpacity`
@@ -15,8 +16,8 @@ export const Container = styled.TouchableOpacity`
 `;
 
 export const ContentInfoStyled = styled.View`
-  height: 350px;
-  width: 80%;
+  height: ${RFPercentage(45)}px;
+  width: 85%;
   border-radius: 12px;
   background-color: white;
   border: 1px solid #000;

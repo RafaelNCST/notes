@@ -8,22 +8,27 @@ export default {
     'Selecione uma categoria': 'Selecione uma categoria',
     Horário: 'Horário',
     Data: 'Data',
-    Obrigatórios: 'Obrigatórios',
+    'Regrinhas!': 'Regrinhas!',
+    'EUA(mês-dia-ano)': 'EUA(mês-dia-ano)',
+    'Brasil(dia-mês-ano)': 'Brasil(dia-mês-ano)',
     'Modo escuro/Modo Claro': 'Modo escuro/Modo Claro',
     'Descreve seu compromisso ai cara!': 'Descreve seu compromisso ai cara!',
-    'Escolha um círculo colorido apenas ilustrativo para demonstrar a urgência do evento':
-      'Escolha um círculo colorido apenas ilustrativo para demonstrar a urgência do evento',
+    'O Círculo colorido é apenas ilustrativo, mas obrigatório viu!':
+      'O Círculo colorido é apenas ilustrativo, mas obrigatório viu!',
     'Um título para seu evento com limite de 35 caracteres':
       'Um título para seu evento com limite de 35 caracteres',
-    'Na seção categoria, descreva com palavras seu nível de importância':
-      'Na seção categoria, descreva com palavras seu nível de importância',
-    'Coloque o horário do evento de acordo com o formato escolhido nas configurações':
-      'Coloque o horário do evento de acordo com o formato escolhido nas configurações',
-    'Descreva uma data que seja acima da data atual de acordo com o formato escolhido nas configurações':
-      'Descreva uma data que seja acima da data atual de acordo com o formato escolhido nas configurações',
+    'Não coloque título, data e horário iguais, pega muito mal, ok?':
+      'Não coloque título, data e horário iguais, pega muito mal, ok?',
+    'O horário por padrão é em formato 24 horas, mas você pode mudar nas configurações.':
+      'O horário por padrão é em formato 24 horas, mas você pode mudar nas configurações.',
+    'Descreva uma data que seja acima da data atual em! Afinal, não podemos marcar eventos para o passado, ou podemos?':
+      'Descreva uma data que seja acima da data atual em! Afinal, não podemos marcar eventos para o passado, ou podemos?',
     'Apagar automaticamente dias passados':
       'Apagar automaticamente dias passados',
-    'Linguagem Escolhida': 'Linguagem Escolhida',
+    'Escolher linguagem': 'Escolher linguagem',
+    'Escolher formato de tempo': 'Escolher formato de tempo',
+    'Escolher formato de data': 'Escolher formato de data',
+    'Escolher fuso horário': 'Escolher fuso horário',
     Editar: 'Editar',
     Excluir: 'Excluir',
     'Sem descrição por aqui  ಥ_ಥ': 'Sem descrição por aqui  ಥ_ಥ',

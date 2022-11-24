@@ -14,7 +14,7 @@ import { SlideButton } from '../../components/SlideButton';
 import { RootStackParamList } from '../../routes/types';
 import { DropDown, CheckMark } from './components';
 import { useTranslation } from 'react-i18next';
-import { DATA_DROPDOWN_LANGUAGES } from '../../utils';
+import { DATA_DROPDOWN_LANGUAGES, DATA_DATE_LOCAL } from '../../utils';
 import { SETTINGS_ITENS } from './data';
 import { ConsumerMainContext } from '../../contexts/consumer';
 
@@ -29,6 +29,9 @@ export const Settings = () => {
     language,
     automaticEraseEventsPastDays,
     saveLanguage,
+    dateTypeLocal,
+    setDateTypeLocal,
+    saveDateTypeLocal,
   } = ConsumerMainContext();
 
   const toggleMarkerEraseEventsPastDays = () => {
@@ -62,7 +65,7 @@ export const Settings = () => {
               {t(SETTINGS_ITENS.AUTOMATIC_ERASE_PAST_DAYS_TEXT)}
             </TextRegular>
           </SubContainer>
-          <SubContainer zIndexContainer={6}>
+          <SubContainer zIndexContainer={7}>
             <DropDown
               Data={DATA_DROPDOWN_LANGUAGES}
               choosedOption={language}
@@ -74,6 +77,34 @@ export const Settings = () => {
               accessibilityRole="Text"
               accessibilityLabel="Linguagem Escolhida">
               {t(SETTINGS_ITENS.LANGUAGE_TEXT)}
+            </TextRegular>
+          </SubContainer>
+          <SubContainer zIndexContainer={6}>
+            <DropDown
+              Data={DATA_DATE_LOCAL}
+              choosedOption={dateTypeLocal}
+              setChoosedOption={setDateTypeLocal}
+              zIndex={5}
+              assistFunction={saveDateTypeLocal}
+            />
+            <TextRegular
+              accessibilityRole="Text"
+              accessibilityLabel="Linguagem Escolhida">
+              {t(SETTINGS_ITENS.DATE_TYPE_TEXT)}
+            </TextRegular>
+          </SubContainer>
+          <SubContainer zIndexContainer={4}>
+            <DropDown
+              Data={DATA_DROPDOWN_LANGUAGES}
+              choosedOption={language}
+              setChoosedOption={setLanguage}
+              zIndex={5}
+              assistFunction={saveLanguage}
+            />
+            <TextRegular
+              accessibilityRole="Text"
+              accessibilityLabel="Linguagem Escolhida">
+              {t(SETTINGS_ITENS.TIMEZONE_TEXT)}
             </TextRegular>
           </SubContainer>
         </Content>

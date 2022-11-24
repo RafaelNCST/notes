@@ -4,10 +4,9 @@ import {
   TopContainer,
   ContainerTitle,
   BottomContainer,
-  TextRegular,
   ContainerTexts,
 } from '../../styles';
-import { TextTitle } from './styles';
+import { TextTitle, TextRegular, TextDescription } from './styles';
 import { CircleEvent } from '../../../../components';
 import { ContentProps } from '../types';
 import { useTranslation } from 'react-i18next';
@@ -54,9 +53,9 @@ export const ViewContent: React.FC<ContentProps> = ({
       </TopContainer>
       <BottomContainer>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <TextRegular>
+          <TextDescription>
             {t(description || BLANK_DESCRIPTION_TEXTS[0])}
-          </TextRegular>
+          </TextDescription>
         </ScrollView>
       </BottomContainer>
     </Content>

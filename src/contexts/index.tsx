@@ -2,10 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useEffect, useState } from 'react';
 import { eventsProps } from '../store/types';
 import '../helpers/i18n';
-import { mainContextTypes, PropsChildren, languages } from './types';
+import { mainContextTypes, PropsChildren } from './types';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_VALUES } from './defaultValues';
-import { LANGUAGE_LIST } from '../utils/languagesTypes';
+import { LANGUAGE_LIST, DATE_LOCAL_LIST } from '../utils';
 
 export const MainContext = createContext({} as mainContextTypes);
 
@@ -15,8 +15,9 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
   const [theme, setTheme] = useState<number>(DEFAULT_VALUES.THEME);
   const [automaticEraseEventsPastDays, setAutomaticEraseEventsPastDays] =
     useState<boolean>(DEFAULT_VALUES.AUTOMATIC_ERASE_PAST_EVENTS);
-  const [language, setLanguage] = useState<languages>(
-    DEFAULT_VALUES.LANGUAGE[0],
+  const [language, setLanguage] = useState<string>(DEFAULT_VALUES.LANGUAGE[0]);
+  const [dateTypeLocal, setDateTypeLocal] = useState<string>(
+    DEFAULT_VALUES.DATE_TYPE_LOCAL[0],
   );
   const [firstRun, setFirstrun] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
@@ -61,11 +62,18 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     );
   };
 
-  const saveLanguage = (item: languages) => {
+  const saveLanguage = (item: string) => {
     const chooseLanguage = LANGUAGE_LIST[item];
     i18n.changeLanguage(chooseLanguage);
     const arrayLanguage = [item, chooseLanguage];
     AsyncStorage.setItem('@Language', JSON.stringify(arrayLanguage));
+  };
+
+  const saveDateTypeLocal = (item: string) => {
+    const chooseDateTypeLocal = DATE_LOCAL_LIST[item];
+    setDateTypeLocal(item);
+    const arrayDateTypeLocal = [item, chooseDateTypeLocal];
+    AsyncStorage.setItem('@dateTypeLocal', JSON.stringify(arrayDateTypeLocal));
   };
 
   const getSettingsInformations = async () => {
@@ -74,6 +82,7 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
       '@AutomaticErasePastDays',
     );
     const stringLanguage = await AsyncStorage.getItem('@Language');
+    const stringDateTypeLocal = await AsyncStorage.getItem('@dateTypeLocal');
 
     if (stringTheme) {
       setTheme(JSON.parse(stringTheme as string));
@@ -86,6 +95,9 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     if (stringLanguage) {
       setLanguage(JSON.parse(stringLanguage as string)[0]);
       i18n.changeLanguage(JSON.parse(stringLanguage as string)[1]);
+    }
+    if (stringDateTypeLocal) {
+      setDateTypeLocal(JSON.parse(stringDateTypeLocal as string)[0]);
     }
 
     setFirstrun(false);
@@ -125,6 +137,9 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
         automaticEraseEventsPastDays,
         loading,
         saveLanguage,
+        dateTypeLocal,
+        setDateTypeLocal,
+        saveDateTypeLocal,
       }}>
       {children}
     </MainContext.Provider>

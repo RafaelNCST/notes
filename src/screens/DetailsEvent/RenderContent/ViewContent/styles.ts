@@ -14,3 +14,21 @@ export const TextTitle = styled.Text<styledProps>`
   line-height: ${defaultStyle.lineHeight.big};
   margin-left: ${({ marginLeft }) => (marginLeft ? responsive.extraSmall : 0)};
 `;
+
+export const TextRegular = styled.Text`
+  color: ${({ theme }) => theme.colors.Text};
+  font-family: ${defaultStyle.fontFamily.interRegular};
+  font-size: ${defaultStyle.fontSize.small};
+  text-align: center;
+  line-height: ${defaultStyle.lineHeight.big};
+  margin-left: ${responsive.small};
+`;
+
+export const TextDescription = styled.Text`
+  color: ${({ theme }) => theme.colors.Text};
+  font-family: ${defaultStyle.fontFamily.interRegular};
+  font-size: ${defaultStyle.fontSize.small};
+  text-align: center;
+  line-height: ${defaultStyle.lineHeight.big};
+  margin: ${responsive.small};
+`;

@@ -21,9 +21,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 interface Props {
   Data: Array<string>;
   zIndex?: number;
-  setChoosedOption: Dispatch<SetStateAction<languages>>;
-  choosedOption?: languages;
-  assistFunction?: (item: languages) => void;
+  setChoosedOption: Dispatch<SetStateAction<string>>;
+  choosedOption?: string;
+  assistFunction?: (item: string) => void;
 }
 
 export const DropDown: React.FC<Props> = ({

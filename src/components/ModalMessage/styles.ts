@@ -71,14 +71,14 @@ export const TextBlankWarning = styled.Text`
 export const TextModalTitle = styled.Text`
   color: ${defaultStyle.colors.WHITE};
   font-family: ${defaultStyle.fontFamily.interBold};
-  font-size: ${responsive.medium};
+  font-size: ${responsive.small};
   text-align: center;
   line-height: ${defaultStyle.lineHeight.big};
 `;
 
 export const TextModalRegular = styled.Text`
   color: ${({ theme }) => theme.colors.Text};
-  font-family: ${defaultStyle.fontFamily.interRegular};
+  font-family: ${defaultStyle.fontFamily.interSemiBold};
   font-size: ${responsive.medium};
   text-align: center;
   line-height: ${defaultStyle.lineHeight.big};
