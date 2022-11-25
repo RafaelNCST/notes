@@ -24,8 +24,6 @@ import { useAppSelector } from '../../store/hooks/useAppSelector';
 import { StackNavigationProp } from '@react-navigation/stack';
 import moment from 'moment';
 import momentz from 'moment';
-import 'moment/locale/pt-br';
-import 'moment/locale/en';
 import { useTranslation } from 'react-i18next';
 import {
   Container,
@@ -123,6 +121,8 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
   const actionButtonCloseModalWarningCloseScreen = () => {
     setShowModalConfirmCloseModalAddEvent(false);
   };
+
+  console.log(dateTypeLocal);
 
   const actionButtonBackToHome = () => {
     reset({
