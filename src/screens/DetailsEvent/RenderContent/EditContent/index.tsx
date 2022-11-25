@@ -10,7 +10,12 @@ import {
 } from '../../styles';
 import { DropDownCircleContainer, InputTexts } from './styles';
 import { ContentEditProps } from '../types';
-import { DropDown, DropDownCircle, MaskInput } from '../../../../components';
+import {
+  DropDown,
+  DropDownCircle,
+  MaskInput,
+  MaskInputDate,
+} from '../../../../components';
 import { useTheme } from 'styled-components';
 import { DATA_CATEGORY, DATA_CIRCLE } from '../../../../utils';
 import { useTranslation } from 'react-i18next';
@@ -92,10 +97,9 @@ export const EditContent: React.FC<ContentEditProps> = ({
           <TextRegular accessibilityRole="Text" accessibilityLabel="Data">
             {t('Data')}:
           </TextRegular>
-          <MaskInput
+          <MaskInputDate
             separator="/"
             linesNumber={3}
-            type="date"
             arrayEvents={arrayEvents}
             setArrayEvents={setArrayEvents}
           />

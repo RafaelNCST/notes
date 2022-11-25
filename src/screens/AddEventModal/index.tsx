@@ -3,9 +3,14 @@ import { BodyScreen } from '../../styles/globalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
 import { Modal } from 'react-native';
-import { BottomMenu, HeaderMenu, DropDownCircle } from '../../components';
-import { MaskInput } from '../../components/MaskInput';
-import { DropDown } from '../../components/DropDown';
+import {
+  BottomMenu,
+  HeaderMenu,
+  DropDownCircle,
+  DropDown,
+  MaskInputDate,
+  MaskInputTime,
+} from '../../components';
 import { useAppDispatch } from '../../store/hooks/useAppDispatch';
 import { ModalMessage } from '../../components/ModalMessage';
 import { InfoButton } from './components/InfoButton';
@@ -44,17 +49,20 @@ import {
   checkErrors,
 } from '../../helpers';
 import { WARNING_TYPES } from './types';
+import { DropDownExtra } from './components/DropDown';
 import { ADD_EVENT } from '../../store/eventsReducer';
 
 interface Props {
   modalState: boolean;
 }
 
+const DATA_FORMAT_AMPM = ['AM', 'PM'];
+
 export type typeError = 'BLANK' | 'DUPLICATED_ID' | '';
 export type typeWarning = 'DUPLICATED_TITLE' | 'DUPLICATED_TIME_DATE' | '';
 
 export const AddEventModal: React.FC<Props> = ({ modalState }) => {
-  const { dateTypeLocal } = ConsumerMainContext();
+  const { dateTypeLocal, timeformat } = ConsumerMainContext();
 
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
@@ -79,6 +87,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
   const [firstRun, setFirstRun] = useState<boolean>(true);
   const [warning, setWarning] = useState<typeWarning>('');
   const [messageType, setMessageType] = useState<WARNING_TYPES>('');
+  const [indicatorTimeFormat, setIndicatorTimeFormat] = useState<string>('AM');
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
     id: '',
     circle: 'white',
@@ -121,8 +130,6 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
   const actionButtonCloseModalWarningCloseScreen = () => {
     setShowModalConfirmCloseModalAddEvent(false);
   };
-
-  console.log(dateTypeLocal);
 
   const actionButtonBackToHome = () => {
     reset({
@@ -333,23 +340,25 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
                   accessibilityLabel="Horário">
                   {t('Horário')}:
                 </TextRegular>
-                <MaskInput
-                  separator=":"
-                  linesNumber={2}
-                  type="time"
+                <MaskInputTime
                   arrayEvents={arrayEvents}
                   setArrayEvents={setArrayEvents}
                   clearMaskInputs={clearMaskInputs}
                 />
+                {timeformat === 'AM/PM' ? (
+                  <DropDownExtra
+                    Data={DATA_FORMAT_AMPM}
+                    zIndex={5}
+                    choosedOption={indicatorTimeFormat}
+                    setChoosedOption={setIndicatorTimeFormat}
+                  />
+                ) : null}
               </ContainerTexts>
               <ContainerTexts>
                 <TextRegular accessibilityRole="Text" accessibilityLabel="Data">
                   {t('Data')}:
                 </TextRegular>
-                <MaskInput
-                  separator="/"
-                  linesNumber={3}
-                  type="date"
+                <MaskInputDate
                   arrayEvents={arrayEvents}
                   setArrayEvents={setArrayEvents}
                   clearMaskInputs={clearMaskInputs}

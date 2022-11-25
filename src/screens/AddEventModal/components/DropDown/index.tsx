@@ -26,19 +26,19 @@ interface Props {
   assistFunction?: (item: string) => void;
 }
 
-export const DropDown: React.FC<Props> = ({
+export const DropDownExtra: React.FC<Props> = ({
   Data,
   zIndex,
   choosedOption,
   setChoosedOption,
   assistFunction,
 }) => {
-  const dataSize: number = Data.length * 40;
+  const dataSize: number = Data.length * 50;
 
   const { t } = useTranslation();
 
   const movimentMenu = useRef(new Animated.Value(-dataSize)).current;
-  const heightMenu = useRef(new Animated.Value(40)).current;
+  const heightMenu = useRef(new Animated.Value(35)).current;
   const [open, setOpen] = useState<boolean>(false);
 
   const handleDropDrown = () => {
@@ -72,7 +72,7 @@ export const DropDown: React.FC<Props> = ({
 
   const heightControl = heightMenu.interpolate({
     inputRange: [0, 1],
-    outputRange: [40, dataSize],
+    outputRange: [35, dataSize],
   });
 
   const onClickDropDown = () => {

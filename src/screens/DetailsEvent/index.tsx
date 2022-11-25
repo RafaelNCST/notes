@@ -169,8 +169,6 @@ export const DetailsEvent = () => {
     }
   };
 
-  console.log(id);
-
   const onClickConfirmEditEvent = () => {
     if (checkErrors(arrayEvents, setArrayBlankError, data, setError)) {
       setIconMessage(MODAL_MESSAGES.ERROR.ICON);

@@ -5,6 +5,7 @@ interface DEFAULT_VALUES_TYPES {
   DATE_TYPE_LOCAL:
     | ['Brasil(dia-mês-ano)', 'pt-br']
     | ['EUA(mês-dia-ano)', 'en'];
+  TIME_FORMAT: '24 HORAS' | 'AM/PM';
 }
 
 export const DEFAULT_VALUES: DEFAULT_VALUES_TYPES = {
@@ -12,4 +13,5 @@ export const DEFAULT_VALUES: DEFAULT_VALUES_TYPES = {
   AUTOMATIC_ERASE_PAST_EVENTS: false, // false para desligado e true para ligado (Relacionado ao apagamento automático de eventos de dias passados a partir do atual)
   LANGUAGE: ['Português(BR)', 'pt'], // linguagem escolhida
   DATE_TYPE_LOCAL: ['Brasil(dia-mês-ano)', 'pt-br'],
+  TIME_FORMAT: '24 HORAS',
 };

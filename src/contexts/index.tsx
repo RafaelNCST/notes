@@ -16,9 +16,13 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
   const [automaticEraseEventsPastDays, setAutomaticEraseEventsPastDays] =
     useState<boolean>(DEFAULT_VALUES.AUTOMATIC_ERASE_PAST_EVENTS);
   const [language, setLanguage] = useState<string>(DEFAULT_VALUES.LANGUAGE[0]);
+  const [timeformat, setTimeFormat] = useState<string>(
+    DEFAULT_VALUES.TIME_FORMAT,
+  );
   const [dateTypeLocal, setDateTypeLocal] = useState<string>(
     DEFAULT_VALUES.DATE_TYPE_LOCAL[0],
   );
+
   const [firstRun, setFirstrun] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -76,6 +80,11 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     AsyncStorage.setItem('@dateTypeLocal', JSON.stringify(arrayDateTypeLocal));
   };
 
+  const saveTimeFormat = (item: string) => {
+    setTimeFormat(item);
+    AsyncStorage.setItem('@timeFormat', item);
+  };
+
   const getSettingsInformations = async () => {
     const stringTheme = await AsyncStorage.getItem('@Theme');
     const stringAutomaticErasePastDays = await AsyncStorage.getItem(
@@ -83,6 +92,7 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     );
     const stringLanguage = await AsyncStorage.getItem('@Language');
     const stringDateTypeLocal = await AsyncStorage.getItem('@dateTypeLocal');
+    const stringTimeFormat = await AsyncStorage.getItem('@timeFormat');
 
     if (stringTheme) {
       setTheme(JSON.parse(stringTheme as string));
@@ -98,6 +108,9 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     }
     if (stringDateTypeLocal) {
       setDateTypeLocal(JSON.parse(stringDateTypeLocal as string)[0]);
+    }
+    if (stringTimeFormat) {
+      setTimeFormat(stringTimeFormat);
     }
 
     setFirstrun(false);
@@ -140,6 +153,9 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
         dateTypeLocal,
         setDateTypeLocal,
         saveDateTypeLocal,
+        timeformat,
+        setTimeFormat,
+        saveTimeFormat,
       }}>
       {children}
     </MainContext.Provider>

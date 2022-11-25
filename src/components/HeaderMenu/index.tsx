@@ -10,7 +10,7 @@ import {
 } from './styles';
 
 interface Props {
-  textDate: string;
+  textDate: string | undefined;
   iconLeft?: string;
   iconRight?: string;
   actionLeftButton?: () => void;
@@ -38,7 +38,7 @@ export const HeaderMenu: React.FC<Props> = ({
         )}
       </ContainerButtonLeft>
       <TextSubTitle accessibilityRole="Text" accessibilityLabel={textDate}>
-        {t(textDate)}
+        {textDate ? t(textDate) : null}
       </TextSubTitle>
       <ContainerButtonRight
         onPress={actionRightButton}

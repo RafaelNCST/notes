@@ -15,12 +15,10 @@ import { useAppDispatch } from '../../store/hooks/useAppDispatch';
 import { ConsumerMainContext } from '../../contexts/consumer';
 import { INITIALIZE_APP } from '../../store/eventsReducer';
 import { eventsProps } from '../../store/types';
-import 'moment/locale/pt-br';
 import moment from 'moment';
 import momentz from 'moment-timezone';
+import { DATE_LOCAL_LIST } from '../../utils';
 import { defaultStyle } from '../../styles/themes/defaultStyle';
-
-moment.locale('pt-br');
 
 interface RenderItemProps {
   item: eventsProps;
@@ -28,6 +26,7 @@ interface RenderItemProps {
 
 export const Home: React.FC = () => {
   const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const { dateTypeLocal } = ConsumerMainContext();
 
   const dispatch = useAppDispatch();
   const reload_changes = useAppSelector(store => store.Events.reload);
@@ -37,6 +36,7 @@ export const Home: React.FC = () => {
   const [dataEvents, setDataEvents] = useState<object[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  moment.locale(DATE_LOCAL_LIST[dateTypeLocal]);
   const actualMoment = momentz.tz('America/Manaus');
   const TITLE_DATE_TODAY = GET_TITLE_DATE_TODAY(language);
 
@@ -48,11 +48,15 @@ export const Home: React.FC = () => {
     navigate('SettingsScreen');
   };
 
+  console.log(actualMoment.hour());
+
   const getEventsToday = (resultArraySavedEvents: eventsProps[]) => {
-    const dateToday = actualMoment.format('DD/MM/YYYY');
+    const dateTodayBrasil = actualMoment.format('DD/MM/YYYY');
+    const dateTodayAmerican = actualMoment.format('MM/DD/YYYY');
     if (resultArraySavedEvents) {
       const eventsToday = resultArraySavedEvents.filter(
-        item => item.date === dateToday,
+        item =>
+          item.date === dateTodayBrasil || item.date === dateTodayAmerican,
       );
       setDataEvents(eventsToday);
     }

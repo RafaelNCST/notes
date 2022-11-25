@@ -14,7 +14,11 @@ import { SlideButton } from '../../components/SlideButton';
 import { RootStackParamList } from '../../routes/types';
 import { DropDown, CheckMark } from './components';
 import { useTranslation } from 'react-i18next';
-import { DATA_DROPDOWN_LANGUAGES, DATA_DATE_LOCAL } from '../../utils';
+import {
+  DATA_DROPDOWN_LANGUAGES,
+  DATA_DATE_LOCAL,
+  DATA_TIME_LOCAL,
+} from '../../utils';
 import { SETTINGS_ITENS } from './data';
 import { ConsumerMainContext } from '../../contexts/consumer';
 
@@ -32,6 +36,9 @@ export const Settings = () => {
     dateTypeLocal,
     setDateTypeLocal,
     saveDateTypeLocal,
+    saveTimeFormat,
+    timeformat,
+    setTimeFormat,
   } = ConsumerMainContext();
 
   const toggleMarkerEraseEventsPastDays = () => {
@@ -91,6 +98,20 @@ export const Settings = () => {
               accessibilityRole="Text"
               accessibilityLabel="Linguagem Escolhida">
               {t(SETTINGS_ITENS.DATE_TYPE_TEXT)}
+            </TextRegular>
+          </SubContainer>
+          <SubContainer zIndexContainer={5}>
+            <DropDown
+              Data={DATA_TIME_LOCAL}
+              choosedOption={timeformat}
+              setChoosedOption={setTimeFormat}
+              zIndex={5}
+              assistFunction={saveTimeFormat}
+            />
+            <TextRegular
+              accessibilityRole="Text"
+              accessibilityLabel="Linguagem Escolhida">
+              {t(SETTINGS_ITENS.TIME_TYPE_TEXT)}
             </TextRegular>
           </SubContainer>
           <SubContainer zIndexContainer={4}>

@@ -8,6 +8,7 @@ export default {
     'Selecione uma categoria': 'Select a category',
     Horário: 'Time',
     Data: 'Date',
+    '24 HORAS': '24 HOURS',
     'EUA(mês-dia-ano)': 'EUA(month-day-year)',
     'Brasil(dia-mês-ano)': 'Brazil(day-month-year)',
     'Regrinhas!': 'Little Rules!',

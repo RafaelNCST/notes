@@ -10,11 +10,12 @@ interface StyledProps {
 }
 
 export const DropDownContainer = styled(Animated.View)<StyledProps>`
-  width: 50%;
+  width: 15%;
   z-index: ${({ zIndex }) => zIndex};
   overflow: hidden;
   max-height: ${({ dataSize }) => dataSize}px;
   align-self: flex-start;
+  margin-left: 10px;
 `;
 
 export const DropDownSubContainer = styled(Animated.View)`
@@ -31,7 +32,7 @@ export const Selected = styled.TouchableHighlight`
 `;
 
 export const SubContainerSelected = styled.View`
-  height: 35px;
+  height: 22px;
   background-color: white;
   align-items: center;
   flex-direction: row;
@@ -49,7 +50,7 @@ export const TextSelected = styled.Text<StyledProps>`
 `;
 
 export const Option = styled.TouchableHighlight`
-  height: 35px;
+  height: 22px;
   justify-content: center;
   align-items: center;
 `;

@@ -16,4 +16,7 @@ export interface mainContextTypes {
   setDateTypeLocal: Dispatch<SetStateAction<string>>;
   saveLanguage: (item: string) => void;
   saveDateTypeLocal: (item: string) => void;
+  timeformat: string;
+  setTimeFormat: Dispatch<SetStateAction<string>>;
+  saveTimeFormat: (item: string) => void;
 }
