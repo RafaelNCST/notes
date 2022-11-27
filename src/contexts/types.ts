@@ -19,4 +19,7 @@ export interface mainContextTypes {
   timeformat: string;
   setTimeFormat: Dispatch<SetStateAction<string>>;
   saveTimeFormat: (item: string) => void;
+  timezone: string;
+  setTimeZone: Dispatch<SetStateAction<string>>;
+  saveTimeZone: (item: string) => void;
 }

@@ -18,6 +18,7 @@ import {
   DATA_DROPDOWN_LANGUAGES,
   DATA_DATE_LOCAL,
   DATA_TIME_LOCAL,
+  DATA_TIME_ZONE,
 } from '../../utils';
 import { SETTINGS_ITENS } from './data';
 import { ConsumerMainContext } from '../../contexts/consumer';
@@ -39,6 +40,9 @@ export const Settings = () => {
     saveTimeFormat,
     timeformat,
     setTimeFormat,
+    timezone,
+    setTimeZone,
+    saveTimeZone,
   } = ConsumerMainContext();
 
   const toggleMarkerEraseEventsPastDays = () => {
@@ -96,7 +100,7 @@ export const Settings = () => {
             />
             <TextRegular
               accessibilityRole="Text"
-              accessibilityLabel="Linguagem Escolhida">
+              accessibilityLabel={SETTINGS_ITENS.DATE_TYPE_TEXT}>
               {t(SETTINGS_ITENS.DATE_TYPE_TEXT)}
             </TextRegular>
           </SubContainer>
@@ -110,21 +114,21 @@ export const Settings = () => {
             />
             <TextRegular
               accessibilityRole="Text"
-              accessibilityLabel="Linguagem Escolhida">
+              accessibilityLabel={SETTINGS_ITENS.TIME_TYPE_TEXT}>
               {t(SETTINGS_ITENS.TIME_TYPE_TEXT)}
             </TextRegular>
           </SubContainer>
           <SubContainer zIndexContainer={4}>
             <DropDown
-              Data={DATA_DROPDOWN_LANGUAGES}
-              choosedOption={language}
-              setChoosedOption={setLanguage}
+              Data={DATA_TIME_ZONE}
+              choosedOption={timezone}
+              setChoosedOption={setTimeZone}
               zIndex={5}
-              assistFunction={saveLanguage}
+              assistFunction={saveTimeZone}
             />
             <TextRegular
               accessibilityRole="Text"
-              accessibilityLabel="Linguagem Escolhida">
+              accessibilityLabel={SETTINGS_ITENS.TIMEZONE_TEXT}>
               {t(SETTINGS_ITENS.TIMEZONE_TEXT)}
             </TextRegular>
           </SubContainer>

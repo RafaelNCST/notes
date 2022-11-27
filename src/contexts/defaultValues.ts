@@ -6,6 +6,7 @@ interface DEFAULT_VALUES_TYPES {
     | ['Brasil(dia-mês-ano)', 'pt-br']
     | ['EUA(mês-dia-ano)', 'en'];
   TIME_FORMAT: '24 HORAS' | 'AM/PM';
+  TIME_ZONE: 'America/Manaus';
 }
 
 export const DEFAULT_VALUES: DEFAULT_VALUES_TYPES = {
@@ -14,4 +15,5 @@ export const DEFAULT_VALUES: DEFAULT_VALUES_TYPES = {
   LANGUAGE: ['Português(BR)', 'pt'], // linguagem escolhida
   DATE_TYPE_LOCAL: ['Brasil(dia-mês-ano)', 'pt-br'],
   TIME_FORMAT: '24 HORAS',
+  TIME_ZONE: 'America/Manaus',
 };

@@ -147,6 +147,7 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
       time: '',
       date: '',
       description: '',
+      assistTimeFormat: '',
     });
     setClearMaskInputs(true);
     setTimeout(() => setClearMaskInputs(false), 500);
@@ -156,6 +157,12 @@ export const AddEventModal: React.FC<Props> = ({ modalState }) => {
 
   const sucessAddId = () => {
     setArrayBlankError([]);
+    if (timeformat === 'AM/PM') {
+      setArrayEvents(prevState => ({
+        ...prevState,
+        assistTimeFormat: `${indicatorTimeFormat}`,
+      }));
+    }
     setArrayEvents(prevState => ({
       ...prevState,
       id: `${actualMoment.format('L')}-${actualMoment.format(

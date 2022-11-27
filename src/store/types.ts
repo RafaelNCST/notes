@@ -9,6 +9,7 @@ export interface eventsProps {
   time?: string;
   date?: string;
   description?: string;
+  assistTimeFormat?: string;
 }
 
 export interface InitialStateProps {

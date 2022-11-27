@@ -8,6 +8,7 @@ export {
 export { DATA_DATE_LOCAL, DATE_LOCAL_LIST } from './settingsData/dateLocalData';
 export { MODAL_MESSAGES, MODAL_TEXT_BUTTONS } from './ModalMessages';
 export { DATA_TIME_LOCAL } from './settingsData/timeLocalData';
+export { DATA_TIME_ZONE } from './settingsData/timezoneData';
 
 export type { ITEM_TYPES, CATEGORYS_TYPES } from './DATA_CATEGORY';
 export type { ITEM_CIRCLE_TYPES, DATA_CIRCLE_TYPES } from './DATA_CIRCLE';

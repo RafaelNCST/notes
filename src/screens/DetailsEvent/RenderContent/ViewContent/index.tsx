@@ -21,6 +21,7 @@ export const ViewContent: React.FC<ContentProps> = ({
   category,
   date,
   circle,
+  assistTimeFormat,
 }) => {
   const { t } = useTranslation();
 
@@ -42,7 +43,9 @@ export const ViewContent: React.FC<ContentProps> = ({
           <TextTitle accessibilityRole="Text" accessibilityLabel="Horário">
             {t('Horário')}:
           </TextTitle>
-          <TextRegular>{time}</TextRegular>
+          <TextRegular>
+            {time} {assistTimeFormat ? assistTimeFormat : null}
+          </TextRegular>
         </ContainerTexts>
         <ContainerTexts>
           <TextTitle accessibilityRole="Text" accessibilityLabel="Data">

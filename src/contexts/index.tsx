@@ -19,6 +19,7 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
   const [timeformat, setTimeFormat] = useState<string>(
     DEFAULT_VALUES.TIME_FORMAT,
   );
+  const [timezone, setTimeZone] = useState<string>(DEFAULT_VALUES.TIME_ZONE);
   const [dateTypeLocal, setDateTypeLocal] = useState<string>(
     DEFAULT_VALUES.DATE_TYPE_LOCAL[0],
   );
@@ -85,6 +86,10 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     AsyncStorage.setItem('@timeFormat', item);
   };
 
+  const saveTimeZone = (item: string) => {
+    AsyncStorage.setItem('@timeZone', item);
+  };
+
   const getSettingsInformations = async () => {
     const stringTheme = await AsyncStorage.getItem('@Theme');
     const stringAutomaticErasePastDays = await AsyncStorage.getItem(
@@ -93,6 +98,7 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     const stringLanguage = await AsyncStorage.getItem('@Language');
     const stringDateTypeLocal = await AsyncStorage.getItem('@dateTypeLocal');
     const stringTimeFormat = await AsyncStorage.getItem('@timeFormat');
+    const stringTimeZone = await AsyncStorage.getItem('@timeZone');
 
     if (stringTheme) {
       setTheme(JSON.parse(stringTheme as string));
@@ -111,6 +117,9 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     }
     if (stringTimeFormat) {
       setTimeFormat(stringTimeFormat);
+    }
+    if (stringTimeZone) {
+      setTimeZone(stringTimeZone);
     }
 
     setFirstrun(false);
@@ -156,6 +165,9 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
         timeformat,
         setTimeFormat,
         saveTimeFormat,
+        timezone,
+        setTimeZone,
+        saveTimeZone,
       }}>
       {children}
     </MainContext.Provider>

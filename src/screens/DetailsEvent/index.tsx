@@ -50,8 +50,16 @@ export const DetailsEvent = () => {
 
   const { goBack, reset } =
     useNavigation<StackNavigationProp<RootStackParamList>>();
-  const { title, time, description, category, date, circle, id } =
-    useRoute<RouteProp<RootStackParamList>>()?.params || {};
+  const {
+    title,
+    time,
+    description,
+    category,
+    date,
+    circle,
+    id,
+    assistTimeFormat,
+  } = useRoute<RouteProp<RootStackParamList>>()?.params || {};
 
   const [arrayEvents, setArrayEvents] = useState<eventsProps>({
     id: id,
@@ -61,6 +69,7 @@ export const DetailsEvent = () => {
     time: time,
     date: date,
     description: description,
+    assistTimeFormat: assistTimeFormat,
   });
 
   const [actualArrayEvents, setActualArrayEvents] =

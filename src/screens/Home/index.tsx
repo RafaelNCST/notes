@@ -26,7 +26,7 @@ interface RenderItemProps {
 
 export const Home: React.FC = () => {
   const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const { dateTypeLocal } = ConsumerMainContext();
+  const { dateTypeLocal, timezone } = ConsumerMainContext();
 
   const dispatch = useAppDispatch();
   const reload_changes = useAppSelector(store => store.Events.reload);
@@ -37,7 +37,7 @@ export const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   moment.locale(DATE_LOCAL_LIST[dateTypeLocal]);
-  const actualMoment = momentz.tz('America/Manaus');
+  const actualMoment = momentz.tz(timezone);
   const TITLE_DATE_TODAY = GET_TITLE_DATE_TODAY(language);
 
   const openModalAddEvent = () => {
@@ -46,6 +46,10 @@ export const Home: React.FC = () => {
 
   const handleNavigationOptions = () => {
     navigate('SettingsScreen');
+  };
+
+  const handleNavigationCalendar = () => {
+    navigate('CalendarScreen');
   };
 
   console.log(actualMoment.hour());
@@ -89,7 +93,7 @@ export const Home: React.FC = () => {
           textDate={TITLE_DATE_TODAY}
           iconLeft="calendar-today"
           iconRight="settings"
-          actionLeftButton={() => console.log('pressouuu')}
+          actionLeftButton={handleNavigationCalendar}
           actionRightButton={handleNavigationOptions}
         />
         <Content>

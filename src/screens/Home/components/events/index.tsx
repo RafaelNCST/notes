@@ -14,6 +14,7 @@ export const Events: React.FC<eventsProps> = ({
   time,
   date,
   description,
+  assistTimeFormat,
 }) => {
   const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
 
@@ -26,6 +27,7 @@ export const Events: React.FC<eventsProps> = ({
       circle,
       category,
       date,
+      assistTimeFormat,
     });
   };
 

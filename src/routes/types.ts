@@ -10,6 +10,8 @@ export type RootStackParamList = {
     circle: ITEM_CIRCLE_TYPES | undefined;
     category: ITEM_TYPES | undefined;
     date: string | undefined;
+    assistTimeFormat: string | undefined;
   };
   SettingsScreen: undefined;
+  CalendarScreen: undefined;
 };

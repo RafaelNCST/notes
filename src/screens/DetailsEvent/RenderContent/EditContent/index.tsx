@@ -13,13 +13,16 @@ import { ContentEditProps } from '../types';
 import {
   DropDown,
   DropDownCircle,
-  MaskInput,
+  MaskInputTime,
   MaskInputDate,
 } from '../../../../components';
 import { useTheme } from 'styled-components';
 import { DATA_CATEGORY, DATA_CIRCLE } from '../../../../utils';
 import { useTranslation } from 'react-i18next';
+import { DropDownExtra } from '../../../AddEventModal/components/DropDown';
 import { ScrollView } from 'react-native-gesture-handler';
+
+const DATA_FORMAT_AMPM = ['AM', 'PM'];
 
 export const EditContent: React.FC<ContentEditProps> = ({
   arrayEvents,
@@ -28,6 +31,7 @@ export const EditContent: React.FC<ContentEditProps> = ({
   const [focusTitle, setFocusTitle] = useState<boolean>(false);
   const [focusDescription, setFocusDescription] = useState<boolean>(false);
   const [firstRunCircleDrop, setFirstRunCircleDrop] = useState<boolean>(false);
+  const [indicatorTimeFormat, setIndicatorTimeFormat] = useState<string>('AM');
   const [firstRunDropDown, setFirstRunDropDown] = useState<boolean>(false);
 
   const theme = useTheme();
@@ -85,21 +89,24 @@ export const EditContent: React.FC<ContentEditProps> = ({
           <TextRegular accessibilityRole="Text" accessibilityLabel="Horário">
             {t('Horário')}:
           </TextRegular>
-          <MaskInput
-            separator=":"
-            linesNumber={2}
-            type="time"
+          <MaskInputTime
             arrayEvents={arrayEvents}
             setArrayEvents={setArrayEvents}
           />
+          {arrayEvents.assistTimeFormat ? (
+            <DropDownExtra
+              Data={DATA_FORMAT_AMPM}
+              zIndex={5}
+              choosedOption={indicatorTimeFormat}
+              setChoosedOption={setIndicatorTimeFormat}
+            />
+          ) : null}
         </ContainerTexts>
         <ContainerTexts>
           <TextRegular accessibilityRole="Text" accessibilityLabel="Data">
             {t('Data')}:
           </TextRegular>
           <MaskInputDate
-            separator="/"
-            linesNumber={3}
             arrayEvents={arrayEvents}
             setArrayEvents={setArrayEvents}
           />

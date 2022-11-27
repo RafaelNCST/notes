@@ -10,6 +10,7 @@ export interface ContentProps {
   date?: string | undefined;
   circle?: ITEM_CIRCLE_TYPES | undefined;
   title?: string | undefined;
+  assistTimeFormat?: string | undefined;
 }
 
 export interface ContentEditProps {
