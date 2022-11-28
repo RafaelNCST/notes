@@ -9,5 +9,12 @@ export const Container = styled.View`
 
 export const Content = styled.View`
   flex: 1;
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.BackGround};
+`;
+
+export const ContainerDetailsDay = styled.View`
+  flex: 1;
+  width: 100%;
+  background-color: pink;
 `;
