@@ -17,6 +17,7 @@ import { INITIALIZE_APP } from '../../store/eventsReducer';
 import { eventsProps } from '../../store/types';
 import moment from 'moment';
 import momentz from 'moment-timezone';
+import 'moment/min/locales';
 import { DATE_LOCAL_LIST } from '../../utils';
 import { defaultStyle } from '../../styles/themes/defaultStyle';
 
@@ -39,6 +40,7 @@ export const Home: React.FC = () => {
   moment.locale(DATE_LOCAL_LIST[dateTypeLocal]);
   const actualMoment = momentz.tz(timezone);
   const TITLE_DATE_TODAY = GET_TITLE_DATE_TODAY(language);
+  console.log(actualMoment.format('dddd'));
 
   const openModalAddEvent = () => {
     setShowModalAddEvent(true);
@@ -51,8 +53,6 @@ export const Home: React.FC = () => {
   const handleNavigationCalendar = () => {
     navigate('CalendarScreen');
   };
-
-  console.log(actualMoment.hour());
 
   const getEventsToday = (resultArraySavedEvents: eventsProps[]) => {
     const dateTodayBrasil = actualMoment.format('DD/MM/YYYY');
