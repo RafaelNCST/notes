@@ -5,13 +5,16 @@ import responsive from '../../../../styles/themes/responsive';
 
 const { height, width } = Dimensions.get('screen');
 
+interface styledProps {
+  outMonth: number[];
+  position: number;
+}
+
 export const CalendarContainer = styled.View`
   width: 100%;
-  background-color: green;
 `;
 
 export const CalendarShortNameDaysContainer = styled.View`
-  background-color: purple;
   height: 25px;
   width: 100%;
   flex-direction: row;
@@ -25,8 +28,11 @@ export const ContainerNameDay = styled.View`
   justify-content: center;
 `;
 
-export const TextRegular = styled.Text`
-  color: ${({ theme }) => theme.colors.Text};
+export const TextRegular = styled.Text<styledProps>`
+  color: ${({ theme, outMonth, position }) =>
+    outMonth?.includes(position)
+      ? defaultStyle.colors.GRAY_OSLO
+      : theme.colors.Text};
   font-family: ${defaultStyle.fontFamily.interRegular};
   font-size: ${defaultStyle.fontSize.small};
   text-align: justify;
@@ -38,5 +44,4 @@ export const CardDay = styled.View`
   height: ${height / 15}px;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
 `;

@@ -33,5 +33,6 @@ export const defaultStyle = {
     GREEN_AFIRMATIVE: '#57A773',
     RED_NEGATIVE: '#CB2900',
     YELLOW_WARNING: '#dbd914',
+    GRAY_OSLO: '#878B8C',
   },
 };
