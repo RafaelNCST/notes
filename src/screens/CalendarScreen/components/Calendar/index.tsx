@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CalendarContainer,
   CalendarShortNameDaysContainer,
@@ -11,7 +11,7 @@ import momentz from 'moment-timezone';
 import { ConsumerMainContext } from '../../../../contexts/consumer';
 import { HeaderMenu } from '../../../../components';
 import { DATA_MASK_MONTH, February } from '../../../../helpers';
-import { Calendar_Itens, DaysNumber } from './data';
+import { Calendar_Itens } from './data';
 import { FlatList } from 'react-native';
 
 export const Calendar = () => {
@@ -19,178 +19,81 @@ export const Calendar = () => {
 
   moment.locale('en');
   const momentNow = momentz.tz(timezone);
-  const actualMonth = momentNow.format('MM');
+  const pastMonth = parseInt(momentNow.format('MM'), 10) - 1;
+  const actualMonth = parseInt(momentNow.format('MM'), 10);
   const actualYear = momentNow.format('YYYY');
-  const dayOfWeekNumber = moment(`${actualYear}-${actualMonth}-01`).weekday();
+  const firstDayOfWeek = moment(`${actualYear}-${actualMonth}-01`).weekday();
 
   const [arrayDaysInMonth, setArrayDaysInMonth] = useState(
     new Array(42).fill(0),
   );
-  const [pastMaxDaysInMonth, setPastMaxDaysInMonth] = useState(
-    parseInt(DATA_MASK_MONTH[actualMonth], 10) - 1,
-  );
-  const [actualMaxDaysInMonth, setActualMaxDaysInMonth] = useState(
-    parseInt(DATA_MASK_MONTH[actualMonth], 10),
-  );
+  const [pastQuantDaysMonth, setPastQuantDaysMonth] = useState<number>(0);
+  const [actualQuantDaysMonth, setActualQuantDaysMonth] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [outWeek, setOutWeek] = useState(0);
 
   const getMaxDaysInMonth = () => {
-    if (pastMaxDaysInMonth === 2) {
-      setPastMaxDaysInMonth(parseInt(February(actualYear), 10));
+    if (pastMonth === 2) {
+      setPastQuantDaysMonth(parseInt(February(actualYear), 10));
     } else {
-      setPastMaxDaysInMonth(parseInt(DATA_MASK_MONTH[actualMonth], 10));
+      setPastQuantDaysMonth(parseInt(DATA_MASK_MONTH[String(pastMonth)], 10));
     }
 
-    if (actualMaxDaysInMonth === 2) {
-      setActualMaxDaysInMonth(parseInt(February(actualYear), 10));
+    if (actualMonth === 2) {
+      setActualQuantDaysMonth(parseInt(February(actualYear), 10));
     } else {
-      setActualMaxDaysInMonth(parseInt(DATA_MASK_MONTH[actualMonth], 10));
+      setActualQuantDaysMonth(
+        parseInt(DATA_MASK_MONTH[String(actualMonth)], 10),
+      );
     }
   };
 
-  getMaxDaysInMonth();
+  console.log(pastQuantDaysMonth);
+  console.log(actualQuantDaysMonth);
 
-  const switchGetArrayDays = () => {
-    let finalArray = [];
-    switch (dayOfWeekNumber) {
-      case 0:
-        finalArray = arrayDaysInMonth.map(() => {
-          let actualItem = 1;
-          if (actualItem === actualMaxDaysInMonth) {
-            actualItem = 0;
-            actualItem + 1;
+  const handleGetDaysInMonth = () => {
+    let newArray = [];
+    if (firstDayOfWeek === 0) {
+      newArray = arrayDaysInMonth.map((_, index: number) => {
+        if (index + 1 > actualQuantDaysMonth) {
+          setOutWeek(index);
+          return index - actualQuantDaysMonth + 1;
+        } else {
+          return index + 1;
+        }
+      });
+    } else {
+      let contDays = pastQuantDaysMonth - firstDayOfWeek;
+      const arrayAux = arrayDaysInMonth.map((_, index: number) => {
+        if (contDays <= pastQuantDaysMonth) {
+          return contDays + (index + 1);
+        }
+      });
+      newArray = arrayAux.map((item, index) => {
+        if (item && item > pastQuantDaysMonth) {
+          if (index - firstDayOfWeek >= actualQuantDaysMonth) {
+            setOutWeek(index);
+            return index - firstDayOfWeek - actualQuantDaysMonth + 1;
           } else {
-            actualItem + 1;
+            return index - firstDayOfWeek + 1;
           }
-          return actualItem;
-        });
-        break;
-      case 1:
-        finalArray = arrayDaysInMonth.map((item, index) => {
-          let actualItem = 1;
-
-          if (index === 0) {
-            return item + pastMaxDaysInMonth;
-          }
-
-          if (actualItem === actualMaxDaysInMonth) {
-            actualItem = 0;
-            actualItem + 1;
-          } else {
-            actualItem + 1;
-          }
-          return item + actualItem;
-        });
-        break;
-      case 2:
-        finalArray = arrayDaysInMonth.map((item, index) => {
-          let actualItem = 1;
-
-          if (index === 0) {
-            return item + pastMaxDaysInMonth;
-          } else if (index === 1) {
-            return item + (pastMaxDaysInMonth - 1);
-          }
-
-          if (actualItem === actualMaxDaysInMonth) {
-            actualItem = 0;
-            actualItem + 1;
-          } else {
-            actualItem + 1;
-          }
-          return item + actualItem;
-        });
-        break;
-      case 3:
-        finalArray = arrayDaysInMonth.map((item, index) => {
-          let actualItem = 1;
-          let pastDayMonth = pastMaxDaysInMonth;
-
-          if (index === 0) {
-            return item + pastDayMonth;
-          } else if (index <= 2) {
-            pastDayMonth = pastDayMonth - 1;
-            return item + pastDayMonth;
-          }
-
-          if (actualItem === actualMaxDaysInMonth) {
-            actualItem = 0;
-            actualItem + 1;
-          } else {
-            actualItem + 1;
-          }
-          return item + actualItem;
-        });
-        break;
-      case 4:
-        finalArray = arrayDaysInMonth.map((item, index) => {
-          let actualItem = 1;
-          let pastDayMonth = pastMaxDaysInMonth;
-
-          if (index === 0) {
-            return item + pastDayMonth;
-          } else if (index <= 3) {
-            pastDayMonth = pastDayMonth - 1;
-            return item + pastDayMonth;
-          }
-
-          if (actualItem === actualMaxDaysInMonth) {
-            actualItem = 0;
-            actualItem + 1;
-          } else {
-            actualItem + 1;
-          }
-          return item + actualItem;
-        });
-        break;
-      case 5:
-        finalArray = arrayDaysInMonth.map((item, index) => {
-          let actualItem = 1;
-          let pastDayMonth = pastMaxDaysInMonth;
-
-          if (index === 0) {
-            return item + pastDayMonth;
-          } else if (index <= 4) {
-            pastDayMonth = pastDayMonth - 1;
-            return item + pastDayMonth;
-          }
-
-          if (actualItem === actualMaxDaysInMonth) {
-            actualItem = 0;
-            actualItem + 1;
-          } else {
-            actualItem + 1;
-          }
-          return item + actualItem;
-        });
-        break;
-      case 6:
-        finalArray = arrayDaysInMonth.map((item, index) => {
-          let actualItem = 1;
-          let pastDayMonth = pastMaxDaysInMonth;
-
-          if (index === 0) {
-            return item + pastDayMonth;
-          } else if (index <= 5) {
-            pastDayMonth = pastDayMonth - 1;
-            return item + pastDayMonth;
-          }
-
-          if (actualItem === actualMaxDaysInMonth) {
-            actualItem = 0;
-            actualItem + 1;
-          } else {
-            actualItem + 1;
-          }
-          return item + actualItem;
-        });
-        break;
+        } else {
+          setOutWeek(index);
+          return item;
+        }
+      });
     }
-
-    setArrayDaysInMonth(finalArray);
-    console.log(finalArray);
+    setArrayDaysInMonth(newArray);
+    setIsLoading(false);
   };
 
-  switchGetArrayDays();
+  useEffect(() => {
+    getMaxDaysInMonth();
+    handleGetDaysInMonth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log(arrayDaysInMonth);
 
   return (
     <CalendarContainer>
@@ -222,20 +125,22 @@ export const Calendar = () => {
           <TextRegular>Sab</TextRegular>
         </ContainerNameDay>
       </CalendarShortNameDaysContainer>
-      <FlatList
-        data={DaysNumber}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        numColumns={7}
-        keyExtractor={item => item}
-        renderItem={({ item }) => {
-          return (
-            <CardDay>
-              <TextRegular>{item}</TextRegular>
-            </CardDay>
-          );
-        }}
-      />
+      {!isLoading && (
+        <FlatList
+          data={arrayDaysInMonth}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          numColumns={7}
+          keyExtractor={(_, index) => String(index)}
+          renderItem={({ item }) => {
+            return (
+              <CardDay>
+                <TextRegular>{item}</TextRegular>
+              </CardDay>
+            );
+          }}
+        />
+      )}
     </CalendarContainer>
   );
 };
