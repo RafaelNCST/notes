@@ -37,20 +37,23 @@ export const Calendar = () => {
   const [monthName, setMonthName] = useState(
     Calendar_Itens.monthNames[actualMonth - 1],
   );
+
   const firstDayOfWeek = moment(`${actualYear}-${actualMonth}-01`).weekday();
 
   const getMaxDaysInMonth = () => {
     if (pastMonth === 2) {
       setPastQuantDaysMonth(parseInt(February(actualYear), 10));
     } else {
-      setPastQuantDaysMonth(parseInt(DATA_MASK_MONTH[String(pastMonth)], 10));
+      setPastQuantDaysMonth(
+        parseInt(DATA_MASK_MONTH[String(pastMonth).padStart(2, '0')], 10),
+      );
     }
 
     if (actualMonth === 2) {
       setActualQuantDaysMonth(parseInt(February(actualYear), 10));
     } else {
       setActualQuantDaysMonth(
-        parseInt(DATA_MASK_MONTH[String(actualMonth)], 10),
+        parseInt(DATA_MASK_MONTH[String(actualMonth).padStart(2, '0')], 10),
       );
     }
   };
@@ -93,21 +96,33 @@ export const Calendar = () => {
   };
 
   const actionLeftArrowCalendar = () => {
-    setPastMonth(prev => prev - 1);
+    if (pastMonth === 1) {
+      setActualYear(prev => prev + 1);
+      setActualMonth(1);
+      setPastMonth(12);
+    } else {
+      setActualMonth(prev => prev - 1);
+      setPastMonth(prev => prev - 1);
+    }
     setMonthName(Calendar_Itens.monthNames[actualMonth - 2]);
-    setActualMonth(prev => prev - 1);
   };
 
   const actionRightArrowCalendar = () => {
-    setPastMonth(prev => prev + 1);
+    if (actualMonth === 12) {
+      setActualYear(prev => prev + 1);
+      setActualMonth(1);
+      setPastMonth(12);
+    } else {
+      setActualMonth(prev => prev + 1);
+      setPastMonth(prev => prev + 1);
+    }
     setMonthName(Calendar_Itens.monthNames[actualMonth]);
-    setActualMonth(prev => prev + 1);
   };
 
   useEffect(() => {
     getMaxDaysInMonth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [actualMonth]);
+  }, [monthName]);
 
   useEffect(() => {
     handleGetDaysInMonth();
