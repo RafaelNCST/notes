@@ -13,11 +13,7 @@ export const CalendarScreen = () => {
   return (
     <BodyScreen>
       <Container>
-        <HeaderMenu
-          textDate="Calendar"
-          iconLeft="arrow-back-ios"
-          actionLeftButton={goBack}
-        />
+        <HeaderMenu iconLeft="arrow-back-ios" actionLeftButton={goBack} />
         <Content>
           <Calendar />
           <ContainerDetailsDay></ContainerDetailsDay>

@@ -10,7 +10,7 @@ import {
 } from './styles';
 
 interface Props {
-  textDate: string | undefined;
+  textDate?: string | undefined;
   iconLeft?: string;
   iconRight?: string;
   actionLeftButton?: () => void;

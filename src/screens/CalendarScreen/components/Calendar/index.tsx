@@ -32,10 +32,10 @@ export const Calendar = () => {
   );
   const [pastQuantDaysMonth, setPastQuantDaysMonth] = useState<number>(0);
   const [actualQuantDaysMonth, setActualQuantDaysMonth] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [endGetDates, setEndGetDates] = useState<boolean>(false);
   const [outMonth, setOutMonth] = useState<number[]>([]);
   const [monthName, setMonthName] = useState(
-    Calendar_Itens.monthNames[actualMonth - 1],
+    Calendar_Itens.monthNames[actualMonth],
   );
 
   const firstDayOfWeek = moment(`${actualYear}-${actualMonth}-01`).weekday();
@@ -56,6 +56,8 @@ export const Calendar = () => {
         parseInt(DATA_MASK_MONTH[String(actualMonth).padStart(2, '0')], 10),
       );
     }
+
+    setEndGetDates(prev => !prev);
   };
 
   const handleGetDaysInMonth = () => {
@@ -92,49 +94,61 @@ export const Calendar = () => {
       });
     }
     setArrayDaysInMonth(newArray);
-    setIsLoading(false);
   };
 
   const actionLeftArrowCalendar = () => {
-    if (pastMonth === 1) {
-      setActualYear(prev => prev + 1);
+    if (actualMonth === 2) {
       setActualMonth(1);
       setPastMonth(12);
+      setMonthName(Calendar_Itens.monthNames[1]);
+    } else if (actualMonth === 1) {
+      setActualYear(prev => String(parseInt(prev, 10) - 1));
+      setActualMonth(12);
+      setPastMonth(11);
+      setMonthName(Calendar_Itens.monthNames[12]);
     } else {
       setActualMonth(prev => prev - 1);
       setPastMonth(prev => prev - 1);
+      setMonthName(Calendar_Itens.monthNames[actualMonth - 1]);
     }
-    setMonthName(Calendar_Itens.monthNames[actualMonth - 2]);
   };
 
   const actionRightArrowCalendar = () => {
     if (actualMonth === 12) {
-      setActualYear(prev => prev + 1);
+      setActualYear(prev => String(parseInt(prev, 10) + 1));
       setActualMonth(1);
       setPastMonth(12);
+      setMonthName(Calendar_Itens.monthNames[1]);
+    } else if (pastMonth === 12) {
+      setActualMonth(2);
+      setPastMonth(1);
+      setMonthName(Calendar_Itens.monthNames[2]);
     } else {
       setActualMonth(prev => prev + 1);
       setPastMonth(prev => prev + 1);
+      setMonthName(Calendar_Itens.monthNames[actualMonth + 1]);
     }
-    setMonthName(Calendar_Itens.monthNames[actualMonth]);
   };
+
+  console.log(pastMonth, actualMonth, actualYear, monthName);
 
   useEffect(() => {
     getMaxDaysInMonth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [monthName]);
+  }, [pastMonth]);
 
   useEffect(() => {
     handleGetDaysInMonth();
+    console.log('rodou');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [actualQuantDaysMonth]);
+  }, [endGetDates]);
 
   return (
     <CalendarContainer>
       <HeaderMenu
         textDate={monthName}
-        iconLeft="arrow-back-ios"
-        iconRight="arrow-forward-ios"
+        iconLeft="arrow-back"
+        iconRight="arrow-forward"
         actionLeftButton={actionLeftArrowCalendar}
         actionRightButton={actionRightArrowCalendar}
       />
@@ -145,24 +159,22 @@ export const Calendar = () => {
           </ContainerNameDay>
         ))}
       </CalendarShortNameDaysContainer>
-      {!isLoading ? (
-        <FlatList
-          data={arrayDaysInMonth}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          numColumns={7}
-          keyExtractor={(_, index) => String(index)}
-          renderItem={({ item, index }) => {
-            return (
-              <CardDay>
-                <TextRegular outMonth={outMonth} position={index}>
-                  {item}
-                </TextRegular>
-              </CardDay>
-            );
-          }}
-        />
-      ) : null}
+      <FlatList
+        data={arrayDaysInMonth}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        numColumns={7}
+        keyExtractor={(_, index) => String(index)}
+        renderItem={({ item, index }) => {
+          return (
+            <CardDay>
+              <TextRegular outMonth={outMonth} position={index}>
+                {item}
+              </TextRegular>
+            </CardDay>
+          );
+        }}
+      />
     </CalendarContainer>
   );
 };
