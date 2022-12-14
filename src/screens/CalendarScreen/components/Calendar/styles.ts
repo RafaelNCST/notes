@@ -5,6 +5,11 @@ import responsive from '../../../../styles/themes/responsive';
 
 const { height, width } = Dimensions.get('screen');
 
+interface styledPropsBorder {
+  backGroundToday: boolean;
+  clickedDay: number;
+}
+
 interface styledProps {
   outMonth: number[];
   position: number;
@@ -39,9 +44,14 @@ export const TextRegular = styled.Text<styledProps>`
   line-height: ${defaultStyle.lineHeight.big};
 `;
 
-export const CardDay = styled.View`
+export const CardDay = styled.TouchableOpacity<styledPropsBorder>`
   width: ${width / 7}px;
   height: ${height / 15}px;
   justify-content: center;
   align-items: center;
+  border-style: solid;
+  border-color: ${({ theme }) => theme.colors.Inverted};
+  border-width: ${({ clickedDay }) => (clickedDay ? '1px' : 0)};
+  background-color: ${({ backGroundToday }) =>
+    backGroundToday ? defaultStyle.colors.BLUE_MARINE : null};
 `;

@@ -27,7 +27,7 @@ export const defaultStyle = {
     WHITE: '#FFF',
     BLACK: '#000',
     PURPLE: '#656BFC',
-    BLUE_DARK: '#2D2F60',
+    BLUE_DARK: '#00006f',
     BLUE_MARINE: '#188084',
     BLUE_WEAK: '#42E2B8',
     GREEN_AFIRMATIVE: '#57A773',

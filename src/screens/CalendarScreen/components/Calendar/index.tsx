@@ -13,12 +13,15 @@ import { HeaderMenu } from '../../../../components';
 import { DATA_MASK_MONTH, February } from '../../../../helpers';
 import { Calendar_Itens } from './data';
 import { FlatList } from 'react-native';
+import { DATE_LOCAL_LIST } from '../../../../utils';
 
 export const Calendar = () => {
-  const { timezone } = ConsumerMainContext();
+  const { timezone, dateTypeLocal } = ConsumerMainContext();
 
-  moment.locale('en');
+  moment.locale(DATE_LOCAL_LIST[dateTypeLocal]);
   const momentNow = momentz.tz(timezone);
+
+  const actualDay = momentNow.format('DD/MM/YYYY');
 
   const [pastMonth, setPastMonth] = useState(
     parseInt(momentNow.format('MM'), 10) - 1,
@@ -30,6 +33,7 @@ export const Calendar = () => {
   const [arrayDaysInMonth, setArrayDaysInMonth] = useState(
     new Array(42).fill(0),
   );
+  const [totalDateArray, setTotalDateArray] = useState(['']);
   const [pastQuantDaysMonth, setPastQuantDaysMonth] = useState<number>(0);
   const [actualQuantDaysMonth, setActualQuantDaysMonth] = useState<number>(0);
   const [endGetDates, setEndGetDates] = useState<boolean>(false);
@@ -37,8 +41,12 @@ export const Calendar = () => {
   const [monthName, setMonthName] = useState(
     Calendar_Itens.monthNames[actualMonth],
   );
+  const [clickedDay, setClickedDay] = useState(actualDay);
 
-  const firstDayOfWeek = moment(`${actualYear}-${actualMonth}-01`).weekday();
+  const firstDayOfWeek = moment(
+    `${actualYear}-${actualMonth}-01`,
+    'YYYY-MM-DD',
+  ).weekday();
 
   const getMaxDaysInMonth = () => {
     if (pastMonth === 2) {
@@ -63,12 +71,26 @@ export const Calendar = () => {
   const handleGetDaysInMonth = () => {
     let newArray = [];
     setOutMonth([]);
+    setTotalDateArray([]);
     if (firstDayOfWeek === 0) {
       newArray = arrayDaysInMonth.map((_, index: number) => {
         if (index + 1 > actualQuantDaysMonth) {
           setOutMonth(prev => [...prev, index]);
+          setTotalDateArray(prev => [
+            ...prev,
+            `${String(index - actualQuantDaysMonth + 1).padStart(
+              2,
+              '0',
+            )}/${actualMonth}/${actualYear}`,
+          ]);
           return index - actualQuantDaysMonth + 1;
         } else {
+          setTotalDateArray(prev => [
+            ...prev,
+            `${String(index + 1).padStart(2, '0')}/${
+              actualMonth + 1
+            }/${actualYear}`,
+          ]);
           return index + 1;
         }
       });
@@ -83,12 +105,29 @@ export const Calendar = () => {
         if (item && item > pastQuantDaysMonth) {
           if (index - firstDayOfWeek >= actualQuantDaysMonth) {
             setOutMonth(prev => [...prev, index]);
+            setTotalDateArray(prev => [
+              ...prev,
+              `${String(
+                index - firstDayOfWeek - actualQuantDaysMonth + 1,
+              ).padStart(2, '0')}/${actualMonth - 1}/${actualYear}`,
+            ]);
             return index - firstDayOfWeek - actualQuantDaysMonth + 1;
           } else {
+            setTotalDateArray(prev => [
+              ...prev,
+              `${String(index - firstDayOfWeek + 1).padStart(
+                2,
+                '0',
+              )}/${actualMonth}/${actualYear}`,
+            ]);
             return index - firstDayOfWeek + 1;
           }
         } else {
           setOutMonth(prev => [...prev, index]);
+          setTotalDateArray(prev => [
+            ...prev,
+            `${String(item).padStart(2, '0')}/${actualMonth + 1}/${actualYear}`,
+          ]);
           return item;
         }
       });
@@ -130,8 +169,6 @@ export const Calendar = () => {
     }
   };
 
-  console.log(pastMonth, actualMonth, actualYear, monthName);
-
   useEffect(() => {
     getMaxDaysInMonth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -139,25 +176,32 @@ export const Calendar = () => {
 
   useEffect(() => {
     handleGetDaysInMonth();
-    console.log('rodou');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endGetDates]);
+
+  console.log(clickedDay);
 
   return (
     <CalendarContainer>
       <HeaderMenu
-        textDate={monthName}
+        textDate={`${monthName} de ${actualYear}`}
         iconLeft="arrow-back"
         iconRight="arrow-forward"
         actionLeftButton={actionLeftArrowCalendar}
         actionRightButton={actionRightArrowCalendar}
       />
       <CalendarShortNameDaysContainer>
-        {Calendar_Itens.dayNamesShort.map((item, index) => (
-          <ContainerNameDay key={index}>
-            <TextRegular>{item}</TextRegular>
-          </ContainerNameDay>
-        ))}
+        {Calendar_Itens.dayNamesShort.map((item, index) => {
+          if (index === 0) {
+            return;
+          }
+
+          return (
+            <ContainerNameDay key={index}>
+              <TextRegular>{item}</TextRegular>
+            </ContainerNameDay>
+          );
+        })}
       </CalendarShortNameDaysContainer>
       <FlatList
         data={arrayDaysInMonth}
@@ -167,7 +211,12 @@ export const Calendar = () => {
         keyExtractor={(_, index) => String(index)}
         renderItem={({ item, index }) => {
           return (
-            <CardDay>
+            <CardDay
+              onPress={() => setClickedDay(totalDateArray[index])}
+              clickedDay={clickedDay === totalDateArray[index] ? true : false}
+              backGroundToday={
+                actualDay === totalDateArray[index] ? true : false
+              }>
               <TextRegular outMonth={outMonth} position={index}>
                 {item}
               </TextRegular>
