@@ -44,6 +44,24 @@ export const TextRegular = styled.Text<styledProps>`
   line-height: ${defaultStyle.lineHeight.big};
 `;
 
+export const ContainerBadges = styled.View`
+  width: 50%;
+  height: 30%;
+  position: absolute;
+  top: 0;
+  right: 3px;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row;
+`;
+
+export const Badge = styled.View`
+  height: 40%;
+  width: 25%;
+  border-radius: 50px;
+  background-color: red;
+`;
+
 export const CardDay = styled.TouchableOpacity<styledPropsBorder>`
   width: ${width / 7}px;
   height: ${height / 15}px;
@@ -53,5 +71,5 @@ export const CardDay = styled.TouchableOpacity<styledPropsBorder>`
   border-color: ${({ theme }) => theme.colors.Inverted};
   border-width: ${({ clickedDay }) => (clickedDay ? '1px' : 0)};
   background-color: ${({ backGroundToday }) =>
-    backGroundToday ? defaultStyle.colors.BLUE_MARINE : null};
+    backGroundToday ? defaultStyle.colors.BLUE_MARINE : 'transparent'};
 `;

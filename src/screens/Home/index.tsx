@@ -40,7 +40,6 @@ export const Home: React.FC = () => {
   moment.locale(DATE_LOCAL_LIST[dateTypeLocal]);
   const actualMoment = momentz.tz(timezone);
   const TITLE_DATE_TODAY = GET_TITLE_DATE_TODAY(language);
-  console.log(actualMoment.format('dddd'));
 
   const openModalAddEvent = () => {
     setShowModalAddEvent(true);

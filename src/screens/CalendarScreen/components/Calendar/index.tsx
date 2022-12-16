@@ -5,6 +5,8 @@ import {
   ContainerNameDay,
   TextRegular,
   CardDay,
+  ContainerBadges,
+  Badge,
 } from './styles';
 import moment from 'moment';
 import momentz from 'moment-timezone';
@@ -13,15 +15,20 @@ import { HeaderMenu } from '../../../../components';
 import { DATA_MASK_MONTH, February } from '../../../../helpers';
 import { Calendar_Itens } from './data';
 import { FlatList } from 'react-native';
+import { useAppSelector } from '../../../../store/hooks/useAppSelector';
 import { DATE_LOCAL_LIST } from '../../../../utils';
 
 export const Calendar = () => {
   const { timezone, dateTypeLocal } = ConsumerMainContext();
 
+  const dataEvents = useAppSelector(store => store.Events.data);
+
   moment.locale(DATE_LOCAL_LIST[dateTypeLocal]);
   const momentNow = momentz.tz(timezone);
 
-  const actualDay = momentNow.format('DD/MM/YYYY');
+  const actualDay = momentNow.format(
+    DATE_LOCAL_LIST[dateTypeLocal] === 'en' ? 'MM/DD/YYYY' : 'DD/MM/YYYY',
+  );
 
   const [pastMonth, setPastMonth] = useState(
     parseInt(momentNow.format('MM'), 10) - 1,
@@ -47,6 +54,58 @@ export const Calendar = () => {
     `${actualYear}-${actualMonth}-01`,
     'YYYY-MM-DD',
   ).weekday();
+
+  const handleOrganizeDateLocalsOne = (index: number) => {
+    const day = String(index - actualQuantDaysMonth).padStart(2, '0');
+    const month = String(actualMonth).padStart(2, '0');
+    const year = actualYear;
+
+    return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
+      ? `${month}/${day}/${year}`
+      : `${day}/${month}/${year}`;
+  };
+
+  const handleOrganizeDateLocalsTwo = (index: number) => {
+    const day = String(index - actualQuantDaysMonth).padStart(2, '0');
+    const month = String(actualMonth).padStart(2, '0');
+    const year = actualYear;
+
+    return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
+      ? `${month}/${day}/${year}`
+      : `${day}/${month}/${year}`;
+  };
+
+  const handleOrganizeDateLocalsThree = (index: number) => {
+    const day = String(
+      index - firstDayOfWeek - actualQuantDaysMonth + 1,
+    ).padStart(2, '0');
+    const month = String(actualMonth + 1).padStart(2, '0');
+    const year = actualYear;
+
+    return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
+      ? `${month}/${day}/${year}`
+      : `${day}/${month}/${year}`;
+  };
+
+  const handleOrganizeDateLocalsFour = (index: number) => {
+    const day = String(index - firstDayOfWeek + 1).padStart(2, '0');
+    const month = String(actualMonth).padStart(2, '0');
+    const year = actualYear;
+
+    return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
+      ? `${month}/${day}/${year}`
+      : `${day}/${month}/${year}`;
+  };
+
+  const handleOrganizeDateLocalsFive = (item: number | undefined) => {
+    const day = String(item).padStart(2, '0');
+    const month = String(actualMonth - 1).padStart(2, '0');
+    const year = actualYear;
+
+    return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
+      ? `${month}/${day}/${year}`
+      : `${day}/${month}/${year}`;
+  };
 
   const getMaxDaysInMonth = () => {
     if (pastMonth === 2) {
@@ -78,18 +137,13 @@ export const Calendar = () => {
           setOutMonth(prev => [...prev, index]);
           setTotalDateArray(prev => [
             ...prev,
-            `${String(index - actualQuantDaysMonth + 1).padStart(
-              2,
-              '0',
-            )}/${actualMonth}/${actualYear}`,
+            `${handleOrganizeDateLocalsOne(index)}`,
           ]);
           return index - actualQuantDaysMonth + 1;
         } else {
           setTotalDateArray(prev => [
             ...prev,
-            `${String(index + 1).padStart(2, '0')}/${
-              actualMonth + 1
-            }/${actualYear}`,
+            `${handleOrganizeDateLocalsTwo(index)}`,
           ]);
           return index + 1;
         }
@@ -107,18 +161,13 @@ export const Calendar = () => {
             setOutMonth(prev => [...prev, index]);
             setTotalDateArray(prev => [
               ...prev,
-              `${String(
-                index - firstDayOfWeek - actualQuantDaysMonth + 1,
-              ).padStart(2, '0')}/${actualMonth - 1}/${actualYear}`,
+              `${handleOrganizeDateLocalsThree(index)}`,
             ]);
             return index - firstDayOfWeek - actualQuantDaysMonth + 1;
           } else {
             setTotalDateArray(prev => [
               ...prev,
-              `${String(index - firstDayOfWeek + 1).padStart(
-                2,
-                '0',
-              )}/${actualMonth}/${actualYear}`,
+              `${handleOrganizeDateLocalsFour(index)}`,
             ]);
             return index - firstDayOfWeek + 1;
           }
@@ -126,7 +175,7 @@ export const Calendar = () => {
           setOutMonth(prev => [...prev, index]);
           setTotalDateArray(prev => [
             ...prev,
-            `${String(item).padStart(2, '0')}/${actualMonth + 1}/${actualYear}`,
+            `${handleOrganizeDateLocalsFive(item)}`,
           ]);
           return item;
         }
@@ -169,6 +218,8 @@ export const Calendar = () => {
     }
   };
 
+  console.log(totalDateArray);
+
   useEffect(() => {
     getMaxDaysInMonth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -178,8 +229,6 @@ export const Calendar = () => {
     handleGetDaysInMonth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endGetDates]);
-
-  console.log(clickedDay);
 
   return (
     <CalendarContainer>
@@ -217,6 +266,11 @@ export const Calendar = () => {
               backGroundToday={
                 actualDay === totalDateArray[index] ? true : false
               }>
+              <ContainerBadges>
+                {dataEvents[index]?.date === totalDateArray[index] ? (
+                  <Badge />
+                ) : null}
+              </ContainerBadges>
               <TextRegular outMonth={outMonth} position={index}>
                 {item}
               </TextRegular>
