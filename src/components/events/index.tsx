@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../../routes/types';
-import { CircleEvent } from '../../../../components';
-import { eventsProps } from '../../../../store/types';
+import { RootStackParamList } from '../../routes/types';
+import { CircleEvent } from '..';
+import { eventsProps } from '../../store/types';
 import { ButtonLine, ContainerText, TextRegular } from './styles';
 
 export const Events: React.FC<eventsProps> = ({

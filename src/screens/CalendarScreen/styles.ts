@@ -18,3 +18,12 @@ export const ContainerDetailsDay = styled.View`
   width: 100%;
   background-color: pink;
 `;
+
+export const BottomInfoEvent = styled.View`
+  flex: 1;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.BackGround};
+  border-style: solid;
+  border-color: ${defaultStyle.colors.BLACK};
+  border-top-width: 1px;
+`;

@@ -1,2 +1,2 @@
 export { BlankList } from './blankList';
-export { Events } from './events';
+export { Events } from '../../../components/events';

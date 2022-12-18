@@ -9,7 +9,7 @@ export const Container = styled.View`
 `;
 
 export const TextSubTitle = styled.Text`
-  color: ${({ theme }) => theme.colors.Text};
+  color: ${defaultStyle.colors.GRAY_OSLO};
   font-family: ${defaultStyle.fontFamily.interBold};
   font-size: ${defaultStyle.fontSize.medium};
   text-align: center;

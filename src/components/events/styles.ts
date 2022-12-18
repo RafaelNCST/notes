@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import responsive from '../../../../styles/themes/responsive';
-import { defaultStyle } from '../../../../styles/themes/defaultStyle';
+import responsive from '../../styles/themes/responsive';
+import { defaultStyle } from '../../styles/themes/defaultStyle';
 
 export const ButtonLine = styled.TouchableOpacity`
   height: 40px;
