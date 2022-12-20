@@ -13,8 +13,6 @@ interface RenderItemProps {
 }
 
 export const EventsInfo: React.FC<EventsInfoProps> = ({ Data }) => {
-  console.log(Data);
-
   return (
     <ListInfoEvents
       data={Data}

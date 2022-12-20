@@ -55,7 +55,7 @@ export const Calendar: React.FC<CalendarProps> = memo(
     const [totalDateArray, setTotalDateArray] = useState(['']);
     const [pastQuantDaysMonth, setPastQuantDaysMonth] = useState<number>(0);
     const [actualQuantDaysMonth, setActualQuantDaysMonth] = useState<number>(0);
-    const [endGetDates, setEndGetDates] = useState<boolean>(false);
+    const [endGetDates, setEndGetDates] = useState<boolean | null>(null);
     const [outMonth, setOutMonth] = useState<number[]>([]);
     const [monthName, setMonthName] = useState(
       Calendar_Itens.monthNames[actualMonth],
@@ -66,14 +66,17 @@ export const Calendar: React.FC<CalendarProps> = memo(
       'YYYY-MM-DD',
     ).weekday();
 
+    const formatDateByLanguage = (day: string, month: string, year: string) =>
+      DATE_LOCAL_LIST[dateTypeLocal] === 'en'
+        ? `${month}/${day}/${year}`
+        : `${day}/${month}/${year}`;
+
     const handleOrganizeDateLocalsOne = (index: number) => {
       const day = String(index - actualQuantDaysMonth).padStart(2, '0');
       const month = String(actualMonth).padStart(2, '0');
       const year = actualYear;
 
-      return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
-        ? `${month}/${day}/${year}`
-        : `${day}/${month}/${year}`;
+      return formatDateByLanguage(day, month, year);
     };
 
     const handleOrganizeDateLocalsTwo = (index: number) => {
@@ -81,9 +84,7 @@ export const Calendar: React.FC<CalendarProps> = memo(
       const month = String(actualMonth).padStart(2, '0');
       const year = actualYear;
 
-      return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
-        ? `${month}/${day}/${year}`
-        : `${day}/${month}/${year}`;
+      return formatDateByLanguage(day, month, year);
     };
 
     const handleOrganizeDateLocalsThree = (index: number) => {
@@ -94,12 +95,11 @@ export const Calendar: React.FC<CalendarProps> = memo(
         2,
         '0',
       );
-      const year =
-        actualMonth === 12 ? parseInt(actualYear, 10) + 1 : actualYear;
+      const year = String(
+        actualMonth === 12 ? parseInt(actualYear, 10) + 1 : actualYear,
+      );
 
-      return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
-        ? `${month}/${day}/${year}`
-        : `${day}/${month}/${year}`;
+      return formatDateByLanguage(day, month, year);
     };
 
     const handleOrganizeDateLocalsFour = (index: number) => {
@@ -107,9 +107,7 @@ export const Calendar: React.FC<CalendarProps> = memo(
       const month = String(actualMonth).padStart(2, '0');
       const year = actualYear;
 
-      return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
-        ? `${month}/${day}/${year}`
-        : `${day}/${month}/${year}`;
+      return formatDateByLanguage(day, month, year);
     };
 
     const handleOrganizeDateLocalsFive = (item: number | undefined) => {
@@ -118,30 +116,29 @@ export const Calendar: React.FC<CalendarProps> = memo(
         2,
         '0',
       );
-      const year =
-        actualMonth === 1 ? parseInt(actualYear, 10) - 1 : actualYear;
+      const year = String(
+        actualMonth === 1 ? parseInt(actualYear, 10) - 1 : actualYear,
+      );
 
-      return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
-        ? `${month}/${day}/${year}`
-        : `${day}/${month}/${year}`;
+      return formatDateByLanguage(day, month, year);
     };
 
-    const getMaxDaysInMonth = () => {
-      if (pastMonth === 2) {
-        setPastQuantDaysMonth(parseInt(February(actualYear), 10));
+    const getQuantDaysInMonth = (
+      setTimeQuant: Dispatch<SetStateAction<number>>,
+      month: number,
+    ) => {
+      if (month === 2) {
+        setTimeQuant(parseInt(February(actualYear), 10));
       } else {
-        setPastQuantDaysMonth(
+        setTimeQuant(
           parseInt(DATA_MASK_MONTH[String(pastMonth).padStart(2, '0')], 10),
         );
       }
+    };
 
-      if (actualMonth === 2) {
-        setActualQuantDaysMonth(parseInt(February(actualYear), 10));
-      } else {
-        setActualQuantDaysMonth(
-          parseInt(DATA_MASK_MONTH[String(actualMonth).padStart(2, '0')], 10),
-        );
-      }
+    const getMaxDaysInMonth = () => {
+      getQuantDaysInMonth(setPastQuantDaysMonth, pastMonth);
+      getQuantDaysInMonth(setActualQuantDaysMonth, actualMonth);
 
       setEndGetDates(prev => !prev);
     };
@@ -238,14 +235,7 @@ export const Calendar: React.FC<CalendarProps> = memo(
     };
 
     const compareEventsInDay = (numberToCompare: string) => {
-      for (let item of dataEvents) {
-        if (item.date === numberToCompare) {
-          return true;
-        } else {
-          continue;
-        }
-      }
-      return false;
+      return dataEvents.some(item => item.date === numberToCompare);
     };
 
     useEffect(() => {
@@ -255,9 +245,14 @@ export const Calendar: React.FC<CalendarProps> = memo(
     }, [pastMonth]);
 
     useEffect(() => {
-      handleGetDaysInMonth();
+      if (endGetDates !== null) {
+        handleGetDaysInMonth();
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [endGetDates]);
+
+    // console.log(moment(`${2023}-${2}-01`, 'YYYY-MM-DD').daysInMonth());
+    console.log(moment(`${1970}-${actualMonth}-01`, 'YYYY-MM-DD').weekday());
 
     return (
       <CalendarContainer>
@@ -269,17 +264,14 @@ export const Calendar: React.FC<CalendarProps> = memo(
           actionRightButton={actionRightArrowCalendar}
         />
         <CalendarShortNameDaysContainer>
-          {Calendar_Itens.dayNamesShort.map((item, index) => {
-            if (index === 0) {
-              return;
-            }
-
-            return (
-              <ContainerNameDay key={index}>
-                <TextRegular>{item}</TextRegular>
-              </ContainerNameDay>
-            );
-          })}
+          {Calendar_Itens.dayNamesShort.map(
+            (item, index) =>
+              !!index && (
+                <ContainerNameDay key={index}>
+                  <TextRegular>{item}</TextRegular>
+                </ContainerNameDay>
+              ),
+          )}
         </CalendarShortNameDaysContainer>
         <FlatList
           data={arrayDaysInMonth}
@@ -287,25 +279,66 @@ export const Calendar: React.FC<CalendarProps> = memo(
           showsHorizontalScrollIndicator={false}
           numColumns={7}
           keyExtractor={(_, index) => String(index)}
-          renderItem={({ item, index }) => {
-            return (
-              <CardDay
-                onPress={() => setClickedDay(totalDateArray[index])}
-                clickedDay={clickedDay === totalDateArray[index] ? true : false}
-                backGroundToday={
-                  actualDay === totalDateArray[index] ? true : false
-                }>
-                <ContainerBadges>
-                  {compareEventsInDay(totalDateArray[index]) ? <Badge /> : null}
-                </ContainerBadges>
-                <TextRegular outMonth={outMonth} position={index}>
-                  {item}
-                </TextRegular>
-              </CardDay>
-            );
-          }}
+          renderItem={({ item, index }) => (
+            <CardDay
+              onPress={() => setClickedDay(totalDateArray[index])}
+              clickedDay={clickedDay === totalDateArray[index] ? true : false}
+              backGroundToday={
+                actualDay === totalDateArray[index] ? true : false
+              }>
+              <ContainerBadges>
+                {compareEventsInDay(totalDateArray[index]) ? <Badge /> : null}
+              </ContainerBadges>
+              <TextRegular outMonth={outMonth} position={index}>
+                {item}
+              </TextRegular>
+            </CardDay>
+          )}
         />
       </CalendarContainer>
     );
   },
 );
+
+// const actualYear = 2022;
+
+// let calendarYear = 1969;
+
+// let arrayMonths = {}
+
+// const getDaysInMonth = (quantPastMonth, quantActualMonth, firstDayOfWeek) => {
+//     let auxArray = new Array(42).fill(0);
+//     let pastMonthArray = [];
+//     let quantPastDaysMonth = quantPastMonth - firstDayOfWeek
+
+//     if(firstDayOfWeek !== 0){
+//         let auxPastArray = [25, 26, 27, 28, 29, 30, 31]
+//         pastMonthArray = auxPastArray.filter((item) => {
+//         if(item > quantPastDaysMonth && item <= quantPastMonth){
+//             return item
+//         }
+//     })
+//     }
+
+//     let countAuxDays = 0;
+
+//     const finalArray = auxArray.map((item, index) => {
+//         if(pastMonthArray[index] !== undefined){
+//             return pastMonthArray[index];
+//         } else if (index >= pastMonthArray.length && index < quantActualMonth + (pastMonthArray.length)) {
+//             return (index - pastMonthArray.length) + 1
+//         } else {
+//             countAuxDays = countAuxDays + 1
+//             return countAuxDays;
+//         }
+//     })
+
+//     return finalArray
+// }
+
+// while(calendarYear < actualYear + 10){
+//     calendarYear = calendarYear + 1;
+//     arrayMonths[calendarYear] = {jan: getDaysInMonth(31, 31, 0), feb: getDaysInMonth(31, 28, 3), mar: 31, abr: 30, mai: 31, jun: 30, jul: 31, ago: 31, set: 30, out: 31, nov: 30, dez: getDaysInMonth(30, 31, 4)};
+// }
+
+// console.log(arrayMonths)
