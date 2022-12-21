@@ -66,6 +66,71 @@ export const Calendar: React.FC<CalendarProps> = memo(
       'YYYY-MM-DD',
     ).weekday();
 
+    // const actualYear = 2022;
+
+    let calendarYear = 1969;
+
+    const getDaysInMonth = (
+      quantPastMonth: number,
+      quantActualMonth: number,
+      firstDayOfWeek2: number,
+    ) => {
+      let auxArray = new Array(42).fill(0);
+      let firstDayOfWeek2 = [];
+      let pastMonthArray = [];
+      let quantPastDaysMonth = quantPastMonth - firstDayOfWeek;
+
+      if (firstDayOfWeek !== 0) {
+        let auxPastArray = [25, 26, 27, 28, 29, 30, 31];
+        pastMonthArray = auxPastArray.filter(item => {
+          if (item > quantPastDaysMonth && item <= quantPastMonth) {
+            return item;
+          }
+        });
+      }
+
+      let countAuxDays = 0;
+
+      const finalArray = auxArray.map((item, index) => {
+        if (pastMonthArray[index] !== undefined) {
+          return pastMonthArray[index];
+        } else if (
+          index >= pastMonthArray.length &&
+          index < quantActualMonth + pastMonthArray.length
+        ) {
+          return index - pastMonthArray.length + 1;
+        } else {
+          countAuxDays = countAuxDays + 1;
+          return countAuxDays;
+        }
+      });
+
+      return finalArray;
+    };
+
+    const handleDaysInMonthArray = () => {
+      let arrayMonths = {};
+      while (calendarYear < actualYear + 10) {
+        calendarYear = calendarYear + 1;
+        arrayMonths[calendarYear] = {
+          jan: getDaysInMonth(31, 31, 0),
+          feb: getDaysInMonth(31, 28, 3),
+          mar: 31,
+          abr: 30,
+          mai: 31,
+          jun: 30,
+          jul: 31,
+          ago: 31,
+          set: 30,
+          out: 31,
+          nov: 30,
+          dez: getDaysInMonth(30, 31, 4),
+        };
+      }
+    };
+
+    // console.log(arrayMonths)
+
     const formatDateByLanguage = (day: string, month: string, year: string) =>
       DATE_LOCAL_LIST[dateTypeLocal] === 'en'
         ? `${month}/${day}/${year}`
