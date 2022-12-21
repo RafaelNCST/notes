@@ -64,5 +64,17 @@ export default {
       'Hey, just a warning, but you have an event with a date and times similar to the one you entered (❁´◡`❁)',
     'Você tem modificações não adicionadas, deseja mesmo sair?':
       'You have changes not added, do you really want to exit?',
+    'Janeiro de ': 'January, ',
+    'Fevereiro de ': 'February, ',
+    'Março de ': 'March, ',
+    'Abril de ': 'April, ',
+    'Maio de ': 'May, ',
+    'Junho de ': 'June, ',
+    'Julho de ': 'July, ',
+    'Agosto de ': 'August, ',
+    'Setembro de ': 'September, ',
+    'Outubro de ': 'October, ',
+    'Novembro de ': 'November, ',
+    'Dezembro de ': 'December, ',
   },
 };

@@ -34,10 +34,8 @@ export const ContainerNameDay = styled.View`
 `;
 
 export const TextRegular = styled.Text<styledProps>`
-  color: ${({ theme, outMonth, position }) =>
-    outMonth?.includes(position)
-      ? defaultStyle.colors.GRAY_OSLO
-      : theme.colors.Text};
+  color: ${({ theme, outMonth }) =>
+    outMonth ? defaultStyle.colors.GRAY_OSLO : theme.colors.Text};
   font-family: ${defaultStyle.fontFamily.interRegular};
   font-size: ${defaultStyle.fontSize.small};
   text-align: justify;

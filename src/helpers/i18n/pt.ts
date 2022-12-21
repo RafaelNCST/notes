@@ -65,5 +65,17 @@ export default {
       'Ei, psiu, só um aviso, mas você tem um evento com data e horários semelhantes ao que você colocou (❁´◡`❁)',
     'Você tem modificações não adicionadas, deseja mesmo sair?':
       'Você tem modificações não adicionadas, deseja mesmo sair?',
+    'Janeiro de ': 'Janeiro de ',
+    'Fevereiro de ': 'Fevereiro de ',
+    'Março de ': 'Março de ',
+    'Abril de ': 'Abril de ',
+    'Maio de ': 'Maio de ',
+    'Junho de ': 'Junho de ',
+    'Julho de ': 'Julho de ',
+    'Agosto de ': 'Agosto de ',
+    'Setembro de ': 'Setembro de ',
+    'Outubro de ': 'Outubro de ',
+    'Novembro de ': 'Novembro de ',
+    'Dezembro de ': 'Dezembro de ',
   },
 };

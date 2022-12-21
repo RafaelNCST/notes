@@ -1,6 +1,5 @@
 export const Calendar_Itens = {
   monthNames: [
-    '',
     'Janeiro',
     'Fevereiro',
     'Março',
@@ -15,7 +14,6 @@ export const Calendar_Itens = {
     'Dezembro',
   ],
   monthNamesShort: [
-    '',
     'Jan.',
     'Fev.',
     'Mar',
@@ -30,7 +28,6 @@ export const Calendar_Itens = {
     'Dez.',
   ],
   dayNames: [
-    '',
     'Domingo',
     'Segunda',
     'Terça',
@@ -39,6 +36,6 @@ export const Calendar_Itens = {
     'Sexta',
     'Sábado',
   ],
-  dayNamesShort: ['', 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+  dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
   today: 'Hoje',
 };
