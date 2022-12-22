@@ -4,6 +4,12 @@ export interface PropsChildren {
   children: React.ReactNode;
 }
 
+export interface arrayDaysInMonthType {
+  [unit: number]: {
+    [unit: string]: string[];
+  };
+}
+
 export interface mainContextTypes {
   theme: number;
   setTheme: Dispatch<SetStateAction<number>>;
@@ -22,4 +28,5 @@ export interface mainContextTypes {
   timezone: string;
   setTimeZone: Dispatch<SetStateAction<string>>;
   saveTimeZone: (item: string) => void;
+  arrayDaysInMonth: arrayDaysInMonthType;
 }
