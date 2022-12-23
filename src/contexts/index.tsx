@@ -25,8 +25,6 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
   const [dateTypeLocal, setDateTypeLocal] = useState<string>(
     DEFAULT_VALUES.DATE_TYPE_LOCAL[0],
   );
-  const [arrayDaysInMonth, setArrayDaysInMonth] =
-    useState<arrayDaysInMonthType>({});
 
   const [firstRun, setFirstrun] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
@@ -132,14 +130,8 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
 
   const formatDateByLanguage = (day: number, month: number, year: number) => {
     return DATE_LOCAL_LIST[dateTypeLocal] === 'en' || dateTypeLocal
-      ? `${String(month).padStart(2, '0')}/${String(day).padStart(
-          2,
-          '0',
-        )}/${year}`
-      : `${String(day).padStart(2, '0')}/${String(month).padStart(
-          2,
-          '0',
-        )}/${year}`;
+      ? `${String(month).padStart(2, '0')}/${day}/${year}`
+      : `${day}/${String(month).padStart(2, '0')}/${year}`;
   };
 
   const getDaysInMonth = (
@@ -155,7 +147,7 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
     let quantPastDaysMonth = quantPastMonth - firstDayOfWeek;
 
     if (firstDayOfWeek !== 0) {
-      let auxPastArray = [25, 26, 27, 28, 29, 30, 31];
+      let auxPastArray = [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
       pastMonthArray = auxPastArray.filter(item => {
         if (item > quantPastDaysMonth && item <= quantPastMonth) {
           return item;
@@ -291,15 +283,16 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
       };
     }
 
-    setArrayDaysInMonth(arrayMonths);
+    return arrayMonths;
   };
+
+  let arrayDaysInMonth: arrayDaysInMonthType = handleDaysInMonthArray();
 
   useEffect(() => {
     if (automaticEraseEventsPastDays) {
       deleteEventPastDays();
     }
     getSettingsInformations();
-    handleDaysInMonthArray();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

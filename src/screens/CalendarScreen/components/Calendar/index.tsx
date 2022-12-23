@@ -33,7 +33,7 @@ export const Calendar: React.FC<CalendarProps> = ({
   let auxActualMonth = parseInt(momentNow.format('MM'), 10);
 
   const actualDay = momentNow.format(
-    DATE_LOCAL_LIST[dateTypeLocal] === 'en' ? 'MM/DD/YYYY' : 'DD/MM/YYYY',
+    DATE_LOCAL_LIST[dateTypeLocal] === 'en' ? 'MM/D/YYYY' : 'D/MM/YYYY',
   );
 
   const [actualYear, setActualYear] = useState(
@@ -81,8 +81,6 @@ export const Calendar: React.FC<CalendarProps> = ({
     setClickedDay(actualDay);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log(clickedDay);
 
   return (
     <CalendarContainer>

@@ -13,6 +13,8 @@ interface ItemsListCalendarProps {
   dateTypeLocal: string;
 }
 
+let count = 0;
+
 export const ItemsListCalendar: React.FC<ItemsListCalendarProps> = memo(
   ({
     actualDay,
@@ -39,6 +41,8 @@ export const ItemsListCalendar: React.FC<ItemsListCalendarProps> = memo(
         : item.split('/')[1],
       10,
     );
+
+    console.log(count++, clickedDay);
 
     return (
       <CardDay
