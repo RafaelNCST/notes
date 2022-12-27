@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components';
 import { useTranslation } from 'react-i18next';
@@ -17,37 +17,33 @@ interface Props {
   actionRightButton?: () => void;
 }
 
-export const HeaderMenu: React.FC<Props> = ({
-  textDate,
-  iconLeft,
-  iconRight,
-  actionLeftButton,
-  actionRightButton,
-}) => {
-  const theme = useTheme();
-  const { t } = useTranslation();
+export const HeaderMenu: React.FC<Props> = memo(
+  ({ textDate, iconLeft, iconRight, actionLeftButton, actionRightButton }) => {
+    const theme = useTheme();
+    const { t } = useTranslation();
 
-  return (
-    <Container>
-      <ContainerButtonLeft
-        onPress={actionLeftButton}
-        accessibilityRole="Button"
-        accessibilityLabel="Botão de ação da esquerda">
-        {iconLeft && (
-          <Icon name={iconLeft} size={20} color={theme.colors.Text} />
-        )}
-      </ContainerButtonLeft>
-      <TextSubTitle accessibilityRole="Text" accessibilityLabel={textDate}>
-        {textDate ? t(textDate) : null}
-      </TextSubTitle>
-      <ContainerButtonRight
-        onPress={actionRightButton}
-        accessibilityRole="Button"
-        accessibilityLabel="Botão de ação da direita">
-        {iconRight && (
-          <Icon name={iconRight} size={20} color={theme.colors.Text} />
-        )}
-      </ContainerButtonRight>
-    </Container>
-  );
-};
+    return (
+      <Container>
+        <ContainerButtonLeft
+          onPress={actionLeftButton}
+          accessibilityRole="Button"
+          accessibilityLabel="Botão de ação da esquerda">
+          {iconLeft && (
+            <Icon name={iconLeft} size={20} color={theme.colors.Text} />
+          )}
+        </ContainerButtonLeft>
+        <TextSubTitle accessibilityRole="Text" accessibilityLabel={textDate}>
+          {textDate ? t(textDate) : null}
+        </TextSubTitle>
+        <ContainerButtonRight
+          onPress={actionRightButton}
+          accessibilityRole="Button"
+          accessibilityLabel="Botão de ação da direita">
+          {iconRight && (
+            <Icon name={iconRight} size={20} color={theme.colors.Text} />
+          )}
+        </ContainerButtonRight>
+      </Container>
+    );
+  },
+);

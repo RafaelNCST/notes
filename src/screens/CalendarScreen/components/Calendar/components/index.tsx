@@ -1,16 +1,17 @@
-import React, { Dispatch, SetStateAction, memo } from 'react';
+import React, { memo } from 'react';
 import { CardDay, ContainerBadges, Badge } from './styles';
-import { useAppSelector } from '../../../../../store/hooks/useAppSelector';
 import { DATE_LOCAL_LIST } from '../../../../../utils';
+import { eventsProps } from '../../../../../store/types';
 import { TextRegular } from '../styles';
 
 interface ItemsListCalendarProps {
   actualDay: string;
   clickedDay: string;
-  setClickedDay: Dispatch<SetStateAction<string>>;
+  handleChangeDate: (item: string) => void;
   item: string;
   actualMonth: number;
   dateTypeLocal: string;
+  dataEvents: eventsProps[];
 }
 
 let count = 0;
@@ -19,13 +20,12 @@ export const ItemsListCalendar: React.FC<ItemsListCalendarProps> = memo(
   ({
     actualDay,
     clickedDay,
-    setClickedDay,
+    handleChangeDate,
     item,
     actualMonth,
     dateTypeLocal,
+    dataEvents,
   }) => {
-    const dataEvents = useAppSelector(store => store.Events.data);
-
     const compareEventsInDay = (numberToCompare: string) => {
       return dataEvents.some(events => events.date === numberToCompare);
     };
@@ -42,11 +42,11 @@ export const ItemsListCalendar: React.FC<ItemsListCalendarProps> = memo(
       10,
     );
 
-    console.log(count++, clickedDay);
+    console.log(count++, 'render');
 
     return (
       <CardDay
-        onPress={() => setClickedDay(item)}
+        onPress={() => handleChangeDate(item)}
         clickedDay={clickedDay === item ? true : false}
         backGroundToday={actualDay === item ? true : false}>
         <ContainerBadges>

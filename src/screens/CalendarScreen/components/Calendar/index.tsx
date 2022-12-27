@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState, useCallback } from 'react';
 import {
   CalendarContainer,
   CalendarShortNameDaysContainer,
@@ -13,6 +13,7 @@ import { Calendar_Itens } from './data';
 import { FlatList } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ItemsListCalendar } from './components';
+import { useAppSelector } from '../../../../store/hooks/useAppSelector';
 import { DATE_LOCAL_LIST } from '../../../../utils';
 interface CalendarProps {
   clickedDay: string;
@@ -24,6 +25,10 @@ export const Calendar: React.FC<CalendarProps> = ({
   setClickedDay,
 }) => {
   const { timezone, dateTypeLocal, arrayDaysInMonth } = ConsumerMainContext();
+
+  const dataEvents = useAppSelector(store => store.Events.data);
+
+  const finalDataDaysInMonth = arrayDaysInMonth;
 
   const { t } = useTranslation();
 
@@ -42,23 +47,23 @@ export const Calendar: React.FC<CalendarProps> = ({
   const [actualMonth, setActualMonth] = useState(
     moment(`${actualYear}-${auxActualMonth}-01`, 'YYYY-MM-DD').month(),
   );
-  const [monthName, setMonthName] = useState(
-    Calendar_Itens.monthNames[actualMonth],
+
+  const handleChangeDate = useCallback(
+    (item: string) => {
+      setClickedDay(item);
+    },
+    [setClickedDay],
   );
-  const finalDataDaysInMonth = arrayDaysInMonth;
 
   const actionLeftArrowCalendar = () => {
     if (actualYear === 1971 && actualMonth === 1) {
       setActualMonth(1);
       setActualYear(prev => prev);
-      setMonthName(Calendar_Itens.monthNames[1]);
     } else if (actualMonth === 0) {
       setActualMonth(11);
       setActualYear(prev => prev - 1);
-      setMonthName(Calendar_Itens.monthNames[11]);
     } else {
       setActualMonth(prev => prev - 1);
-      setMonthName(Calendar_Itens.monthNames[actualMonth - 1]);
     }
   };
 
@@ -66,26 +71,20 @@ export const Calendar: React.FC<CalendarProps> = ({
     if (actualYear === momentNow.year() + 10 && actualMonth === 11) {
       setActualMonth(11);
       setActualYear(prev => prev);
-      setMonthName(Calendar_Itens.monthNames[11]);
     } else if (actualMonth === 11) {
       setActualMonth(0);
       setActualYear(prev => prev + 1);
-      setMonthName(Calendar_Itens.monthNames[0]);
     } else {
       setActualMonth(prev => prev + 1);
-      setMonthName(Calendar_Itens.monthNames[actualMonth + 1]);
     }
   };
-
-  useEffect(() => {
-    setClickedDay(actualDay);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <CalendarContainer>
       <HeaderMenu
-        textDate={t(`${monthName} de `) + actualYear}
+        textDate={
+          t(`${Calendar_Itens.monthNames[actualMonth]} de `) + actualYear
+        }
         iconLeft="arrow-back"
         iconRight="arrow-forward"
         actionLeftButton={actionLeftArrowCalendar}
@@ -108,10 +107,11 @@ export const Calendar: React.FC<CalendarProps> = ({
           <ItemsListCalendar
             actualDay={actualDay}
             clickedDay={clickedDay}
-            setClickedDay={setClickedDay}
+            handleChangeDate={handleChangeDate}
             item={item}
             actualMonth={actualMonth}
             dateTypeLocal={dateTypeLocal}
+            dataEvents={dataEvents}
           />
         )}
       />

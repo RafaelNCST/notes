@@ -129,7 +129,7 @@ export const MainContextProvider: React.FC<PropsChildren> = ({ children }) => {
   };
 
   const formatDateByLanguage = (day: number, month: number, year: number) => {
-    return DATE_LOCAL_LIST[dateTypeLocal] === 'en' || dateTypeLocal
+    return DATE_LOCAL_LIST[dateTypeLocal] === 'en'
       ? `${String(month).padStart(2, '0')}/${day}/${year}`
       : `${day}/${String(month).padStart(2, '0')}/${year}`;
   };

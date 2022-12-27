@@ -68,12 +68,31 @@ export const Home: React.FC = () => {
   const getAsyncStorageEvents = async () => {
     const stringArraySavedEvents = await AsyncStorage.getItem('@ArrayEvents');
     const parsedArraySavedEvents = JSON.parse(stringArraySavedEvents as string);
-    if (parsedArraySavedEvents) {
-      getEventsToday(parsedArraySavedEvents);
-      dispatch(INITIALIZE_APP(parsedArraySavedEvents));
+    const formatedArraySavedEvents = changeFormatedDates(
+      parsedArraySavedEvents,
+    );
+    if (formatedArraySavedEvents) {
+      getEventsToday(formatedArraySavedEvents);
+      dispatch(INITIALIZE_APP(formatedArraySavedEvents));
     }
 
     setLoading(false);
+  };
+
+  const changeFormatedDates = (arrayData: eventsProps[]) => {
+    const newArray = arrayData.map(item => {
+      const year = item.date?.split('/')[2];
+      if (DATE_LOCAL_LIST[dateTypeLocal] === 'en') {
+        const day = item.date?.split('/')[0];
+        const month = item.date?.split('/')[1];
+        return { ...item, date: `${month}/${day}/${year}` };
+      } else {
+        const day = item.date?.split('/')[0];
+        const month = item.date?.split('/')[1];
+        return { ...item, date: `${day}/${month}/${year}` };
+      }
+    });
+    return newArray;
   };
 
   const reset = () => {
@@ -83,7 +102,7 @@ export const Home: React.FC = () => {
   useEffect(() => {
     getAsyncStorageEvents();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload_changes]);
+  }, [reload_changes, dateTypeLocal]);
 
   return (
     <BodyScreen>
